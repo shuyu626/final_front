@@ -14,7 +14,7 @@ import 'leaflet.locatecontrol'; // 导入插件
 import 'leaflet.markercluster';
 import { useApi } from '@/composables/axios'
 import { useSnackbar } from 'vuetify-use-dialog'
-
+import '@fortawesome/fontawesome-free/css/all.min.css';
 
 const createSnackbar = useSnackbar()
 const initialMap = ref(null);
@@ -74,7 +74,7 @@ const initializeMap = () => {
         enableHighAccuracy: true,
         maxZoom: 13
         },
-      icon: '', // 設置定位標記的icon
+      icon: 'fa fa-solid fa-crosshairs', // 設置定位標記的icon
       onLocationError: function (err) {
         console.error(err.message);
         createSnackbar({
