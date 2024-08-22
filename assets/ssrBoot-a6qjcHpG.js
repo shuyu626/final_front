@@ -1,0 +1,1 @@
+import{U as s,O as t,s as e,bW as n}from"./index-C3mp5WEP.js";function i(){const o=s(!1);return t(()=>{window.requestAnimationFrame(()=>{o.value=!0})}),{ssrBootStyles:e(()=>o.value?void 0:{transition:"none !important"}),isBooted:n(o)}}export{i as u};
