@@ -1,1 +1,0 @@
-import{o as e,e as a,m as r}from"./index-CwHat2aJ.js";const p={__name:"appButton",props:{text:{type:String,default:"新增"}},setup(t){return(n,o)=>(e(),a(r,{type:"submit",text:t.text,variant:"text",class:"rounded-xl b-1",density:"comfortable",ripple:!1},null,8,["text"]))}};export{p as _};
