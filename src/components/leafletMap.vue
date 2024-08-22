@@ -74,7 +74,7 @@ const initializeMap = () => {
         enableHighAccuracy: true,
         maxZoom: 13
         },
-      icon: 'fa fa-solid fa-crosshairs', // 設置定位標記的icon
+      icon: '', // 設置定位標記的icon
       onLocationError: function (err) {
         console.error(err.message);
         createSnackbar({
