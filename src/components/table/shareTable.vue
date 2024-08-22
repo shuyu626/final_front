@@ -19,6 +19,7 @@
               <!-- 搜尋欄位 -->
               <template #top>
                 <search 
+                 class="my-5"
                   v-model="tableSearch"
                   @click-append="tableLoadItems(true)"
                   @keydown.enter="tableLoadItems(true)"

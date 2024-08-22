@@ -22,6 +22,7 @@
                   @click-append="tableLoadItems(true)"
                   @keydown.enter="tableLoadItems(true)"
                   max-width="100%"
+                   class="my-5"
                 ></search>
             </template>
             <template #[`item.image`]="{ item }">

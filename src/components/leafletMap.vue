@@ -121,8 +121,10 @@ const initializeMap = () => {
 const loadMapData = async () => {
   try {
     const { data } = await api.get('/landmark');
+    console.log(data)
     marks.value = data.result.data;
     updateMarkers();
+    console.log(marks.value)
   } catch (error) {
     console.error('Error fetching data:', error);
     createSnackbar({
@@ -262,7 +264,7 @@ const updateMarkers = () => {
         <h3 style="margin: 2px 0 2px 0;color:gray;">地址：${mark.address}</h3>
         <h3 style="margin: 2px 0 2px 0;color:gray;">電話：${mark.tel}</h3>
         <span style="font-size: 1.17em;font-weight: bold;color:gray;">類別：</span><span style="font-size: 1.17em;font-weight: bold;margin: 2px 0 2px 0;color:#7b97a6;">${mark.categories.join(' | ') }</span>
-        <div><span style="font-size: 1.17em;font-weight: bold;color:gray;">簡介：</span><h4 style="margin: 2px 0 2px 0;color:gray;word-wrap: break-word;">${mark.description}</h4></div>`
+        <div><span style="font-size: 1.17em;font-weight: bold;color:gray;">簡介：</span><h4 style="margin: 2px 0 2px 0;color:gray;white-space: pre-line;">${mark.description}</h4></div>`
         ,
           {
             className: 'custom-popup-class',

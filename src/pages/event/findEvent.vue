@@ -62,17 +62,6 @@
                                             <label class="form-label">活動類別：</label>
                                         </v-col>
                                         <v-col cols="12" md="9">
-                                          <!-- <v-combobox
-                                            class="flex-grow-1"
-                                            multiple
-                                            variant="outlined" 
-                                            density="comfortable" 
-                                            dense
-                                            hide-details
-                                            v-model="category.value.value"
-                                            :error-messages="category.errorMessage.value"
-                                            :items="chips"
-                                          ></v-combobox> -->
                                           <v-select
                                                 v-model="category.value.value"
                                                 :error-messages="category.errorMessage.value"
@@ -85,32 +74,12 @@
                                                 multiple
                                             >
                                           </v-select>
-                                          <!-- <v-select
-                                                v-model="category.value.value"
-                                                :error-messages="category.errorMessage.value"
-                                                label="選擇" 
-                                                variant="outlined" 
-                                                density="comfortable" 
-                                                dense
-                                                width="140"
-                                                :items="chips"
-                                                hide-details
-                                            >
-                                          </v-select> -->
                                         </v-col>
                                         <!-- 活動時間 -->
                                         <v-col cols="12" md="3" class="my-auto text-center px-0">
                                             <label class="form-label">活動時間：</label>
                                         </v-col>
                                         <v-col cols="12" md="9">
-                                            <!-- <v-date-input
-                                            v-model="model"
-                                            label="選擇日期"
-                                            max-width="368px"
-                                            variant="outlined"
-                                            density="comfortable"
-                                            hide-details
-                                            ></v-date-input> -->
                                             <inputText
                                             v-model="date.value.value"
                                             :error-messages="date.errorMessage.value"

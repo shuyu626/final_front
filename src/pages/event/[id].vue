@@ -5,16 +5,16 @@
             <v-col cols="5" class="d-flex justify-center">
                 <v-img :src="event.image" class="" max-width="400" max-height="500" contain></v-img>
             </v-col>
-            <v-col cols="5">
+            <v-col cols="6">
                 <v-card variant="flat">
-                    <v-card-title class="font-weight-black">活動名稱：{{ event.title }}</v-card-title>
+                    <v-card-title class="font-weight-black" style="white-space: pre-line;">活動名稱：{{ event.title }}</v-card-title>
                     <v-divider thickness="0"></v-divider>
                     <v-card-text class="font-weight-black">活動時間</v-card-text>
                     <v-card-text>{{ event.date }}</v-card-text>
                     <v-card-text class="font-weight-black">活動地點</v-card-text>
                     <v-card-text>{{event.address}}</v-card-text>
                     <v-card-text class="font-weight-black">活動類別</v-card-text>
-                    <v-card-text>{{event.category}}</v-card-text>
+                    <v-card-text v-for="item in event.category" :key="item">{{item}}</v-card-text>
                     <v-card-text class="font-weight-black">主辦單位</v-card-text>
                     <v-card-text>{{ event.organizer }}</v-card-text>
                     <v-card-text></v-card-text>

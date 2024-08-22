@@ -32,20 +32,8 @@
 <!-- 02 地標管理 -->
           <v-tabs-window-item value="option-2" >
             <!-- 麵包屑 - 顯示目前頁面位置 -->
-           <breadcrumbs :title="mark"></breadcrumbs>
-           <!-- <v-data-table-server
-                :headers="event_tableHeaders"
-                hover
-                class="w-75 mx-auto b-1 rounded-lg "
-              >
-              <template #[`item.image`]="{ value }">
-                <v-img :src="value" height="50px"></v-img>
-              </template>
-              <template #[`item.action`]="{ item }">
-                <v-btn icon="mdi-pencil" variant="text" color="blue" @click="openDialog(item)"></v-btn>
-                <v-btn icon="mdi-delete" variant="text" color="blue" @click="openDialog(item)"></v-btn>
-              </template>
-            </v-data-table-server> -->
+          <breadcrumbs :title="mark"></breadcrumbs>
+          <LandmarkTable/>
           </v-tabs-window-item>
 
 
@@ -126,6 +114,7 @@ import AccountTable from '@/components/table/accountTable.vue'
 import MaterialTable from '@/components/table/shareReplyTable.vue'
 import ShareReplyTable from '@/components/table/shareReplyTable.vue'
 import FindReplyTable from '@/components/table/findReplyTable.vue'
+import LandmarkTable from '@/components/table/landmarkTable.vue'
 const { api,apiAuth } = useApi()
 const createSnackbar = useSnackbar()
 const fileAgent = ref(null)

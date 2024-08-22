@@ -95,6 +95,7 @@
           <v-tabs-window-item value="option-2" >
             <!-- 麵包屑 - 顯示目前頁面位置 -->
            <breadcrumbs :title="mark"></breadcrumbs>
+           <AllLandmark></AllLandmark>
            <!-- <v-data-table-server
                 :headers="event_tableHeaders"
                 hover
@@ -125,7 +126,7 @@
 
 
 
-          <!-- 活動收藏管理 -->
+<!-- 04 活動收藏管理 -->
           <v-tabs-window-item value="option-4">
             <!-- 麵包屑 - 顯示目前頁面位置 -->
           <breadcrumbs :title="event"></breadcrumbs>
@@ -141,7 +142,6 @@
           </v-tabs-window-item>
 
 
-      
           
         </v-tabs-window>
       </v-container>
@@ -152,7 +152,7 @@
 import AllEventTable from '@/components/admin/allEventTable.vue';
 import AllFindTable from '@/components/admin/allFindTable.vue';
 import AllShareTable from '@/components/admin/allShareTable.vue';
-
+import AllLandmark from '@/components/admin/allLandmark.vue';
   const profile=(['會員中心','基本資料'])
 const mark=(['會員中心','地標管理'])
 const post=(['會員中心','貼文管理'])

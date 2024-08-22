@@ -1,26 +1,79 @@
 <template>
-    <v-container>
-    <!-- 麵包屑 -->
-    <breadcrumbs :title=title></breadcrumbs>
-    <!-- 地圖 -->
-    <div id="map" ref="map" ></div>
+    <!-- 活動貼文管理 -->
+    <h2 class="my-5 bg-accent text-center mx-auto w-75">地標管理</h2>
+            <v-data-table-server
+                v-model:items-per-page="tableItemsPerPage"
+                v-model:sort-by="tableSortBy"
+                v-model:page="tablePage"
+                :items="tableItems"
+                :headers="tableHeaders"
+                :loading="tableLoading"
+                :items-length="tableItemsLength"
+                :search="tableSearch"
+                @update:items-per-page="tableLoadItems(false)"
+                @update:sort-by="tableLoadItems(false)"
+                @update:page="tableLoadItems(false)"
+                hover
+                class="w-75 mx-auto rounded-lg mb-15"
+              >
+              <!-- 搜尋欄位 -->
+                <template #top>
+                <search 
+                    class="my-5"
+                    v-model="tableSearch"
+                    @click-append="tableLoadItems(true)"
+                    @keydown.enter="tableLoadItems(true)"
+                    max-width="100%"
+                ></search>
+                </template>
+                <template #[`item.name`]="{item }">
+                    <td style="width: 240px;">{{ item.name }}</td>
+                </template>
+                <template #[`item.tel`]="{item }">
+                    <td style="width:120px;">{{ item.tel }}</td>
+                </template>
+                <template #[`item.address`]="{ item }">
+                <td style="width: 300px;" class="text-left">{{ item.address }}</td>
+                </template>
+                <template #[`item.categories`]="{ item }">
+                    <!-- .join 將陣列轉換為格式化的字串 -->
+                    <td style="width: 200px;" class="text-center">{{ item.categories.join(' , ') }}</td>
+                </template>
+                <template #[`item.description`]="{ item }">
+                <td style="width: 350px;" class="py-2 text-left">{{ item.description }}</td>
+                </template>
+                <template #[`item.action`]="{ item }">
+                <td style="width: 80px;">{{ item.action }}
+                    <v-btn icon="mdi-pencil" variant="text" color="blue" @click="openDialog(item)"></v-btn>
+                    <v-btn icon="mdi-delete" variant="text" color="blue" @click="deleteItem(item)"></v-btn>
+                </td>
+                </template>
+            </v-data-table-server>
 
-    <v-card width="500px" variant="outlined" class="overflow-y-auto">
-        <v-toolbar color="secondary bb-1" prominent >
-            <v-toolbar-title >
-                新增資源
-            </v-toolbar-title>
-        </v-toolbar>
-        <div class="px-6">
+           
+            <v-dialog max-width="700" v-model="dialog.open">
+                <v-card>
+                    <v-toolbar color="secondary" prominent class=" bb-1">
+                        <v-toolbar-title class="mt-3">
+                            修改地標
+                        </v-toolbar-title>
+                    </v-toolbar>
+                <div class="px-6 my-2">
             <v-form @submit.prevent="submit" :disabled="isSubmitting">
-                <Search class="mx-auto" 
-                v-model="address"
-                :error-messages="addressError "
-                label="輸入資源地址"
-                ></Search>
-                <v-row class="my-5">
+                <v-row class="my-1">
+                    <v-col cols="12" md="3" class="my-auto text-center ps-6">
+                        <label class="form-label">服務地址</label>
+                    </v-col>
+                    <v-col cols="12" md="9">
+                        <Search 
+                        v-model="address"
+                        :error-messages="addressError "
+                        label="輸入資源地址"
+                        max-width="1000px"
+                        ></Search>
+                    </v-col>
                     <!-- 物資名稱 -->
-                    <v-col cols="12" md="3" class="my-auto text-left ps-6">
+                    <v-col cols="12" md="3" class="my-auto text-center ps-6">
                     <label class="form-label">服務名稱</label>
                     </v-col>
                     <v-col cols="12" md="9">
@@ -30,7 +83,7 @@
                         />
                     </v-col>
                     <!-- 需求量 -->
-                    <v-col cols="12" md="3" class="my-auto text-left ps-6">
+                    <v-col cols="12" md="3" class="my-auto text-center ps-6">
                     <label class="form-label">服務電話</label>
                     </v-col>
                     <v-col cols="12" md="9">
@@ -40,7 +93,7 @@
                         />
                     </v-col>
                         <!-- 物資類別 -->
-                        <v-col cols="12" md="3" class="mt-2 text-left ps-6">
+                        <v-col cols="12" md="3" class="mt-2 text-center ps-6">
                     <label class="form-label">服務項目</label>
                     </v-col>
                     <v-col cols="12" md="9">
@@ -205,7 +258,7 @@
                         </v-expansion-panels>
                     </v-col>
                     <!-- 需求介紹 -->
-                    <v-col cols="12" md="3" class="text-left ps-6">
+                    <v-col cols="12" md="3" class="text-center ps-6">
                         <label class="form-label">服務介紹</label>
                     </v-col>
                     <v-col cols="12" md="9">
@@ -214,43 +267,30 @@
                         variant="outlined" clearable
                         v-model="description.value.value"
                         :error-messages="description.errorMessage.value"
+                        hide-details
                         ></v-textarea>
                     </v-col>
                 </v-row>
                 <v-row>
                     <v-col class="text-center" >
-                        <submitButton type="submit" class="b-1 bg-accent  mb-8" @click="addMarker"></submitButton>
+                        <submitButton type="submit" class="b-1 bg-accent mb-8" @click="addMarker"></submitButton>
                     </v-col>
                 </v-row>
             </v-form>
         </div>
-    </v-card>
-      <!-- app 固定在頁腳 -->
-  <v-footer color="info" height="60px" class="b-1" app></v-footer>
-</v-container>
+                </v-card>
+            </v-dialog>
+            
 </template>
 <script setup>
-import { ref, onMounted } from 'vue';
+import { ref } from 'vue'
+import { useSnackbar } from 'vuetify-use-dialog'
 import * as yup from 'yup'
 import { useForm, useField } from 'vee-validate'
-import { useRoute } from 'vue-router'
 import { useApi } from '@/composables/axios'
-import { useSnackbar } from 'vuetify-use-dialog'
-import axios from 'axios';
-import { definePage } from 'vue-router/auto'
-
-import * as L from 'leaflet';
-
-
-import "leaflet/dist/leaflet.css";
-import Search from '@/components/search.vue';
-
 const { api,apiAuth } = useApi()
-const route = useRoute()
 const createSnackbar = useSnackbar()
 
-
-const title=['資源地圖','新增資源']
 
 const client = ['長期照顧','身心障礙','婦女','兒童及少年','保護性服務']
 const care = ['日照中心','護理之家','居家服務','交通接送','家庭托顧']
@@ -259,14 +299,89 @@ const child = ['少年福利服務中心','親子館','課後班']
 const assistance = ['經濟補助','待用餐','基金會','社會福利中心']
 const women = ['婦女福利服務中心','新住民家庭服務中心']
 
-// const safetyNet = ['衛政','社政','警政','勞政','司法','教育']
-definePage({
-meta: {
-title: ' | 新建資源'
+
+
+// 活動管理
+// 一頁10個
+const tableItemsPerPage = ref(10)
+// 可以一次支援很多欄位去做排序，前端要支援這個功能的話後端的api就要把這個功能寫出來(這裡只舉一個欄位做排序)
+const tableSortBy = ref([
+  { key: 'createdAt', order: 'desc' } // createdAt建立的日期 ， order代表正序或倒序(desc 倒序)
+])
+const tablePage = ref(1) // 表格被翻到哪一頁，預設在第一頁
+const tableItems = ref([])
+const tableHeaders = [ 
+
+{ title: '服務名稱', align: 'center', sortable: false, key: 'name' }, 
+{ title: '地址', align: 'center', sortable: true, key: 'address' },
+{ title: '聯絡電話', align: 'center', sortable: false, key: 'tel' },
+{ title: '服務項目', align: 'center', sortable: true, key: 'categories' },
+{ title: '服務介紹', align: 'center', sortable: false, key: 'description' },
+{ title: '操作', align: 'center', sortable: false, key: 'action' }
+]
+const tableLoading = ref(true) // 進來頁面時是讀取狀態
+const tableItemsLength = ref(0) // 全部有多少筆資料
+const tableSearch = ref('') // 搜尋的文字
+
+const tableLoadItems = async (reset) => {
+  if (reset) tablePage.value = 1 // 重置當前頁碼，重新整理時從第一頁開始
+  tableLoading.value = true
+  try {
+    // 取得表格資料
+    // get(網址參數，請求的設定)
+    const { data } = await apiAuth.get('/user/landmark', { // 發送請求從後端取得特定資料
+      
+      // 設定路由的參數
+      params: {
+        page: tablePage.value,
+        itemsPerPage: tableItemsPerPage.value,
+        sortBy: tableSortBy.value[0]?.key || 'createdAt', // 要寫?，因為排序是可以取消的
+        sortOrder: tableSortBy.value[0]?.order || 'desc',
+        search: tableSearch.value
+      }
+      
+    })
+    console.log(data)
+    tableItems.value.splice(0, tableItems.value.length, ...data.result.data) // 清空所有資料，再從後端取得新資料
+    tableItemsLength.value = data.result.total
+    // console.log(tableItems)
+    // const category = tableItems.value.map(obj => obj.category);
+    // console.log(category)
+  } catch (error) {
+    console.log(error)
+    createSnackbar({
+      text: error?.response?.data?.message || '發生錯誤',
+      snackbarProps: {
+        color: 'red'
+      }
+    })
+  }
+  tableLoading.value = false
 }
-})
+tableLoadItems() // 第一次進來要呼叫一次
 
-
+const chips=['兒童','青少年','育兒','長照','精神','照顧','就學','就業','身障','親職教育','早療','紓壓','居住','醫療','司法','社工','其他']
+// 活動貼文管理對話框
+const dialog = ref({
+  open: false,
+  id: ''
+});
+const openDialog = (item) => {
+    dialog.value.open = true
+    dialog.value.id = item._id // 傳入的商品id
+    title.value.value = item.title 
+    date.value.value = item.date
+    address.value.value = item.address
+    category.value.value = item.category
+    organizer.value.value = item.organizer
+    description.value.value = item.description
+    
+}
+const closeDialog = () => {
+  dialog.value.open = false
+  resetForm()
+  fileAgent.value.deleteFileRecord() 
+}
 
 
 const schema = yup.object({
@@ -329,139 +444,40 @@ const category6 = useField('category6')
 const category7 = useField('category7')
 const description = useField('description')
 const { value: address, errorMessage: addressError } = useField('address');
-
-
-// Google Maps API 密鑰
-const googleMapsApiKey = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
-console.log(googleMapsApiKey);
-  // Leaflet map reference
-const initialMap = ref(null);
-// const address = ref('');
-// const name = ref('');
-// const tel = ref('');
-// const description = ref('');
-
-// 用來存取地址轉換的經緯度(要傳到資料庫的)
-const latitude = ref(null);
-const longitude = ref(null);
-onMounted(() => {
-// Initialize Leaflet map
-initialMap.value = L.map('map').setView([25.049183268037577, 121.51342818384893], 12);
-
-
-L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    maxZoom: 19,
-    attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-}).addTo(initialMap.value);
-});
-
-const addMarker = async () => {
-if (!address.value) {
-    alert('找不到地址~');
-    return;
-}
-
-
-
-// Google Maps Geocoding API URL
-const geocodeUrl = `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(address.value)}&key=${googleMapsApiKey}`;
-
-try {
-    const response = await axios.get(geocodeUrl);
-    const data = response.data;
-    console.log(data)
-    if (data.results && data.results.length > 0) {
-    const lat = data.results[0].geometry.location.lat;
-    const lng = data.results[0].geometry.location.lng;
- 
-    latitude.value = lat;
-    longitude.value = lng;
-
-    console.log(latitude.value)
-    console.log(data.results)
-    console.log(lat)
-    console.log(lng)
-    
-     L.marker([lat, lng], { icon: customIcon })
-    .bindPopup(
-      `<h2 style="margin:5px 0 5px 0;text-decoration: underline;">${name.value}</h2>
-       <h3 style="margin: 2px 0 2px 0;color:gray;">${address.value}</h3>
-       <h3 style="margin: 2px 0 2px 0;color:gray;">${tel.value}</h3>
-  
-       <p style="margin: 2px 0 2px 0;color:gray;">簡介：<br>${description.value}</p>`,
-      {
-        className: 'custom-popup-class',
-        maxWidth: 400,
-        minWidth: 100,
-        maxHeight: 250,
-        minHeight: 100,
-        closeOnClick: false,  
-        autoPan: false  
-      }
-    )
-    .openPopup()
-  
-    loadMap();
- 
-
-    } else {
-    alert('找不到地址~');
-    }
-} catch (error) {
-    console.error('新增地標錯誤:', error);
-    alert('新增地標失敗~');
-}
-};
-
-
-
-// 新增地標資料到後端資料庫
 const submit = handleSubmit(async (values) => {
+  // 如果 vue.file.agent 這個元件選到的檔案有 error 的話就 return，[0]代表第一個檔案，如果第一個檔案有error就return
+  // ?.沒選檔案的時候是undefined，if不會過 > return
+  if (fileRecords.value[0]?.error) return 
+  if (fileRecords.value.length < 1) return
+  // 建立 FormData 物件並添加要上傳的資料
+  
   try {
-    await addMarker() // 避免取到經緯度時就已經執行了submit()，沒有這行會取不到lat、lng
-    console.log(latitude.value)
-
-    const categories = [
-      ...values.category1,
-      ...values.category2,
-      ...values.category3,
-      ...values.category4,
-      ...values.category5,
-      ...values.category6,
-      ...values.category7
-    ];
-
-    const data = {
-        name:values.name,
-        address:values.address,
-        tel:values.tel,
-        categories: categories,
-        description:values.description,
-        lat: latitude.value, 
-        lng: longitude.value 
+    // 要先建立 FormData 物件，然後把東西放進去
+    // 用append方法把要放進formdata的資料放進去
+    const fd = new FormData()
+    // fd.append(key, value)
+    fd.append('title', values.title)
+    fd.append('date', values.date)
+    fd.append('address', values.address)
+    fd.append('category', values.category)
+    fd.append('organizer', values.organizer)
+    fd.append('description', values.description)
+    // 如果有選擇圖片，將圖片添加到 FormData
+    // 如果大於0，才要把檔案放進去
+    if (fileRecords.value.length > 0) {
+      fd.append('image', fileRecords.value[0].file)
     }
-    console.log(data)
-    await apiAuth.post('landmark/', data) 
+    await apiAuth.patch('/event/' + dialog.value.id, fd) 
     createSnackbar({
       text: '新增成功' ,
       snackbarProps: {
         color: 'green'
       }
     })
-    initialMap.value.eachLayer((layer) => {
-      if (layer instanceof L.Marker) {
-        initialMap.value.removeLayer(layer);
-      }
-    });
-
-  
-
-    // 重置表單
-    resetForm();
-
-
+    closeDialog()
   } catch (error) {
     console.log(error)
+    
     createSnackbar({
       text: error?.response?.data?.message || '發生錯誤',
       snackbarProps: {
@@ -470,90 +486,44 @@ const submit = handleSubmit(async (values) => {
     })
   }
 })
-
-const customIcon = L.icon({
-  iconUrl: 'https://cdn-icons-png.flaticon.com/512/7596/7596723.png', // 替換為你的圖標 URL
-  iconSize: [32, 32], // 圖標尺寸
-  iconAnchor: [16, 32], // 圖標的錨點位置
-  popupAnchor: [0, -32] // 彈出框的錨點位置
+watch(tableSearch, () => {
+  tableLoadItems(true); // 當搜尋查詢變化時重新過濾項目
 });
 
 
-
-// 取得後端所有地標資料
-const marks = ref([])
-const loadMap = async () => {
+const deleteItem = async (item) => {
+  // console.log(item._id)
   try {
-    const { data } = await apiAuth.get('/landmark');
-    marks.value.splice(0, marks.value.length, ...data.result.data); // 更新前端的商品列表
-    console.log(data)
-    
-    // 清空地圖上的所有現有標註
-    initialMap.value.eachLayer((layer) => {
-      if (layer instanceof L.Marker) {
-        initialMap.value.removeLayer(layer);
+    await apiAuth.delete(`/landmark/${item._id}`)
+    createSnackbar({
+      text: '刪除成功',
+      snackbarProps: {
+        color: 'green'
       }
-    });
-    console.log(marks.value)
-    // 在地圖上添加地標標註
-    marks.value.forEach((mark) => {
-      L.marker([mark.lat, mark.lng], { icon: customIcon })
-        .bindPopup(
-          `<h2 style="margin:5px 0 5px 0;text-decoration: underline;">${mark.name}</h2>
-        <h3 style="margin: 2px 0 2px 0;color:gray;">${mark.address}</h3>
-        <h3 style="margin: 2px 0 2px 0;color:gray;">${mark.tel}</h3>
-        <h4 style="margin: 2px 0 2px 0;color:gray;">類別：${mark.categories.join(' | ') }</h4>
-        <p style="margin: 2px 0 2px 0;color:gray;">簡介：<br>${mark.description}</p>`
-        ,
-          {
-            className: 'custom-popup-class',
-            maxWidth: 400, // 設置最大寬度
-            minWidth: 100, // 設置最小寬度
-            maxHeight: 250, // 設置最大高度
-            minHeight: 100,
-            closeOnClick: false, 
-          autoPan: false  
-          }
-        )
-        .addTo(initialMap.value);
-    });
+    })
+    tableLoadItems(true) // 重新加載資料表
   } catch (error) {
-    console.log(error);
+    console.log(error)
     createSnackbar({
       text: error?.response?.data?.message || '發生錯誤',
       snackbarProps: {
-        color: 'red',
-      },
-    });
-  }
-};
-loadMap();
+        color: 'red'
+      }
+    })
+  } 
+}
 
 
 
 
 </script>
-<style scoped>
-#map {
-width: 50%;
-height: 650px;
-border: 1px solid #000;
-border-radius: 15px;
-position: absolute;
-top: 18%;
-left: 12%;
-}
+
+<style setup>
 .b-1{
-border: 1px solid #7a7a7a;
+  border: 1px solid #7a7a7a;
 }
 .bb-1{
     border-bottom: 1px solid #7a7a7a;
-}
-.v-card{
-    height: 650px;
-    position: absolute;
-    top: 18%;
-    right: 10%;
 }
 ::v-deep .v-expansion-panel__shadow{
     box-shadow:none;
@@ -575,14 +545,8 @@ border: 1px solid #7a7a7a;
 ::v-deep .v-expansion-panel-text__wrapper{
     padding: 0 8px 0 8px ;
 }
-p{
-    color:rgb(94, 94, 94);
-}
-.v-col{
-    padding: 5px 10px 5px 10px;
-}
 .form-label{
- font-size: 18px;
+ font-size: 20px;
  font-weight: bold;
  color: rgb(80, 80, 80);
 }

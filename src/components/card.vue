@@ -5,7 +5,7 @@
             <div style="width: 264px;height:264px;" class="d-flex justify-content-center b-1 mt-2 mb-2  bg-white">
                 <v-img :src="image" rounded containr></v-img>
             </div>
-            <v-card-title class="font-weight-black " style="font-size: 1.1rem;width: 215px;word-wrap: break-word;">{{ title }}
+            <v-card-title class="font-weight-black " style="font-size: 1.1rem;width: 215px;white-space: pre-line;">{{ title }}
             </v-card-title>
             <v-card-subtitle style="width: 200px;" class="font-weight-black" >{{ organizer }}</v-card-subtitle>
             <v-chip density="compact" class="mt-2 me-1"v-for="item in category" :key="item">{{ item }}</v-chip>

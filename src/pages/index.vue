@@ -19,6 +19,7 @@
       </v-toolbar>
       <v-card-item>
           <search
+           class="my-5"
           v-model="searchQuery"
           label="輸入資源地址"
           />
@@ -49,7 +50,7 @@
                 服務類別
               </v-toolbar-title>
           </v-toolbar>
-          <v-expansion-panels  variant="accordion">
+          <v-expansion-panels  variant="accordion" class="">
               <v-expansion-panel
               v-for="(category, index) in categories"
               :key="index"
