@@ -403,6 +403,7 @@ const submit = handleSubmit(async (values) => {
       }
     })
     closeDialog()
+    loadEvents()
   } catch (error) {
     console.log(error)
     

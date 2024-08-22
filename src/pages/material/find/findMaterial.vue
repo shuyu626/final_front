@@ -39,7 +39,7 @@
         <!-- 側邊欄 -->
         <v-navigation-drawer class="bg-primary b-1 text-center" width="300">
             <!-- 新增需求對話框 -->
-            <resourceDialog type="find"></resourceDialog>
+            <resourceDialog type="find" @update="loadMaterials"></resourceDialog>
             <!-- 搜尋欄 -->
             <v-responsive >
               <v-text-field

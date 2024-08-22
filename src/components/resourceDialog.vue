@@ -116,7 +116,7 @@ import * as yup from 'yup'
 import { useForm, useField } from 'vee-validate'
 import { useApi } from '@/composables/axios'
 import { useSnackbar } from 'vuetify-use-dialog'
-
+const emit =defineEmits(["update"])
 const { apiAuth } = useApi()
 const createSnackbar = useSnackbar()
 
@@ -232,6 +232,8 @@ try {
      color: 'green'
    }
  })
+
+ emit("update")
  closeDialog()
 } catch (error) {
  console.log(error)
