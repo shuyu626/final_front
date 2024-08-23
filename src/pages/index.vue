@@ -19,7 +19,7 @@
       </v-toolbar>
       <v-card-item>
           <search
-           class="my-5"
+           class="my-5 "
           v-model="searchQuery"
           label="輸入資源地址"
           />

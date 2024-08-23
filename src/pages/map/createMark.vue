@@ -13,7 +13,7 @@
         </v-toolbar>
         <div class="px-6">
             <v-form @submit.prevent="submit" :disabled="isSubmitting">
-                <Search class="mx-auto" 
+                <Search class="mx-auto my-5" 
                 v-model="address"
                 :error-messages="addressError "
                 label="輸入資源地址"

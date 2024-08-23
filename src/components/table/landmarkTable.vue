@@ -1,5 +1,4 @@
 <template>
-    <!-- 活動貼文管理 -->
     <h2 class="my-5 bg-accent text-center mx-auto w-75">地標管理</h2>
             <v-data-table-server
                 v-model:items-per-page="tableItemsPerPage"
@@ -54,7 +53,7 @@
             <v-dialog max-width="700" v-model="dialog.open">
                 <v-card>
                     <v-toolbar color="secondary" prominent class=" bb-1">
-                        <v-toolbar-title class="mt-3">
+                        <v-toolbar-title class="mt-3 text-center font-weight-bold">
                             修改地標
                         </v-toolbar-title>
                     </v-toolbar>
@@ -288,6 +287,10 @@ import { useSnackbar } from 'vuetify-use-dialog'
 import * as yup from 'yup'
 import { useForm, useField } from 'vee-validate'
 import { useApi } from '@/composables/axios'
+import axios from 'axios';
+import * as L from 'leaflet';
+import "leaflet/dist/leaflet.css";
+
 const { api,apiAuth } = useApi()
 const createSnackbar = useSnackbar()
 
@@ -364,23 +367,18 @@ const chips=['兒童','青少年','育兒','長照','精神','照顧','就學','
 // 活動貼文管理對話框
 const dialog = ref({
   open: false,
-  id: ''
 });
 const openDialog = (item) => {
     dialog.value.open = true
-    dialog.value.id = item._id // 傳入的商品id
-    title.value.value = item.title 
-    date.value.value = item.date
-    address.value.value = item.address
-    category.value.value = item.category
-    organizer.value.value = item.organizer
+    dialog.value.id = item._id
+    name.value.value = item.name 
+    tel.value.value = item.tel
     description.value.value = item.description
     
 }
 const closeDialog = () => {
   dialog.value.open = false
   resetForm()
-  fileAgent.value.deleteFileRecord() 
 }
 
 
@@ -444,40 +442,100 @@ const category6 = useField('category6')
 const category7 = useField('category7')
 const description = useField('description')
 const { value: address, errorMessage: addressError } = useField('address');
-const submit = handleSubmit(async (values) => {
-  // 如果 vue.file.agent 這個元件選到的檔案有 error 的話就 return，[0]代表第一個檔案，如果第一個檔案有error就return
-  // ?.沒選檔案的時候是undefined，if不會過 > return
-  if (fileRecords.value[0]?.error) return 
-  if (fileRecords.value.length < 1) return
-  // 建立 FormData 物件並添加要上傳的資料
-  
-  try {
-    // 要先建立 FormData 物件，然後把東西放進去
-    // 用append方法把要放進formdata的資料放進去
-    const fd = new FormData()
-    // fd.append(key, value)
-    fd.append('title', values.title)
-    fd.append('date', values.date)
-    fd.append('address', values.address)
-    fd.append('category', values.category)
-    fd.append('organizer', values.organizer)
-    fd.append('description', values.description)
-    // 如果有選擇圖片，將圖片添加到 FormData
-    // 如果大於0，才要把檔案放進去
-    if (fileRecords.value.length > 0) {
-      fd.append('image', fileRecords.value[0].file)
+
+
+
+
+
+
+
+
+// Google Maps API 密鑰
+const googleMapsApiKey = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
+console.log(googleMapsApiKey);
+
+
+
+// 用來存取地址轉換的經緯度(要傳到資料庫的)
+const latitude = ref(null);
+const longitude = ref(null);
+
+const addMarker = async () => {
+if (!address.value) {
+    alert('找不到地址~');
+    return;
+}
+// Google Maps Geocoding API URL
+const geocodeUrl = `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(address.value)}&key=${googleMapsApiKey}`;
+
+try {
+    const response = await axios.get(geocodeUrl);
+    const data = response.data;
+    console.log(data)
+    if (data.results && data.results.length > 0) {
+    const lat = data.results[0].geometry.location.lat;
+    const lng = data.results[0].geometry.location.lng;
+ 
+    latitude.value = lat;
+    longitude.value = lng;
+
+    console.log(latitude.value)
+    console.log(data.results)
+    console.log(lat)
+    console.log(lng)
+
+    } else {
+    alert('找不到地址~');
     }
-    await apiAuth.patch('/event/' + dialog.value.id, fd) 
+} catch (error) {
+    console.error('新增地標錯誤:', error);
+    alert('新增地標失敗~');
+}
+};
+
+
+
+
+
+// 新增地標資料到後端資料庫
+const submit = handleSubmit(async (values) => {
+  try {
+    await addMarker() // 避免取到經緯度時就已經執行了submit()，沒有這行會取不到lat、lng
+    console.log(latitude.value)
+
+    const categories = [
+      ...values.category1,
+      ...values.category2,
+      ...values.category3,
+      ...values.category4,
+      ...values.category5,
+      ...values.category6,
+      ...values.category7
+    ];
+
+    const data = {
+        name:values.name,
+        address:values.address,
+        tel:values.tel,
+        categories: categories,
+        description:values.description,
+        lat: latitude.value, 
+        lng: longitude.value 
+    }
+    console.log(data)
+    await apiAuth.patch('landmark/' + dialog.value.id, data) 
     createSnackbar({
-      text: '新增成功' ,
+      text: '修改成功' ,
       snackbarProps: {
         color: 'green'
       }
     })
     closeDialog()
+    // 重置表單
+    resetForm();
+    tableLoadItems(true)
   } catch (error) {
     console.log(error)
-    
     createSnackbar({
       text: error?.response?.data?.message || '發生錯誤',
       snackbarProps: {

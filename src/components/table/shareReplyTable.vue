@@ -79,8 +79,12 @@ const tableLoadItems = async (reset) => {
       }
     })
     console.log(data)
-    tableItems.value.splice(0, tableItems.value.length, ...data.result.data)
-    tableItemsLength.value = data.result.total
+    const filteredData = data.result.data.filter(item => item.donations && item.donations.length > 0);
+
+    if (filteredData.value > 0) {
+      tableItems.value.splice(0, tableItems.value.length, ...filteredData);
+      tableItemsLength.value = data.result.total;
+    }
   } catch (error) {
     console.log(error)
     createSnackbar({
