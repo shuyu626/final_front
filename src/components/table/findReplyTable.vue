@@ -13,12 +13,12 @@
                 @update:sort-by="tableLoadItems(false)"
                 @update:page="tableLoadItems(false)"
                 hover
-                class="w-75 mx-auto rounded-lg mb-15"
+                class="w-75 mx-auto rounded-lg mb-15 "
               >
               <template #[`item.image`]="{ item }">
-                <v-col cols="12" md="4" class="mx-auto" style="width: 300px;">
+                <v-col cols="12" md="4" class="mx-auto" style="width: 250px;">
                   <router-link :to="'/material/find/'+ item._id" style="text-decoration: none">
-                    <v-img :src="item.image" width="250px" max-height="200px" class="my-5"></v-img>
+                    <v-img :src="item.image" width="250px" max-height="150px" class="my-5"></v-img>
                   </router-link>
                 </v-col>
               </template>
@@ -61,9 +61,6 @@ const tableItems = ref([])
 const tableHeaders = [
   { title: '物資', align: 'center', sortable: false, key: 'image' },
   { title: '捐贈者聯絡資訊', align: 'center', sortable: false, key: 'donations' }
-  // { title: '捐贈數量', align: 'center', sortable: false, key: 'donations[0].quantity' },
-  // { title: '單位名', align: 'center', sortable: false, key: 'donations[0].donator' },
-  // { title: '聯絡電話', align: 'center', sortable: false, key: 'donations[0].phone' }
 ]
 const tableLoading = ref(true)
 const tableItemsLength = ref(0)
@@ -79,9 +76,12 @@ const tableLoadItems = async (reset) => {
         sortOrder: tableSortBy.value[0]?.order || 'desc',
       }
     })
-    console.log(data)
-    tableItems.value.splice(0, tableItems.value.length, ...data.result.data)
-    tableItemsLength.value = data.result.total
+    console.log(data.result.data)
+
+    // 確認 data.result.data 裡的 donations 是否有東西，有東西才顯示在畫面上
+    const filteredData = data.result.data.filter(item => item.donations && item.donations.length > 0)    
+    tableItems.value.splice(0, tableItems.value.length, ...filteredData)
+    tableItemsLength.value = filteredData.length
   } catch (error) {
     console.log(error)
     createSnackbar({

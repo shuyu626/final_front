@@ -13,7 +13,7 @@
                 @update:sort-by="tableLoadItems(false)"
                 @update:page="tableLoadItems(false)"
                 hover
-                class="w-75 mx-auto rounded-lg mb-15"
+                class="w-75 mx-auto b-1 rounded-lg mb-15 px-8"
               >
               <!-- 搜尋欄位 -->
                 <template #top>

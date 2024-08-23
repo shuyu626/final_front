@@ -1,6 +1,7 @@
 <template>
         <!-- 新增活動對話框 -->
             <v-btn
+                v-if="user.isLogin"
                 @click="openDialog(null)"
                 class="bg-third b-1"
                 size="65px"
@@ -229,6 +230,8 @@ import { useForm, useField } from 'vee-validate'
 import { useApi } from '@/composables/axios'
 import { useSnackbar } from 'vuetify-use-dialog'
 import Card from '@/components/card.vue'
+import { useUserStore } from '@/stores/user'
+const user = useUserStore()
 
 const { api, apiAuth } = useApi()
 const createSnackbar = useSnackbar()

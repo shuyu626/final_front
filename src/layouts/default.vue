@@ -129,7 +129,7 @@ const menus = computed(() => {
     return[
     { to: '/', text: '資源地圖', icon: 'mdi-map-search', show:!user.isLogin },
     { to: '/event/findEvent', text: '活動分享', icon: 'mdi-calendar', show:true},
-    { to: '/setting', text: '管理', icon: 'mdi-cog', show:user.isLogin },
+    { to: '/setting', text: '會員中心', icon: 'mdi-cog', show:user.isLogin },
     { to:'',text:'註冊/登入',icon:'mdi-account-plus', show:!user.isLogin},
     { to:'/admin',text:'管理者',icon:'mdi-face-man', show:user.isLogin && user.isAdmin}
     ]

@@ -1,6 +1,6 @@
 <template>
     <!-- 活動貼文管理 -->
-    <h2 class="my-5 bg-accent text-center">活動管理</h2>
+    <h2 class="my-5 bg-accent text-center w-75 mx-auto">活動管理</h2>
             <v-data-table-server
                 v-model:items-per-page="tableItemsPerPage"
                 v-model:sort-by="tableSortBy"
@@ -14,7 +14,7 @@
                 @update:sort-by="tableLoadItems(false)"
                 @update:page="tableLoadItems(false)"
                 hover
-                class="w-75 mx-auto rounded-lg mb-15"
+                class="w-75 mx-auto b-1 rounded-lg mb-15 px-8"
               >
               <!-- 搜尋欄位 -->
               <template #top>
@@ -39,7 +39,7 @@
                 <td >{{ item.category.join(' , ') }}</td>
               </template>
               <template #[`item.description`]="{ item }">
-                <td style="width: 350px;" class="py-2">{{ item.description }}</td>
+                <td style="width: 500px;white-space: pre-line;" class="py-2">{{ item.description }}</td>
               </template>
               <template #[`item.action`]="{ item }">
                 <td style="width: 80px;">{{ item.action }}
@@ -354,6 +354,7 @@ const submit = handleSubmit(async (values) => {
       }
     })
     closeDialog()
+    tableLoadItems()
   } catch (error) {
     console.log(error)
     

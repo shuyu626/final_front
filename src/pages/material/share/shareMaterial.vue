@@ -35,7 +35,7 @@
     <!-- 側邊欄 -->
     <v-navigation-drawer class="bg-primary b-1 text-center" width="300">
         <!-- 新增需求對話框 -->
-        <resourceDialog card-title="分享物資" number-title="數量" description-title="物資概況"></resourceDialog>
+        <resourceDialog card-title="分享物資" number-title="數量" description-title="物資概況"  @update="loadMaterials"></resourceDialog>
         <!-- 搜尋欄 -->
         <v-responsive >
               <v-text-field

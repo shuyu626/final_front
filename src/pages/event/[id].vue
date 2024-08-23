@@ -21,8 +21,16 @@
                     <v-card-text></v-card-text>
                     <v-card-text></v-card-text>
                       <!-- 按收藏按鈕切換樣式 -->
-                      <AppButton v-if="isFavorite" prepend-icon="mdi-bookmark" text="已收藏" class="me-15 " :style="{ backgroundColor: '#F5B4B4' } " @click="toggleFavorite"></AppButton>
-                      <AppButton v-else prepend-icon="mdi-bookmark" text="我要收藏" class="me-15 bg-info" @click="toggleFavorite" ></AppButton>
+                      <AppButton
+                        v-if="user.isLogin"
+                        :prepend-icon="isFavorite ? 'mdi-bookmark' : 'mdi-bookmark-outline'"
+                        :text="isFavorite ? '已收藏' : '我要收藏'"
+                        :class="isFavorite ? 'me-15' : 'me-15 bg-info'"
+                        :style="isFavorite ? { backgroundColor: '#F5B4B4' } : {}"
+                        @click="toggleFavorite"
+                    />
+                      <!-- <AppButton v-if="isFavorite" prepend-icon="mdi-bookmark" text="已收藏" class="me-15 " :style="{ backgroundColor: '#F5B4B4' } " @click="toggleFavorite"></AppButton>
+                      <AppButton v-else prepend-icon="mdi-bookmark" text="我要收藏" class="me-15 bg-info" @click="toggleFavorite" ></AppButton> -->
                     
                 </v-card>
             </v-col>
@@ -48,6 +56,8 @@ import { definePage } from 'vue-router/auto'
 import { useRoute } from 'vue-router'
 import { useApi } from '@/composables/axios'
 import { useSnackbar } from 'vuetify-use-dialog'
+import { useUserStore } from '@/stores/user'
+const user = useUserStore()
 
 definePage({
   meta: {
@@ -101,13 +111,12 @@ const load = async () => {
     // event.value.description = data.result.description
     // event.value.image = data.result.image
 
+    if (user.isLogin) {
+      isFavorite.value = await checkIfFavorite(event.value._id)
+    }
 
 
-    // 獲取用戶收藏的活動列表
-    const { data: markedEvents } = await apiAuth.get('/user/mark')
-    // 檢查當前活動是否在收藏列表中
-    // 如果 markedEvents 中存在一個活動的 _id 與 event.value._id 相匹配，那麼 isFavorite.value 將被設置為 true，表示該活動已被收藏
-    isFavorite.value = markedEvents.some(markedEvent => markedEvent._id === event.value._id)
+ 
 
   } catch (error) {
     console.log(error)
@@ -123,27 +132,59 @@ load()
 
 
 
-const toggleFavorite = async () => {
+const checkIfFavorite = async (eventId) => {
   try {
-    const response = await apiAuth.post('/user/toggleFavorite', { eventId: event.value._id });
-    console.log(response)
-    isFavorite.value = response.data.isFavorite; // 用於控制收藏按鈕的樣式
+    const { data: markedEvents } = await apiAuth.get('/user/mark')
+    return markedEvents.some(markedEvent => markedEvent._id === eventId)
+  } catch (error) {
+    console.log(error)
+    createSnackbar({
+      text: error?.response?.data?.message || '發生錯誤',
+      snackbarProps: {
+        color: 'red'
+      }
+    })
+    return false
+  }
+}
+
+
+
+const toggleFavorite = async () => {
+  if (!user.isLogin) {
+    createSnackbar({
+      text: '请登录后进行收藏操作',
+      snackbarProps: {
+        color: 'red'
+      }
+    })
+    return
+  }
+
+  try {
+    const response = await apiAuth.post('/user/toggleFavorite', { eventId: event.value._id })
+    isFavorite.value = response.data.isFavorite
     createSnackbar({
       text: response.data.isFavorite ? '已收藏' : '取消收藏',
       snackbarProps: {
         color: 'accent'
       }
-    });
+    })
   } catch (error) {
-    console.error('收藏操作失敗', error);
+    console.error('收藏操作失败', error)
     createSnackbar({
-      text: '收藏操作失敗',
+      text: '收藏操作失败',
       snackbarProps: {
         color: 'red'
       }
-    });
+    })
   }
-};
+}
+
+// 在组件挂载时加载数据
+onMounted(load)
+
+
 </script>
 
 

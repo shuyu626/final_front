@@ -78,13 +78,11 @@ const tableLoadItems = async (reset) => {
         sortOrder: tableSortBy.value[0]?.order || 'desc',
       }
     })
-    console.log(data)
-    const filteredData = data.result.data.filter(item => item.donations && item.donations.length > 0);
-
-    if (filteredData.value > 0) {
-      tableItems.value.splice(0, tableItems.value.length, ...filteredData);
-      tableItemsLength.value = data.result.total;
-    }
+    console.log(data.result.data)
+  // 確認 data.result.data 裡的 donations 是否有東西，有東西才顯示在畫面上
+  const filteredData = data.result.data.filter(item => item.donations && item.donations.length > 0)    
+    tableItems.value.splice(0, tableItems.value.length, ...filteredData)
+    tableItemsLength.value = filteredData.length
   } catch (error) {
     console.log(error)
     createSnackbar({
