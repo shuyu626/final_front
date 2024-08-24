@@ -1,1 +1,0 @@
-import{U as s,O as t,s as e,bX as n}from"./index-D-zaGDru.js";function i(){const o=s(!1);return t(()=>{window.requestAnimationFrame(()=>{o.value=!0})}),{ssrBootStyles:e(()=>o.value?void 0:{transition:"none !important"}),isBooted:n(o)}}export{i as u};
