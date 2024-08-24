@@ -19,7 +19,7 @@
       </v-toolbar>
       <v-card-item>
           <search
-           class="my-5 "
+           class="my-5"
           v-model="searchQuery"
           label="輸入資源地址"
           />
@@ -50,7 +50,7 @@
                 服務類別
               </v-toolbar-title>
           </v-toolbar>
-          <v-expansion-panels  variant="accordion" >
+          <v-expansion-panels  variant="accordion" class="">
               <v-expansion-panel
               v-for="(category, index) in categories"
               :key="index"
@@ -74,10 +74,7 @@
   </v-card>
     </v-col>
   </v-row>
-  
-  
-    <!-- app 固定在頁腳 -->
-<v-footer color="info" height="60px" style="border: 1px solid ;" app></v-footer>
+
 </v-container>
 </template>
 <script setup>
@@ -101,9 +98,8 @@ const title=['資源地圖','資源查詢']
 // { name: '兒少', subcategories: ['青少年服務中心', '家扶中心', '少觀所'] },
 // { name: '社會救助', subcategories: ['基金會','社會福利中心'] }
 // ]);
-
-
 const categories = ref([
+{ name: '服務對象', subcategories: ['長期照顧','身心障礙','婦女','兒童及少年','精神','保護性服務','社會救助','綜合'] },
 { name: '長期照顧', subcategories: ['日照中心','護理之家','居家服務','交通接送','家庭托顧'] },
 { name: '身心障礙', subcategories: ['身心障礙者服務中心','輔具中心','職業重建中心','小作所','庇護工場'] },
 { name: '兒童及少年', subcategories: ['少年福利服務中心','親子館','課後班'] },

@@ -95,7 +95,7 @@ const isFavorite = ref(props.isFavorite);
 
 // 從後端加載商品的資料到前端去
 const load = async () => {
-  try { // 透過'/event/' + route.params.id 來取得特定商品的資料
+  try { // 透過'/event/' + route.params.id 來取得特定活動的資料
     const { data } = await api.get('/event/' + route.params.id)
     // Object.assign(target, ...sources) 
     // target：目標對象，將接收來源對象的屬性。
@@ -153,7 +153,7 @@ const checkIfFavorite = async (eventId) => {
 const toggleFavorite = async () => {
   if (!user.isLogin) {
     createSnackbar({
-      text: '请登录后进行收藏操作',
+      text: '請登入後再收藏活動',
       snackbarProps: {
         color: 'red'
       }

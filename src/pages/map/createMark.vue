@@ -19,7 +19,7 @@
                 label="輸入資源地址"
                 ></Search>
                 <v-row class="my-5">
-                    <!-- 物資名稱 -->
+                    <!-- 服務名稱 -->
                     <v-col cols="12" md="3" class="my-auto text-left ps-6">
                     <label class="form-label">服務名稱</label>
                     </v-col>
@@ -29,7 +29,7 @@
                         :error-messages="name.errorMessage.value"
                         />
                     </v-col>
-                    <!-- 需求量 -->
+                    <!-- 服務電話 -->
                     <v-col cols="12" md="3" class="my-auto text-left ps-6">
                     <label class="form-label">服務電話</label>
                     </v-col>
@@ -39,7 +39,23 @@
                         :error-messages="tel.errorMessage.value"
                         />
                     </v-col>
-                        <!-- 物資類別 -->
+                    <!-- 服務類別 -->
+                    <v-col cols="12" md="3" class="my-auto text-left ps-6">
+                    <label class="form-label">服務類別</label>
+                    </v-col>
+                    <v-col cols="12" md="9" class="my-auto">
+                        <v-select
+                        :items="clients"
+                        label="服務類別"
+                        density="comfortable"
+                        variant="outlined"
+                        v-model="cl.value.value"
+                        :error-messages="cl.errorMessage.value"
+                        hide-details
+                        >
+                        </v-select>
+                    </v-col>
+                        <!-- 服務項目 -->
                         <v-col cols="12" md="3" class="mt-2 text-left ps-6">
                     <label class="form-label">服務項目</label>
                     </v-col>
@@ -225,8 +241,6 @@
             </v-form>
         </div>
     </v-card>
-      <!-- app 固定在頁腳 -->
-  <v-footer color="info" height="60px" class="b-1" app></v-footer>
 </v-container>
 </template>
 <script setup>
@@ -252,12 +266,14 @@ const createSnackbar = useSnackbar()
 
 const title=['資源地圖','新增資源']
 
-const client = ['長期照顧','身心障礙','婦女','兒童及少年','保護性服務']
+const client = ['長期照顧','身心障礙','婦女','兒童及少年','心理衛生','保護性服務','社會救助','綜合','其他']
 const care = ['日照中心','護理之家','居家服務','交通接送','家庭托顧']
 const disability =['身心障礙者服務中心','輔具中心','職業重建中心','小作所','庇護工場']
 const child = ['少年福利服務中心','親子館','課後班']
 const assistance = ['經濟補助','待用餐','基金會','社會福利中心']
 const women = ['婦女福利服務中心','新住民家庭服務中心']
+
+const clients = ref(['長期照顧','身心障礙','婦女','兒童及少年','精神','保護性服務','社會救助','綜合'])
 
 // const safetyNet = ['衛政','社政','警政','勞政','司法','教育']
 definePage({
@@ -277,6 +293,8 @@ address: yup
     .string()
     .required('服務地址必填'),
 tel: yup
+    .string(),
+cl:yup
     .string(),
 category5:yup.array().of(yup.string())
     .required('分類必填'),
@@ -306,6 +324,7 @@ const { handleSubmit, isSubmitting, resetForm } = useForm({
     name: '', 
     address: '', // 初始值是0
     tel: '',
+    cl:'',
     category1:[],
     category2:[],
     category3:[],
@@ -320,6 +339,7 @@ const { handleSubmit, isSubmitting, resetForm } = useForm({
 const name = useField('name')
 // const address = useField('address')
 const tel = useField('tel')
+const cl = useField('cl')
 const category1 = useField('category1')
 const category2 = useField('category2')
 const category3 = useField('category3')
@@ -435,6 +455,7 @@ const submit = handleSubmit(async (values) => {
         name:values.name,
         address:values.address,
         tel:values.tel,
+        cl:values.cl,
         categories: categories,
         description:values.description,
         lat: latitude.value, 
@@ -499,7 +520,7 @@ const loadMap = async () => {
     marks.value.forEach((mark) => {
       L.marker([mark.lat, mark.lng], { icon: customIcon })
         .bindPopup(
-          `<h2 style="margin:5px 0 5px 0;text-decoration: underline;">${mark.name}</h2>
+        `<h2 style="margin:5px 0 5px 0;text-decoration: underline;">${mark.name}</h2>
         <h3 style="margin: 2px 0 2px 0;color:gray;">${mark.address}</h3>
         <h3 style="margin: 2px 0 2px 0;color:gray;">${mark.tel}</h3>
         <h4 style="margin: 2px 0 2px 0;color:gray;">類別：${mark.categories.join(' | ') }</h4>

@@ -40,6 +40,10 @@ const props = defineProps({
   selectedSubcategories: {
     type: Array,
     default: () => []
+  },
+  selectedclient: {
+    type: String,
+    default: null
   }
 });
 // 地圖初始化和地標加載
@@ -216,6 +220,12 @@ const categoryIcons = {
     iconAnchor: [16, 32],
     popupAnchor: [0, -32]
   }),
+  '心理衛生': L.icon({
+    iconUrl: 'https://cdn-icons-png.flaticon.com/512/1090/1090903.png',
+    iconSize: [32, 32],
+    iconAnchor: [16, 32],
+    popupAnchor: [0, -32]
+  }),
   '婦女': L.icon({
     iconUrl: 'https://cdn-icons-png.flaticon.com/512/7457/7457069.png',
     iconSize: [32, 32],
@@ -228,8 +238,16 @@ const categoryIcons = {
     iconAnchor: [16, 32],
     popupAnchor: [0, -32]
   }),
+  '綜合': L.icon({
+    iconUrl: 'https://cdn-icons-png.flaticon.com/512/5153/5153858.png',
+    iconSize: [32, 32],
+    iconAnchor: [16, 32],
+    popupAnchor: [0, -32]
+  }),
   '其他': L.icon({
-    iconUrl: 'https://cdn-icons-png.flaticon.com/512/3010/3010860.png',
+    iconUrl: 'https://cdn-icons-png.flaticon.com/512/5672/5672993.png',
+    // iconUrl: 'https://cdn-icons-png.flaticon.com/512/3010/3010860.png',
+    // https://cdn-icons-png.flaticon.com/512/2684/2684763.png
     iconSize: [32, 32],
     iconAnchor: [16, 32],
     popupAnchor: [0, -32]
@@ -240,46 +258,47 @@ const categoryIcons = {
 
 // 更新標記 (包括篩選功能)
 const updateMarkers = () => {
-  markers.value.forEach(({ marker }) => marker.remove());
-  const filteredMarks = marks.value
-    .filter(mark =>
-      // 檢查 mark.address 是否包含選到的城市
-      (!props.selectedCity || mark.address.includes(props.selectedCity)) &&
-      // 檢查 mark.address 是否包含選到的地區
-      (!props.selectedArea || mark.address.includes(props.selectedArea)) &&
-      // 檢查 mark.name 是否包含搜尋的字
-      (!props.searchQuery || mark.name.toLowerCase().includes(props.searchQuery.toLowerCase())) &&
-      // 檢查 mark.categories 是否包含選中的子類別
-      (props.selectedSubcategories.length === 0 || mark.categories.some(cat => props.selectedSubcategories.includes(cat)))
-    );
+  if (!initialMap.value) return;
 
-  markers.value = filteredMarks.map(mark => {
-    const category = mark.categories.find(cat => Object.keys(categoryIcons).includes(cat)) || '其他';
-    const icon = categoryIcons[category] || categoryIcons['其他'];
+  // 清除现有的标记
+  markers.value.forEach(marker => initialMap.value.removeLayer(marker));
+  markers.value = [];
 
+  // 过滤数据
+  const filteredMarks = marks.value.filter(item => {
+    // 根据筛选条件进行过滤
+    const matchesCity = !props.selectedCity || item.address.includes(props.selectedCity);
+    const matchesArea = !props.selectedArea || item.address.includes(props.selectedArea);
+    const matchesSubcategory = props.selectedSubcategories.length === 0 ||
+      item.categories.some(subcat => props.selectedSubcategories.includes(subcat));
+    
+    return matchesCity && matchesArea && matchesSubcategory;
+  });
 
-    const marker = L.marker([mark.lat, mark.lng], { icon })
-      .bindPopup(
-        `<h2 style="margin:5px 0 5px 0;text-decoration: underline;color:#1b3f63;">${mark.name}</h2>
-        <h3 style="margin: 2px 0 2px 0;color:gray;">地址：${mark.address}</h3>
-        <h3 style="margin: 2px 0 2px 0;color:gray;">電話：${mark.tel}</h3>
-        <span style="font-size: 1.17em;font-weight: bold;color:gray;">類別：</span><span style="font-size: 1.17em;font-weight: bold;margin: 2px 0 2px 0;color:#7b97a6;">${mark.categories.join(' | ') }</span>
-        <div><span style="font-size: 1.17em;font-weight: bold;color:gray;">簡介：</span><h4 style="margin: 2px 0 2px 0;color:gray;white-space: pre-line;">${mark.description}</h4></div>`
-        ,
-          {
-            className: 'custom-popup-class',
-            maxWidth: 400, // 設置最大寬度
-            minWidth: 100, // 設置最小寬度
-            maxHeight: 250, // 設置最大高度
-            minHeight: 100
-          }
-        )
-      .addTo(initialMap.value);
-    return { marker, address: mark.address };
+  // 遍历过滤后的数据并添加标记
+  filteredMarks.forEach(item => {
+    const lat = parseFloat(item.lat);
+    const lng = parseFloat(item.lng);
+    const cl = item.cl; // 取出类别
+    const icon = categoryIcons[cl] || categoryIcons['綜合']; // 默认图标为 '綜合'
+
+    if (isFinite(lat) && isFinite(lng)) {
+      const marker = L.marker([lat, lng], { icon })
+        .addTo(initialMap.value)
+        .bindPopup(`<h2 style="margin:5px 0 5px 0;text-decoration: underline;color:#1b3f63;">${item.name}</h2>
+        <h3 style="margin: 2px 0 2px 0;color:gray;">地址：${item.address}</h3>
+        <h3 style="margin: 2px 0 2px 0;color:gray;">電話：${item.tel}</h3>
+        <span style="font-size: 1.17em;font-weight: bold;color:gray;">類別：</span><span style="font-size: 1.17em;font-weight: bold;margin: 2px 0 2px 0;color:#7b97a6;">${item.categories.join(' | ') }</span>
+        <div><span style="font-size: 1.17em;font-weight: bold;color:gray;">簡介：</span><h4 style="margin: 2px 0 2px 0;color:gray;white-space: pre-line;">${item.description}</h4></div>`);
+      
+      markers.value.push(marker);
+    } else {
+      console.warn(`Invalid coordinates for item: ${JSON.stringify(item)}`);
+    }
   });
 };
 // 監聽搜尋字串變化
-watch(() => [props.searchQuery, props.selectedCity, props.selectedArea, props.selectedSubcategories], updateMarkers);
+watch(() => [props.searchQuery, props.selectedCity, props.selectedArea, props.selectedSubcategories, props.selectedclient], updateMarkers);
 
 onMounted(async () => {
   initializeMap();
