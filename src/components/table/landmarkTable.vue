@@ -13,7 +13,7 @@
                 @update:sort-by="tableLoadItems(false)"
                 @update:page="tableLoadItems(false)"
                 hover
-                class="w-75 mx-auto b-1 rounded-lg mb-15 px-8"
+                class="w-75 mx-auto b-1 rounded-lg mb-15 px-8 text-body-1 "
               >
               <!-- 搜尋欄位 -->
                 <template #top>
@@ -43,8 +43,8 @@
                 </template>
                 <template #[`item.action`]="{ item }">
                 <td style="width: 80px;">{{ item.action }}
-                    <v-btn icon="mdi-pencil" variant="text" color="blue" @click="openDialog(item)"></v-btn>
-                    <v-btn icon="mdi-delete" variant="text" color="blue" @click="deleteItem(item)"></v-btn>
+                    <v-btn icon="mdi-pencil" variant="text" color="grey-darken-2" @click="openDialog(item)"></v-btn>
+                    <v-btn icon="mdi-delete" variant="text" color="red-darken-4" @click="deleteItem(item)"></v-btn>
                 </td>
                 </template>
             </v-data-table-server>

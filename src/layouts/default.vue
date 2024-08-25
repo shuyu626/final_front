@@ -40,7 +40,14 @@
   <!-- 導覽列 -->
   <v-app-bar color="primary" scroll-behavior="elevate" class="b-1">
     <v-container class="d-flex align-center">
-      <v-btn to="/" :active="false">logo</v-btn>
+
+      
+        <v-btn to="/" :active="false" class="p-1">
+          <v-img src="../assets/logo.png" width="38" class="d-inline-block" style="vertical-align: cneter;" contain></v-img>
+          <span style="text-transform:capitalize; color: #474747;" class=" text-h5 pl-1">KeeperS</span> 
+        </v-btn>
+        
+      
       <v-spacer></v-spacer>
       <template v-if="mobile">
         <v-app-bar-nav-icon @click="drawer=true"></v-app-bar-nav-icon>
@@ -48,8 +55,8 @@
       <template v-else>
         <template v-for="menu in menus" :key="menu.title">
         <v-menu open-on-hover transition="slide-y-transition">
-          <template v-slot:activator="{ props }">
-            <v-btn v-if="menu.show" v-bind="props" :ripple="false" :prepend-icon="menu.icon" class="font-weight-black pe-1">
+          <template v-slot:activator="{ props }" >
+            <v-btn v-if="menu.show" v-bind="props" :ripple="false" :prepend-icon="menu.icon" class="font-weight-black pe-1 text-body-1" style="color: #474747;">
               {{ menu.title }}
               <v-icon>mdi-menu-down</v-icon>
             </v-btn>
@@ -76,11 +83,12 @@
         :prepend-icon="item.icon" 
         :to="item.to"
         :active="false"
-        class="mx-1 font-weight-black pe-1"
+        class="mx-1 font-weight-black pe-1 text-body-1"
+        style="color: #474747;"
         @click="handleItemClick(item)"
         >{{ item.text }}</v-btn>
       </template>
-      <v-btn class="ms-8 bg-accent b-1" elevation="2" prepend-icon="mdi-account-arrow-right" v-if="user.isLogin" @click="logout">登出</v-btn>
+      <v-btn class="ms-8 bg-accent b-1 text-body-1 font-weight-black" style="color: #474747;" elevation="2" prepend-icon="mdi-account-arrow-right" v-if="user.isLogin" @click="logout">登出</v-btn>
       </template>
     </v-container>
   </v-app-bar>

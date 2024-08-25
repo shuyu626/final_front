@@ -4,6 +4,7 @@
         :text="text"
         variant="text"
         class="rounded-xl b-1"
+        style="font-weight: 630;"
         density="comfortable"
         :ripple="false"
         >

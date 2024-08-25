@@ -12,7 +12,7 @@
                 @update:sort-by="tableLoadItems(false)"
                 @update:page="tableLoadItems(false)"
                 hover
-                class="w-75 mx-auto rounded-lg mb-15"
+                class="w-75 mx-auto rounded-lg mb-15  text-body-1"
               >
               <template #[`item.image`]="{ item }">
                 <v-col cols="12" md="4" class="mx-auto" style="width: 300px;">

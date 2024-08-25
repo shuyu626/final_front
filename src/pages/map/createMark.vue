@@ -1,7 +1,11 @@
 <template>
     <v-container>
     <!-- 麵包屑 -->
-    <breadcrumbs :title=title></breadcrumbs>
+    <v-breadcrumbs :items="items">
+        <template v-slot:divider>
+        <v-icon icon="mdi-chevron-right"></v-icon>
+        </template>
+    </v-breadcrumbs>
     <!-- 地圖 -->
     <div id="map" ref="map" ></div>
 
@@ -263,8 +267,18 @@ const { api,apiAuth } = useApi()
 const route = useRoute()
 const createSnackbar = useSnackbar()
 
+const items=ref([
+{
+    title: '首頁',
+    disabled: false,
+    href: '/',
+  },
+  {
+    title: '新增資源',
+    disabled: true,
+  }
+])
 
-const title=['資源地圖','新增資源']
 
 const client = ['長期照顧','身心障礙','婦女','兒童及少年','心理衛生','保護性服務','社會救助','綜合','其他']
 const care = ['日照中心','護理之家','居家服務','交通接送','家庭托顧']
@@ -273,7 +287,7 @@ const child = ['少年福利服務中心','親子館','課後班']
 const assistance = ['經濟補助','待用餐','基金會','社會福利中心']
 const women = ['婦女福利服務中心','新住民家庭服務中心']
 
-const clients = ref(['長期照顧','身心障礙','婦女','兒童及少年','精神','保護性服務','社會救助','綜合'])
+const clients = ref(['長期照顧','身心障礙','婦女','兒童及少年','心理衛生','保護性服務','社會救助','綜合','其他'])
 
 // const safetyNet = ['衛政','社政','警政','勞政','司法','教育']
 definePage({
@@ -402,26 +416,6 @@ try {
     console.log(lat)
     console.log(lng)
     
-     L.marker([lat, lng], { icon: customIcon })
-    .bindPopup(
-      `<h2 style="margin:5px 0 5px 0;text-decoration: underline;">${name.value}</h2>
-       <h3 style="margin: 2px 0 2px 0;color:gray;">${address.value}</h3>
-       <h3 style="margin: 2px 0 2px 0;color:gray;">${tel.value}</h3>
-  
-       <p style="margin: 2px 0 2px 0;color:gray;">簡介：<br>${description.value}</p>`,
-      {
-        className: 'custom-popup-class',
-        maxWidth: 400,
-        minWidth: 100,
-        maxHeight: 250,
-        minHeight: 100,
-        closeOnClick: false,  
-        autoPan: false  
-      }
-    )
-    .openPopup()
-  
-    loadMap();
  
 
     } else {
@@ -474,8 +468,27 @@ const submit = handleSubmit(async (values) => {
         initialMap.value.removeLayer(layer);
       }
     });
-
-  
+// 在地圖上添加新標註
+const icon = categoryIcons[values.cl] || categoryIcons['綜合'];
+    const marker = L.marker([latitude.value, longitude.value], { icon })
+      .bindPopup(
+        `<h2 style="margin:5px 0 5px 0;text-decoration: underline;">${values.name}</h2>
+        <h3 style="margin: 2px 0 2px 0;color:gray;">${values.address}</h3>
+        <h3 style="margin: 2px 0 2px 0;color:gray;">${values.tel}</h3>
+        <h4 style="margin: 2px 0 2px 0;color:gray;">類別：${categories.join(' | ')}</h4>
+        <p style="margin: 2px 0 2px 0;color:gray;">簡介：<br>${values.description}</p>`,
+        {
+          className: 'custom-popup-class',
+          maxWidth: 400,
+          minWidth: 100,
+          maxHeight: 250,
+          minHeight: 100,
+          closeOnClick: false,
+          autoPan: true
+        }
+      )
+      .addTo(initialMap.value)
+      .openpopup()
 
     // 重置表單
     resetForm();
@@ -492,12 +505,65 @@ const submit = handleSubmit(async (values) => {
   }
 })
 
-const customIcon = L.icon({
-  iconUrl: 'https://cdn-icons-png.flaticon.com/512/7596/7596723.png', // 替換為你的圖標 URL
-  iconSize: [32, 32], // 圖標尺寸
-  iconAnchor: [16, 32], // 圖標的錨點位置
-  popupAnchor: [0, -32] // 彈出框的錨點位置
-});
+const categoryIcons =  {
+  '服務對象': L.icon({
+    iconUrl: 'https://cdn-icons-png.flaticon.com/512/2377/2377871.png',
+    iconSize: [32, 32],
+    iconAnchor: [16, 32],
+    popupAnchor: [0, -32]
+  }),
+  '長期照顧': L.icon({
+    iconUrl: 'https://cdn-icons-png.flaticon.com/512/12264/12264430.png',
+    iconSize: [32, 32],
+    iconAnchor: [16, 32],
+    popupAnchor: [0, -32]
+  }),
+  '身心障礙': L.icon({
+    iconUrl: 'https://cdn-icons-png.flaticon.com/512/17573/17573294.png',
+    iconSize: [32, 32],
+    iconAnchor: [16, 32],
+    popupAnchor: [0, -32]
+  }),
+  '兒童及少年': L.icon({
+    iconUrl: 'https://cdn-icons-png.flaticon.com/512/5759/5759522.png',
+    iconSize: [32, 32],
+    iconAnchor: [16, 32],
+    popupAnchor: [0, -32]
+  }),
+  '心理衛生': L.icon({
+    iconUrl:'https://cdn-icons-png.flaticon.com/512/4010/4010654.png',
+    // iconUrl: 'https://cdn-icons-png.flaticon.com/512/1090/1090903.png',
+    iconSize: [32, 32],
+    iconAnchor: [16, 32],
+    popupAnchor: [0, -32]
+  }),
+  '婦女': L.icon({
+    iconUrl: 'https://cdn-icons-png.flaticon.com/512/7457/7457069.png',
+    iconSize: [32, 32],
+    iconAnchor: [16, 32],
+    popupAnchor: [0, -32]
+  }),
+  '社會救助': L.icon({
+    iconUrl: 'https://cdn-icons-png.flaticon.com/512/784/784791.png',
+    iconSize: [32, 32],
+    iconAnchor: [16, 32],
+    popupAnchor: [0, -32]
+  }),
+  '綜合': L.icon({
+    iconUrl: 'https://cdn-icons-png.flaticon.com/512/5153/5153858.png',
+    iconSize: [32, 32],
+    iconAnchor: [16, 32],
+    popupAnchor: [0, -32]
+  }),
+  '其他': L.icon({
+    iconUrl: 'https://cdn-icons-png.flaticon.com/512/5672/5672993.png',
+    // iconUrl: 'https://cdn-icons-png.flaticon.com/512/3010/3010860.png',
+    // https://cdn-icons-png.flaticon.com/512/2684/2684763.png
+    iconSize: [32, 32],
+    iconAnchor: [16, 32],
+    popupAnchor: [0, -32]
+  })
+};
 
 
 
@@ -517,8 +583,13 @@ const loadMap = async () => {
     });
     console.log(marks.value)
     // 在地圖上添加地標標註
+
+
+    
     marks.value.forEach((mark) => {
-      L.marker([mark.lat, mark.lng], { icon: customIcon })
+        const cl = mark.cl
+        const icon = categoryIcons[cl] || categoryIcons['綜合']
+      L.marker([mark.lat, mark.lng], { icon })
         .bindPopup(
         `<h2 style="margin:5px 0 5px 0;text-decoration: underline;">${mark.name}</h2>
         <h3 style="margin: 2px 0 2px 0;color:gray;">${mark.address}</h3>

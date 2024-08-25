@@ -1,6 +1,6 @@
 <template>
   <v-container>
-  <breadcrumbs :title=title></breadcrumbs>
+
   <v-row>
     <v-col cols="7">
       <leaflet-map  
@@ -90,7 +90,6 @@ meta: {
 
 const emit = defineEmits();
 
-const title=['資源地圖','資源查詢']
 // 服務篩選
 // const categories = ref([
 // { name: '身障', subcategories: ['日照中心','全日型住宿機構','輔具中心'] },
@@ -193,9 +192,7 @@ const handlePanelClick = (category, index) => {
   top: 18%;
   right: 10%;
 }
-.b-1{
-  border: 1px solid #7a7a7a;
-}
+
 .bb-1{
   border-bottom: 1px solid #7a7a7a;
 }

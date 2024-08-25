@@ -1,6 +1,10 @@
 <template>
     <v-container style="padding:0.5rem 15rem 3rem 15rem;">
-        <breadcrumbs :title=webtitle></breadcrumbs>
+        <v-breadcrumbs :items="items">
+              <template v-slot:divider>
+                <v-icon icon="mdi-chevron-right"></v-icon>
+              </template>
+      </v-breadcrumbs>
         <v-row justify-center class="mt-5">
             <v-col cols="5" class="d-flex justify-center align-center">
                 <div style="width: 360px;height: 360px;" class="b-1 pa-2 d-flex justify-center ">
@@ -200,8 +204,23 @@ const closeDialog = () => {
   dialog.value = false
 }
 
+const items=ref([
+  {
+    title: '首頁',
+    disabled: false,
+    href: '/',
+  },
+  {
+    title: '我要分享',
+    disabled: false,
+    href: '/material/share/shareMaterial',
+  },
+  {
+    title: '物資詳情',
+    disabled: true,
+  }
+])
 
-const webtitle=['物資分享','我要募資','物資詳情']
 definePage({
   meta: {
     title: 'keeperS | 物資',

@@ -21,8 +21,7 @@
         <v-tabs-window v-model="tab" class="my-10">
 <!-- 01 基本資料管理 -->
           <v-tabs-window-item value="option-1">
-          <!-- 麵包屑 - 顯示目前頁面位置 -->
-           <breadcrumbs :title="profile"></breadcrumbs>
+
             <AccountTable/>
           </v-tabs-window-item>
 
@@ -32,7 +31,11 @@
 <!-- 02 地標管理 -->
           <v-tabs-window-item value="option-2" >
             <!-- 麵包屑 - 顯示目前頁面位置 -->
-          <breadcrumbs :title="mark"></breadcrumbs>
+            <v-breadcrumbs :items="mark">
+              <template v-slot:divider>
+                <v-icon icon="mdi-chevron-right"></v-icon>
+              </template>
+            </v-breadcrumbs>
           <LandmarkTable/>
           </v-tabs-window-item>
 
@@ -41,7 +44,11 @@
 <!-- 03 貼文管理 -->
           <v-tabs-window-item value="option-3">
           <!-- 麵包屑 - 顯示目前頁面位置 -->
-          <breadcrumbs :title="post"></breadcrumbs>
+          <v-breadcrumbs :items="post">
+              <template v-slot:divider>
+                <v-icon icon="mdi-chevron-right"></v-icon>
+              </template>
+            </v-breadcrumbs>
             <!-- 物資募資 -->
             <div class="  mx-auto mb-5 rounded-lg">
               <FindTable/>
@@ -61,8 +68,12 @@
           <!-- 活動收藏管理 -->
           <v-tabs-window-item value="option-4">
             <!-- 麵包屑 - 顯示目前頁面位置 -->
-          <breadcrumbs :title="event"></breadcrumbs>
-          <div class="w-66 mx-auto b-1 rounded-lg my-5" v-for="event in events" :key="event._id">
+            <v-breadcrumbs :items="event">
+              <template v-slot:divider>
+                <v-icon icon="mdi-chevron-right"></v-icon>
+              </template>
+            </v-breadcrumbs>
+          <div class="w-66 mx-auto rounded-lg my-5" style="border:1.2px solid #000;" v-for="event in events" :key="event._id">
             <v-card variant="flat" class="rounded-lg">
                 <v-row class="align-center my-4 ps-10" >
                     <v-col cols="3" class=" align-self-start">
@@ -71,12 +82,13 @@
                       </router-link>
                       </v-col>
                     <v-col cols="7" class=" align-self-start ">
-                      <v-card-title>{{ event.title }}</v-card-title>
-                      <v-card-subtitle>{{ event.organizer }}</v-card-subtitle>
-                      <v-card-text style="white-space: pre-line;">{{ event.description }}</v-card-text>
+                      <v-card-title class="text-h5 font-weight-black">{{ event.title }}</v-card-title>
+                      <v-card-subtitle class="text-h6">{{ event.organizer }}</v-card-subtitle>
+                      <v-card-text class="text-h6">{{ event.date }}</v-card-text>
+                      <!-- <v-card-text style="white-space: pre-line;">{{ event.description }}</v-card-text> -->
                   </v-col>
                   <v-col cols="2" class=" align-self-start mt-2">
-                    <v-btn id="btn" v-if="isFavorite"  text="取消收藏" prepend-icon="mdi-bookmark" variant="outlined" style="background-color: #F5B4B4;" @click="toggleFavorite(event._id)"></v-btn>
+                    <v-btn id="btn" v-if="isFavorite"  text="取消收藏" prepend-icon="mdi-bookmark" variant="outlined" style="background-color: #F5B4B4;" @click="toggleFavorite(event._id)" class="font-weight-black text-body-1" width="140" height="40"></v-btn>
                   </v-col>
                 </v-row>                
             </v-card>
@@ -88,7 +100,11 @@
           <!-- 讀取物資回覆 -->
           <v-tabs-window-item value="option-5">
             <!-- 麵包屑 - 顯示目前頁面位置 -->
-          <breadcrumbs :title="material"></breadcrumbs>
+            <v-breadcrumbs :items="material">
+              <template v-slot:divider>
+                <v-icon icon="mdi-chevron-right"></v-icon>
+              </template>
+            </v-breadcrumbs>
           <div class="  mx-auto mb-5 rounded-lg">
               <ShareReplyTable/>
               <FindReplyTable/>
@@ -126,12 +142,57 @@ definePage({
     title: ' | 會員管理'
   }
 })
-const profile=(['會員中心','基本資料'])
-const mark=(['會員中心','地標管理'])
-const post=(['會員中心','貼文管理'])
-const event=(['會員中心','活動收藏'])
+
+const mark=ref([
+{
+    title: '會員中心',
+    disabled: false,
+    href: '/setting',
+  },
+  {
+    title: '地標管理',
+    disabled: true,
+  }
+])
+
+const post=ref([
+{
+    title: '會員中心',
+    disabled: false,
+    href: '/setting',
+  },
+  {
+    title: '貼文管理',
+    disabled: true,
+  }
+])
+
+const event=ref([
+{
+    title: '會員中心',
+    disabled: false,
+    href: '/setting',
+  },
+  {
+    title: '活動收藏',
+    disabled: true,
+  }
+])
+
+const material =ref([
+{
+    title: '會員中心',
+    disabled: false,
+    href: '/setting',
+  },
+  {
+    title: '物資管理',
+    disabled: true,
+  }
+])
+
+
 const tab = ref('option-1');
-const material=(['會員中心','物資管理'])
 
 
 
@@ -230,6 +291,7 @@ onMounted(() => {
 #btn{
   position: absolute;
   bottom: 10%;
+  right: 3%;
 }
 </style>
   

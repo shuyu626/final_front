@@ -1,8 +1,12 @@
 
 <template>
     <v-container>
-    <breadcrumbs :title="webtitle"></breadcrumbs>
-    <v-divider width="200" color="primary" thickness="5"></v-divider>
+      <v-breadcrumbs :items="items">
+              <template v-slot:divider>
+                <v-icon icon="mdi-chevron-right"></v-icon>
+              </template>
+      </v-breadcrumbs>
+    <!-- <v-divider width="200" color="primary" thickness="5"></v-divider> -->
         <v-row class="mx-5">
             <v-col
             v-for="provide in filteredItems"
@@ -98,8 +102,18 @@ definePage({
   }
 })
 
-const webtitle=ref(['物資分享','我想分享'])
 
+const items=ref([
+{
+    title: '首頁',
+    disabled: false,
+    href: '/',
+  },
+  {
+    title: '我想分享',
+    disabled: true,
+  }
+])
 
 
 

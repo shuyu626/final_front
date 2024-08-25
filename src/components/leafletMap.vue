@@ -141,60 +141,6 @@ const loadMapData = async () => {
 };
 
 
-
-// const customIcon = L.icon({
-//   iconUrl: 'https://cdn-icons-png.flaticon.com/512/7596/7596723.png', // 替換為你的圖標 URL
-//   iconSize: [32, 32], // 圖標尺寸
-//   iconAnchor: [16, 32], // 圖標的錨點位置
-//   popupAnchor: [0, -32] // 彈出框的錨點位置
-// });
-
-
-// const categoryIcons = {
-//   '服務對象': L.icon({
-//     iconUrl: 'https://cdn-icons-png.flaticon.com/512/2377/2377871.png', // 替換為你實際的圖標 URL
-//     iconSize: [32, 32],
-//     iconAnchor: [16, 32],
-//     popupAnchor: [0, -32]
-//   }),
-//   '長期照顧': L.icon({
-//     iconUrl: 'https://cdn-icons-png.flaticon.com/512/12264/12264430.png', // 替換為你實際的圖標 URL
-//     iconSize: [32, 32],
-//     iconAnchor: [16, 32],
-//     popupAnchor: [0, -32]
-//   }),
-//   '身心障礙': L.icon({
-//     iconUrl: 'https://cdn-icons-png.flaticon.com/512/17573/17573294.png', // 替換為你實際的圖標 URL
-//     iconSize: [32, 32],
-//     iconAnchor: [16, 32],
-//     popupAnchor: [0, -32]
-//   }),
-//   '兒童及少年': L.icon({
-//     iconUrl: 'https://cdn-icons-png.flaticon.com/512/5759/5759522.png', // 替換為你實際的圖標 URL
-//     iconSize: [32, 32],
-//     iconAnchor: [16, 32],
-//     popupAnchor: [0, -32]
-//   }),
-//   '婦女': L.icon({
-//     iconUrl: 'https://cdn-icons-png.flaticon.com/512/7457/7457069.png', // 替換為你實際的圖標 URL
-//     iconSize: [32, 32],
-//     iconAnchor: [16, 32],
-//     popupAnchor: [0, -32]
-//   }),
-//   '社會救助': L.icon({
-//     iconUrl: 'https://cdn-icons-png.flaticon.com/512/784/784791.png',
-//     iconSize: [32, 32],
-//     iconAnchor: [16, 32],
-//     popupAnchor: [0, -32]
-//   }),
-//   '其他': L.icon({
-//     iconUrl: 'https://cdn-icons-png.flaticon.com/512/3010/3010860.png',
-//     iconSize: [32, 32],
-//     iconAnchor: [16, 32],
-//     popupAnchor: [0, -32]
-//   })
-// };
-
 const categoryIcons = {
   '服務對象': L.icon({
     iconUrl: 'https://cdn-icons-png.flaticon.com/512/2377/2377871.png',
@@ -221,7 +167,8 @@ const categoryIcons = {
     popupAnchor: [0, -32]
   }),
   '心理衛生': L.icon({
-    iconUrl: 'https://cdn-icons-png.flaticon.com/512/1090/1090903.png',
+    iconUrl:'https://cdn-icons-png.flaticon.com/512/4010/4010654.png',
+    // iconUrl: 'https://cdn-icons-png.flaticon.com/512/1090/1090903.png',
     iconSize: [32, 32],
     iconAnchor: [16, 32],
     popupAnchor: [0, -32]
@@ -269,10 +216,11 @@ const updateMarkers = () => {
     // 根据筛选条件进行过滤
     const matchesCity = !props.selectedCity || item.address.includes(props.selectedCity);
     const matchesArea = !props.selectedArea || item.address.includes(props.selectedArea);
+    const matchsQuery = !props.searchQuery || item.name.toLowerCase().includes(props.searchQuery.toLowerCase())
     const matchesSubcategory = props.selectedSubcategories.length === 0 ||
       item.categories.some(subcat => props.selectedSubcategories.includes(subcat));
     
-    return matchesCity && matchesArea && matchesSubcategory;
+    return matchesCity && matchesArea && matchesSubcategory && matchsQuery
   });
 
   // 遍历过滤后的数据并添加标记

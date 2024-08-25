@@ -1,6 +1,10 @@
 <template>
     <v-container>
-        <breadcrumbs :title=webtitle></breadcrumbs>
+      <v-breadcrumbs :items="items">
+              <template v-slot:divider>
+                <v-icon icon="mdi-chevron-right"></v-icon>
+              </template>
+      </v-breadcrumbs>
         <v-row justify-center>
             <v-col cols="5" class="d-flex justify-center">
                 <v-img :src="event.image" class="" max-width="400" max-height="500" contain></v-img>
@@ -70,8 +74,22 @@ definePage({
 const { api,apiAuth } = useApi()
 const route = useRoute()
 const createSnackbar = useSnackbar()
-
-const webtitle=['活動分享','活動詳情']
+const items=ref([
+  {
+    title: '首頁',
+    disabled: false,
+    href: '/',
+  },
+  {
+    title: '活動分享',
+    disabled: false,
+    href: '../event/findEvent.vue',
+  },
+  {
+    title: '物資詳情',
+    disabled: true,
+  }
+])
 // 商品欄位
 const event = ref({
   _id: '',
@@ -164,6 +182,7 @@ const toggleFavorite = async () => {
   try {
     const response = await apiAuth.post('/user/toggleFavorite', { eventId: event.value._id })
     isFavorite.value = response.data.isFavorite
+    console.log(isFavorite.value)
     createSnackbar({
       text: response.data.isFavorite ? '已收藏' : '取消收藏',
       snackbarProps: {

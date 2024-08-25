@@ -1,6 +1,10 @@
 <template>
     <v-container style="padding:0.5rem 15rem 3rem 15rem;">
-        <breadcrumbs :title=webtitle></breadcrumbs>
+      <v-breadcrumbs :items="items">
+              <template v-slot:divider>
+                <v-icon icon="mdi-chevron-right"></v-icon>
+              </template>
+      </v-breadcrumbs>
         <v-row justify-center class="mt-5">
             <v-col cols="5" class="d-flex justify-center align-center">
                 <div style="width: 360px;height: 360px;" class="b-1 pa-2 d-flex justify-center ">
@@ -9,7 +13,7 @@
             </v-col>
             <v-col cols="5">
                 <v-card variant="flat" id="resourceCard">
-                    <v-card-title class="font-weight-black mb-2" >物資名稱：{{provide.name}}</v-card-title>
+                    <v-card-title class="font-weight-black mb-2 text-h4" >物資名稱：{{provide.name}}</v-card-title>
                     <v-divider thickness="0"></v-divider>
                     <v-row>
                         <!-- 活動名稱 -->
@@ -21,7 +25,7 @@
                         </v-col>
                         <!-- 活動對象 -->
                         <v-col cols="12" md="3" class="my-auto ">
-                        <label class="form-label">物資類別</label>
+                          <label class="form-label">物資類別</label>
                         </v-col>
                         <v-col cols="12" md="9">
                             <p>{{provide.category}}</p>
@@ -157,8 +161,24 @@ const closeDialog = () => {
   dialog.value = false
 }
 
+const items=ref([
+  {
+    title: '首頁',
+    disabled: false,
+    href: '/',
+  },
+  {
+    title: '我要募資',
+    disabled: false,
+    href: '/material/find/findMaterial',
+  },
+  {
+    title: '物資詳情',
+    disabled: true,
+  }
+])
 
-const webtitle=['物資分享','我要募資','物資詳情']
+
 definePage({
   meta: {
     title: 'keeperS | 物資',
@@ -311,7 +331,7 @@ function scrollTo(selector) { // 找到想滾動到的元素css選擇器
         }
     }
     .form-label{
-    font-size: 20px;
+    font-size: 25px;
     font-weight: bold;
     color:#87b3b0;
     margin-left: 0.8rem;
@@ -329,16 +349,18 @@ function scrollTo(selector) { // 找到想滾動到的元素css選擇器
     position: relative;
     left: 70%;
 }
-.form-label{
+/* .form-label{
     font-size: 20px;
     font-weight: bold;
-}
+} */
 #close{
     position: relative;
     left: 95%;
 }
 p{
-    font-size: 18px;
+    font-size: 20px;
+    font-weight: bold;
+    color: gray;
 }
 
 </style>

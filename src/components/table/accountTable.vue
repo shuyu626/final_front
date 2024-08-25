@@ -4,7 +4,7 @@
       <v-card-text>
         <div id="profile" class="b-1 w-50 text-center mx-auto rounded-lg">
           <v-toolbar color="info" class="mb-10 rounded-t-lg bb-1" prominent>
-            <v-toolbar-title class="ms-0 font-weight-bold">基本資料</v-toolbar-title>
+            <v-toolbar-title class="ms-0 font-weight-bold" style="font-size:23px;">基本資料</v-toolbar-title>
           </v-toolbar>
           <vue-file-agent
             id="account"
@@ -30,10 +30,10 @@
           <v-container>
             <v-row class="mb-5 px-15 text-left">
               <v-col md="2"></v-col>
-              <v-col cols="12" md="3" class="my-auto form-label" style="font-size:18px;">服務單位</v-col>
-              <template v-for="item in files" :key="item.id">
+              <v-col cols="12" md="3" class="my-auto form-label text-h5" style="font-size:18px;">服務單位</v-col>
+              <template v-for="item in files" :key="item.id" >
                 <v-col cols="12" md="4" class="my-auto">
-                  <p v-if="!item.isEditing" style="font-size:18px;">
+                  <p v-if="!item.isEditing" style="font-size:18px;"  class="text-h5">
                     {{ item.username }}
                   </p>
                   <v-text-field
@@ -63,10 +63,10 @@
             </v-row>
             <v-row class="mb-5 px-15 text-left">
               <v-col md="2"></v-col>
-              <v-col cols="12" md="3" class="my-auto form-label" style="font-size:18px;">電子信箱</v-col>
+              <v-col cols="12" md="3" class="my-auto form-label text-h5" style="font-size:18px;">電子信箱</v-col>
               <template v-for="item in files" :key="item.id">
                 <v-col cols="12" md="4" class="my-auto">
-                  <p style="font-size:18px;">
+                  <p style="font-size:18px;" class="text-h5">
                     {{ item.email }}
                   </p>
                 </v-col>
@@ -76,11 +76,11 @@
             
             <v-row class="mb-5 px-15 text-left">
               <v-col md="2"></v-col>
-              <v-col cols="12" md="3" class="my-auto form-label" style="font-size:18px;">密碼</v-col>
+              <v-col cols="12" md="3" class="my-auto form-label text-h5" style="font-size:18px;">密碼</v-col>
               <template v-for="item in files" :key="item.id">
                 <v-col cols="12" md="4" class="my-auto">
                   <!-- 非編輯狀態時顯示原用戶名 -->
-                  <p v-if="!item.passwordisEditing" style="font-size:18px;">
+                  <p v-if="!item.passwordisEditing" style="font-size:18px;" class="text-h5">
                     {{ item.password }}
                   </p>
                   <v-text-field
@@ -110,7 +110,7 @@
             </v-row>
             
             
-            <AppButton text="提交" class="mx-auto bg-accent my-5"></AppButton>
+            <AppButton text="提交" class="mx-auto bg-accent my-5 text-h6" width="100" height="35"></AppButton>
           </v-container>
         </div>
       </v-card-text>

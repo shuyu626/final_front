@@ -3,8 +3,12 @@
         <!-- 物資card -->
         <v-container>
           <!-- 麵包屑 - 顯示目前頁面位置 -->
-          <breadcrumbs :title=" webtitle"></breadcrumbs>
-          <v-divider width="200" color="yellow-darken-4" thickness="5"></v-divider>
+          <v-breadcrumbs :items="items">
+              <template v-slot:divider>
+                <v-icon icon="mdi-chevron-right"></v-icon>
+              </template>
+            </v-breadcrumbs>
+          <!-- <v-divider width="200" color="yellow-darken-4" thickness="5"></v-divider> -->
             <v-row class="mx-5" >
               <!-- filteredItems -->
                 <v-col
@@ -20,9 +24,9 @@
                               </div>
                             </v-col>
                             <v-col cols="5">
-                                <v-card-title>{{ provide.name }}</v-card-title>
-                                <v-card-subtitle>{{ provide.organizer }}</v-card-subtitle>
-                                <v-card-text >數量：{{ provide.quantity }}</v-card-text>
+                                <v-card-title class="text-h5 font-weight-bold">{{ provide.name }}</v-card-title>
+                                <v-card-subtitle style="font-size: 17px;">{{ provide.organizer }}</v-card-subtitle>
+                                <v-card-text style="font-size: 16px;">數量：{{ provide.quantity }}</v-card-text>
                                 <AppButton text="詳細說明" class="bg-third" :to="'/material/find/'+ provide._id"></AppButton>
                             </v-col>
                         </v-row>                
@@ -103,8 +107,18 @@ definePage({
   }
 })
 
-const webtitle=ref(['物資分享','我要募資'])
 
+const items=ref([
+{
+    title: '首頁',
+    disabled: false,
+    href: '/',
+  },
+  {
+    title: '物資分享',
+    disabled: true,
+  }
+])
 const categories = ref([
     { name: '食品', selected: false },
     { name: '服飾配件', selected: false },

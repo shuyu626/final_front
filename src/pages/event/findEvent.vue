@@ -136,7 +136,11 @@
         <!-- 搜尋欄 -->
         <v-container>
             <!-- 麵包屑 - 顯示目前頁面位置 -->
-            <breadcrumbs :title="webtitle"></breadcrumbs>
+            <v-breadcrumbs :items="items">
+              <template v-slot:divider>
+                <v-icon icon="mdi-chevron-right"></v-icon>
+              </template>
+            </v-breadcrumbs>
             <v-responsive >
               <v-text-field
               variant="outlined"
@@ -236,7 +240,17 @@ const user = useUserStore()
 const { api, apiAuth } = useApi()
 const createSnackbar = useSnackbar()
 
-const webtitle=ref(['活動分享','活動查詢'])
+const items=ref([
+{
+    title: '首頁',
+    disabled: false,
+    href: '/',
+  },
+  {
+    title: '活動分享',
+    disabled: true,
+  }
+])
 const chips=(['兒童', '青少年', '育兒', '長照', '精神', '照顧', '就學', '就業', '身障', '親職教育', '早療', '紓壓', '居住', '醫療', '司法', '社工', '其他'])
 
 const categories = ref([
@@ -263,7 +277,7 @@ const categories = ref([
 
 const page = ref(1) // 現在第幾頁
 const pages = ref(1) // 全部有幾頁
-const ITEMS_PER_PAGE = 12 // 一頁12個
+const itemsS_PER_PAGE = 12 // 一頁12個
 
 
 
@@ -277,7 +291,7 @@ definePage({
   }
 })
 
-const openDialog = (item) => {
+const openDialog = (items) => {
   dialog.value = true
 }
 
@@ -438,11 +452,11 @@ const loadEvents = async () => {
   try {
     const { data } = await api.get('/event', { // 從後端取得商品資訊
       params: { 
-        itemsPerPage: ITEMS_PER_PAGE, // 傳參數過去讓後端知道一頁有幾個
+        itemssPerPage: itemsS_PER_PAGE, // 傳參數過去讓後端知道一頁有幾個
         page: page.value,
       }
     });
-    pages.value = Math.ceil(data.result.total / ITEMS_PER_PAGE); // 總頁數 = 總商品數量 / 每頁數量
+    pages.value = Math.ceil(data.result.total / itemsS_PER_PAGE); // 總頁數 = 總商品數量 / 每頁數量
     events.value.splice(0, events.value.length, ...data.result.data); // 更新前端的商品列表
     
   } catch (error) {
