@@ -117,7 +117,7 @@ const items=ref([
     href: '/',
   },
   {
-    title: '物資分享',
+    title: '我要募資',
     disabled: true,
   }
 ])

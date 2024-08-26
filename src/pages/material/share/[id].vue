@@ -55,7 +55,7 @@
 
 
         <AppButton text="我要留言" width="90" class="me-4 bg-third" @click="scrollTo('#msg')"></AppButton>
-                <AppButton text="我要捐贈" width="90" class=" bg-third" @click="openDialog(null)" ></AppButton>
+                <AppButton text="我要索取" width="90" class=" bg-third" @click="openDialog(null)" ></AppButton>
         <!-- 我要捐贈 - 對話框 -->
         <v-dialog max-width="700px" v-model="dialog">
 
