@@ -13,7 +13,7 @@
             </v-col>
             <v-col cols="5">
                 <v-card variant="flat" id="resourceCard">
-                    <v-card-title class="font-weight-black mb-2">物資名稱：{{provide.name}}</v-card-title>
+                    <v-card-title class="font-weight-black mb-2 text-h5">物資名稱：{{provide.name}}</v-card-title>
                     <v-divider thickness="0"></v-divider>
                     <v-row>
                         <!-- 活動名稱 -->
@@ -388,16 +388,14 @@ function scrollTo(selector) { // 找到想滾動到的元素css選擇器
     position: relative;
     left: 70%;
 }
-.form-label{
-    font-size: 20px;
-    font-weight: bold;
-}
 #close{
     position: relative;
     left: 95%;
 }
 p{
-    font-size: 18px;
+  font-size: 19px;
+    font-weight: bold;
+    color: gray;
 }
 
 </style>

@@ -74,21 +74,21 @@
               </template>
             </v-breadcrumbs>
           <div class="w-66 mx-auto rounded-lg my-5" style="border:1.2px solid #000;" v-for="event in events" :key="event._id">
-            <v-card variant="flat" class="rounded-lg">
-                <v-row class="align-center my-4 ps-10" >
+            <v-card variant="flat" class="rounded-lg" style="background-color: #f7f2e9;">
+                <v-row class="align-center my-4 ps-8" >
                     <v-col cols="3" class=" align-self-start">
                       <router-link :to="'/event/'+ event._id" style="text-decoration: none">
-                        <v-img :src="event.image" class="b-1 rounded-lg" width="250px" height="280px" cover></v-img>
+                        <v-img :src="event.image" class="b-1 rounded-lg" width="200px" height="220px" cover></v-img>
                       </router-link>
                       </v-col>
-                    <v-col cols="7" class=" align-self-start ">
-                      <v-card-title class="text-h5 font-weight-black">{{ event.title }}</v-card-title>
-                      <v-card-subtitle class="text-h6">{{ event.organizer }}</v-card-subtitle>
-                      <v-card-text class="text-h6">{{ event.date }}</v-card-text>
+                    <v-col cols="7" class=" align-self-start">
+                      <v-card-title class="text-h6 font-weight-black">{{ event.title }}</v-card-title>
+                      <v-card-subtitle class="text-body-1 font-weight-bold">{{ event.organizer }}</v-card-subtitle>
+                      <v-card-subtitle class="text-body-1 font-weight-bold mt-2">{{ event.date }}</v-card-subtitle>
                       <!-- <v-card-text style="white-space: pre-line;">{{ event.description }}</v-card-text> -->
                   </v-col>
                   <v-col cols="2" class=" align-self-start mt-2">
-                    <v-btn id="btn" v-if="isFavorite"  text="取消收藏" prepend-icon="mdi-bookmark" variant="outlined" style="background-color: #F5B4B4;" @click="toggleFavorite(event._id)" class="font-weight-black text-body-1" width="140" height="40"></v-btn>
+                    <v-btn id="btn" v-if="isFavorite"  text="取消收藏" prepend-icon="mdi-bookmark" variant="outlined" style="background-color: #F5B4B4;" @click="toggleFavorite(event._id)" class="font-weight-black " width="120" height="35"></v-btn>
                   </v-col>
                 </v-row>                
             </v-card>
@@ -269,6 +269,7 @@ onMounted(() => {
 }
 .v-data-table__thead{
   background-color:#000;
+  font-size: 15px;
 }
 /* ::v-deep [data-v-9f35885f] .grid-block-wrapper .grid-block .file-preview {
   width: 100px;

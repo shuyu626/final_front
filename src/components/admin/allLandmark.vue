@@ -1,6 +1,7 @@
 <template>
+  <div class="b-1 w-75 mx-auto">
     <!-- 活動貼文管理 -->
-    <h2 class="my-5 bg-accent text-center w-75 mx-auto">地標管理</h2>
+    <h2 class="bb-1 bg-primary text-center mx-auto py-1">地標管理</h2>
         <v-data-table-server
             v-model:items-per-page="tableItemsPerPage"
             v-model:sort-by="tableSortBy"
@@ -14,7 +15,7 @@
             @update:sort-by="tableLoadItems(false)"
             @update:page="tableLoadItems(false)"
             hover
-            class="w-75 mx-auto rounded-lg mb-15"
+            class="mx-auto rounded-lg mb-15 px-8"
             >
             <!-- 搜尋欄位 -->
             <template #top>
@@ -48,7 +49,7 @@
             </td>
             </template>
         </v-data-table-server>
-
+      </div>
         
 
 </template>
@@ -140,7 +141,12 @@ const deleteItem = async (item) => {
   } 
 }
 
-
-
-
 </script>
+<style scoped>
+::v-deep .v-data-table__thead{
+  background: #D9D9D9
+}
+.bb-1{
+  border-bottom: 1px solid #7a7a7a;
+}
+</style>

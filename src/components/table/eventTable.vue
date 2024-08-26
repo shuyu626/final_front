@@ -1,6 +1,7 @@
 <template>
     <!-- 活動貼文管理 -->
-    <h2 class="my-5 bg-accent text-center w-75 mx-auto">活動管理</h2>
+    <div class="b-1 w-75 mx-auto" >
+    <h2 class="bb-1 bg-accent text-center mx-auto py-1">活動管理</h2>
             <v-data-table-server
                 v-model:items-per-page="tableItemsPerPage"
                 v-model:sort-by="tableSortBy"
@@ -14,7 +15,7 @@
                 @update:sort-by="tableLoadItems(false)"
                 @update:page="tableLoadItems(false)"
                 hover
-                class="w-75 mx-auto b-1 rounded-lg mb-15 px-8"
+                class=" mb-15 px-8 rounded-lg"
               >
               <!-- 搜尋欄位 -->
               <template #top>
@@ -28,18 +29,21 @@
               </template>
               <template #[`item.image`]="{item }">
                 <router-link :to="'/event/'+ item._id" style="text-decoration: none">
-                  <v-img :src="item.image"  width="100px" max-height="140px"  class="my-5"></v-img>
+                  <v-img :src="item.image"  width="140px" max-height="160px"  class="my-5"></v-img>
                 </router-link>
               </template>
+              <template #[`item.title`]="{ item }">
+                <td style="width: 180px;" class="text-left">{{ item.title }}</td>
+              </template>
               <template #[`item.address`]="{ item }">
-                <td style="width: 220px;">{{ item.address }}</td>
+                <td style="width: 220px;" class="text-left">{{ item.address }}</td>
               </template>
               <template #[`item.category`]="{ item }">
                 <!-- .join 將陣列轉換為格式化的字串 -->
-                <td >{{ item.category.join(' , ') }}</td>
+                <td style="width:80px;">{{ item.category.join(' , ') }}</td>
               </template>
               <template #[`item.description`]="{ item }">
-                <td style="width: 500px;white-space: pre-line;" class="py-2">{{ item.description }}</td>
+                <td style="width: 350px;" class="py-2">{{ item.description }}</td>
               </template>
               <template #[`item.action`]="{ item }">
                 <td style="width: 80px;">{{ item.action }}
@@ -48,7 +52,7 @@
                 </td>
               </template>
             </v-data-table-server>
-
+</div>
            
             <v-dialog max-width="700" v-model="dialog.open">
                 <v-card>
@@ -397,3 +401,17 @@ const deleteItem = async (item) => {
 
 
 </script>
+<style scoped>
+
+::v-deep .v-data-table__thead{
+  background: #D9D9D9;
+  font-size: 16px;
+  font-weight: bold;
+}
+.b-1{
+  border: 1px solid #7a7a7a;
+}
+.bb-1{
+  border-bottom: 1px solid #7a7a7a;
+}
+</style>

@@ -1,4 +1,6 @@
 <template>
+  <div class="b-1 w-75 mx-auto" >
+    <h2 class="bb-1 bg-accent text-center mx-auto py-1 mb-5">捐贈者聯絡資訊</h2>
     <!-- 物資回覆管理 -->
             <v-data-table-server
                 v-model:items-per-page="tableItemsPerPage"
@@ -13,7 +15,7 @@
                 @update:sort-by="tableLoadItems(false)"
                 @update:page="tableLoadItems(false)"
                 hover
-                class="w-75 mx-auto rounded-lg mb-15  text-body-1"
+                class="mb-15 px-8 rounded-lg"
               >
               <template #[`item.image`]="{ item }">
                 <v-col cols="12" md="4" class="mx-auto" style="width: 250px;">
@@ -37,7 +39,7 @@
                     </v-col>
             </template>
             </v-data-table-server>
-
+  </div>
 
 </template>
 <script setup>
@@ -100,3 +102,17 @@ tableLoadItems()
 
 
 </script>
+<style scoped>
+
+::v-deep .v-data-table__thead{
+  background: #D9D9D9;
+  font-size: 16px;
+  font-weight: bold;
+}
+.b-1{
+  border: 1px solid #7a7a7a;
+}
+.bb-1{
+  border-bottom: 1px solid #7a7a7a;
+}
+</style>

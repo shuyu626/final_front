@@ -1,11 +1,10 @@
 <template>
   <v-app-bar color="info" scroll-behavior="elevate" class="b-1">
     <v-container class="d-flex align-center">
-      <v-btn to="/" :active="false" class="p-1">
-          <v-img src="../../assets/logo.png" width="38" class="d-inline-block" style="vertical-align: cneter;" contain></v-img>
-          <span style="text-transform:capitalize; color: #474747;" class=" text-h5 pl-1">KeeperS</span> 
+        <v-btn to="/" :active="false" class="p-1">
+          <v-img src="../../assets/logo.png" width="30" class="d-inline-block" style="vertical-align: cneter;" contain></v-img>
+          <span style="text-transform:capitalize; color: #474747;" class=" text-h6 pl-1">KeeperS</span> 
         </v-btn>
-        
       <v-spacer></v-spacer>
       <template v-if="mobile">
         <v-app-bar-nav-icon @click="drawer=true"></v-app-bar-nav-icon>

@@ -1,16 +1,42 @@
 <template>
   <!-- 側邊欄 -->
   <v-navigation-drawer v-if="mobile" v-model="drawer" color="primary" class="b-1">
-    <v-list nav>
-      <v-list-item
-      v-for="item in navItems" 
-      :key="item.to"
-      :prepend-icon="item.icon" 
-      :to="item.to"
-      :title="item.text" 
-      :active="false"
-      ></v-list-item>
-    </v-list>
+    <v-list>
+      <template v-for="menu in menus" :key="menu.title">
+        <v-menu open-on-hover transition="slide-y-transition">
+          <template v-slot:activator="{ props }" >
+            <v-btn v-if="menu.show" v-bind="props" :ripple="false" :prepend-icon="menu.icon" class="font-weight-black pe-1 " style="color: #474747;">
+              {{ menu.title }}
+              <v-icon>mdi-menu-down</v-icon>
+            </v-btn>
+          </template>
+          <v-list>
+            <template v-for="(item, i) in menu.items" :key="i">
+              <v-list-item
+                v-if="item.show"  
+                :to="item.to"
+                link
+              >
+                <v-list-item-title>{{ item.text }}</v-list-item-title>
+              </v-list-item>
+            </template>
+          </v-list>
+        </v-menu>
+      </template>
+          </v-list>
+          <template v-for="item in navItems" >
+        <v-btn 
+        v-if="item.show"
+        :key="item.to" 
+        :prepend-icon="item.icon" 
+        :to="item.to"
+        :active="false"
+        class="mx-1 font-weight-black pe-1 "
+        style="color: #474747;"
+        @click="handleItemClick(item)"
+        >{{ item.text }}</v-btn>
+      </template>
+      <v-btn class="ms-8 bg-accent b-1  font-weight-black" style="color: #474747;" elevation="2" prepend-icon="mdi-account-arrow-right" v-if="user.isLogin" @click="logout">登出</v-btn>
   </v-navigation-drawer>
 
   <v-dialog v-model="dialogOpen" persistent width="600">
@@ -43,8 +69,8 @@
 
       
         <v-btn to="/" :active="false" class="p-1">
-          <v-img src="../assets/logo.png" width="38" class="d-inline-block" style="vertical-align: cneter;" contain></v-img>
-          <span style="text-transform:capitalize; color: #474747;" class=" text-h5 pl-1">KeeperS</span> 
+          <v-img src="../assets/logo.png" width="30" class="d-inline-block" style="vertical-align: cneter;" contain></v-img>
+          <span style="text-transform:capitalize; color: #474747;" class=" text-h6 pl-1">KeeperS</span> 
         </v-btn>
         
       
@@ -56,7 +82,7 @@
         <template v-for="menu in menus" :key="menu.title">
         <v-menu open-on-hover transition="slide-y-transition">
           <template v-slot:activator="{ props }" >
-            <v-btn v-if="menu.show" v-bind="props" :ripple="false" :prepend-icon="menu.icon" class="font-weight-black pe-1 text-body-1" style="color: #474747;">
+            <v-btn v-if="menu.show" v-bind="props" :ripple="false" :prepend-icon="menu.icon" class="font-weight-black pe-1 " style="color: #474747;">
               {{ menu.title }}
               <v-icon>mdi-menu-down</v-icon>
             </v-btn>
@@ -83,12 +109,12 @@
         :prepend-icon="item.icon" 
         :to="item.to"
         :active="false"
-        class="mx-1 font-weight-black pe-1 text-body-1"
+        class="mx-1 font-weight-black pe-1 "
         style="color: #474747;"
         @click="handleItemClick(item)"
         >{{ item.text }}</v-btn>
       </template>
-      <v-btn class="ms-8 bg-accent b-1 text-body-1 font-weight-black" style="color: #474747;" elevation="2" prepend-icon="mdi-account-arrow-right" v-if="user.isLogin" @click="logout">登出</v-btn>
+      <v-btn class="ms-8 bg-accent b-1  font-weight-black" style="color: #474747;" elevation="2" prepend-icon="mdi-account-arrow-right" v-if="user.isLogin" @click="logout">登出</v-btn>
       </template>
     </v-container>
   </v-app-bar>

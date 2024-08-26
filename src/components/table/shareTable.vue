@@ -1,6 +1,7 @@
 <template>
+  <div class="b-1 w-75 mx-auto">
     <!-- 我的分享管理 -->
-    <h2 class="my-5 bg-accent text-center w-75 mx-auto">我要分享</h2>
+    <h2 class="bg-accent text-center mx-auto bb-1 py-1">我要分享</h2>
             <v-data-table-server
                 v-model:items-per-page="tableItemsPerPage"
                 v-model:sort-by="tableSortBy"
@@ -14,7 +15,7 @@
                 @update:sort-by="tableLoadItems(false)"
                 @update:page="tableLoadItems(false)"
                 hover
-                class="w-75 mx-auto b-1 rounded-lg mb-15 px-8  text-body-1"
+                class="mb-15 px-8"
               >
               <!-- 搜尋欄位 -->
               <template #top>
@@ -41,6 +42,7 @@
                 </td>
               </template>
             </v-data-table-server>
+          </div>
             <v-dialog max-width="600" v-model="dialog.open">
                 <v-card>
                     <v-container>

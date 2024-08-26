@@ -32,6 +32,9 @@
                         :class="isFavorite ? 'me-15' : 'me-15 bg-info'"
                         :style="isFavorite ? { backgroundColor: '#F5B4B4' } : {}"
                         @click="toggleFavorite"
+                        width="125"
+                        height="32"
+                        class="text-body-3"
                     />
                       <!-- <AppButton v-if="isFavorite" prepend-icon="mdi-bookmark" text="已收藏" class="me-15 " :style="{ backgroundColor: '#F5B4B4' } " @click="toggleFavorite"></AppButton>
                       <AppButton v-else prepend-icon="mdi-bookmark" text="我要收藏" class="me-15 bg-info" @click="toggleFavorite" ></AppButton> -->
@@ -216,16 +219,18 @@ onMounted(load)
 }
 .v-card-title{
     padding-left: 9px;
-    font-size: 30px;
+    font-size: 25px;
 }
 .v-card-text{
     padding: 9px;
     &:nth-child(even){
         color:#87b3b0;
-        font-size: 20px;
+        font-size: 22px;
         }
     &:nth-child(odd){
-    font-size: 16px;
+    font-size: 18px;
+    font-weight: 550;
+    color: #7a7a7a;
     }
 }
 .info{

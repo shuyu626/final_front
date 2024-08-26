@@ -19,14 +19,16 @@
                     <v-card width="650px" height="300px" variant="flat">
                         <v-row class="align-content-center">
                           <v-col cols="5" class=" ml-15 ">
+                            <router-link :to="'/material/find/'+ provide._id">
                               <div style="width: 240px;height:240px;" class="d-flex justify-content-center b-1">
                                 <v-img :src="provide.image" contain ></v-img>
                               </div>
+                            </router-link>
                             </v-col>
                             <v-col cols="5">
-                                <v-card-title class="text-h5 font-weight-bold">{{ provide.name }}</v-card-title>
-                                <v-card-subtitle style="font-size: 17px;">{{ provide.organizer }}</v-card-subtitle>
-                                <v-card-text style="font-size: 16px;">數量：{{ provide.quantity }}</v-card-text>
+                                <v-card-title class="text-h6 font-weight-bold">{{ provide.name }}</v-card-title>
+                                <v-card-subtitle style="font-size: 16px;">{{ provide.organizer }}</v-card-subtitle>
+                                <v-card-text style="font-size: 15px;">數量：{{ provide.quantity }}</v-card-text>
                                 <AppButton text="詳細說明" class="bg-third" :to="'/material/find/'+ provide._id"></AppButton>
                             </v-col>
                         </v-row>                

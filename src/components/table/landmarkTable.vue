@@ -1,5 +1,6 @@
 <template>
-    <h2 class="my-5 bg-accent text-center mx-auto w-75">地標管理</h2>
+    <div class="b-1 w-75 mx-auto" >
+    <h2 class="bg-accent text-center mx-auto bb-1 py-1">地標管理</h2>
             <v-data-table-server
                 v-model:items-per-page="tableItemsPerPage"
                 v-model:sort-by="tableSortBy"
@@ -13,7 +14,7 @@
                 @update:sort-by="tableLoadItems(false)"
                 @update:page="tableLoadItems(false)"
                 hover
-                class="w-75 mx-auto b-1 rounded-lg mb-15 px-8 text-body-1 "
+                class="mx-auto mb-15 px-8 text-body-1  rounded-lg"
               >
               <!-- 搜尋欄位 -->
                 <template #top>
@@ -48,12 +49,12 @@
                 </td>
                 </template>
             </v-data-table-server>
-
+        </div>
            
             <v-dialog max-width="700" v-model="dialog.open">
                 <v-card>
-                    <v-toolbar color="secondary" prominent class=" bb-1">
-                        <v-toolbar-title class="mt-3 text-center font-weight-bold">
+                    <v-toolbar color="secondary" prominent class=" bb-1" height="55">
+                        <v-toolbar-title class="mt-3 text-center">
                             修改地標
                         </v-toolbar-title>
                     </v-toolbar>
