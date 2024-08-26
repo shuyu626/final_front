@@ -116,11 +116,11 @@
                                     </v-row>
                                     <v-card-actions>
                                 <div class="mx-auto">
-                                    <v-btn variant="text"class="rounded-xl b-1" density="comfortable" type="submit" :loading="isSubmitting">送出</v-btn>
+                                    <v-btn variant="text"class="rounded-xl b-1 bg-accent" density="comfortable" type="submit" :loading="isSubmitting">送出</v-btn>
                                     <v-btn
                                     text="取消"
                                     variant="text"
-                                    class="rounded-xl b-1"
+                                    class="rounded-xl b-1 bg-info"
                                     density="comfortable"
                                     @click="closeDialog()"
                                     ></v-btn>
@@ -287,7 +287,7 @@ const dialog = ref(false)
 
 definePage({
   meta: {
-    title: ' | 活動查詢'
+    title: 'KeeperS | 活動查詢'
   }
 })
 

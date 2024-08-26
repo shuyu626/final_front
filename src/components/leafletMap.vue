@@ -76,7 +76,7 @@ const initializeMap = () => {
       },
         locateOptions: { // 配置定位的選項
         enableHighAccuracy: true,
-        maxZoom: 13
+        maxZoom: 16
         },
       icon: 'fa fa-solid fa-crosshairs', // 設置定位標記的icon
       onLocationError: function (err) {

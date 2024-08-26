@@ -105,7 +105,7 @@ const { api } = useApi()
 const createSnackbar = useSnackbar()
 definePage({
   meta: {
-    title: ' | 我要募資'
+    title: 'KeeperS | 我要募資'
   }
 })
 

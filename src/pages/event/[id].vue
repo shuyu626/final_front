@@ -189,7 +189,7 @@ const toggleFavorite = async () => {
     createSnackbar({
       text: response.data.isFavorite ? '已收藏' : '取消收藏',
       snackbarProps: {
-        color: 'accent'
+        color: response.data.isFavorite ? '#F5B4B4' : 'info'
       }
     })
   } catch (error) {

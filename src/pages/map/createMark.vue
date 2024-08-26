@@ -56,6 +56,7 @@
                         v-model="cl.value.value"
                         :error-messages="cl.errorMessage.value"
                         hide-details
+                        
                         >
                         </v-select>
                     </v-col>
@@ -292,7 +293,7 @@ const clients = ref(['長期照顧','身心障礙','婦女','兒童及少年','�
 // const safetyNet = ['衛政','社政','警政','勞政','司法','教育']
 definePage({
 meta: {
-title: ' | 新建資源'
+title: 'KeeperS | 新建資源'
 }
 })
 

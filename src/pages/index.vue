@@ -84,7 +84,7 @@ import { definePage } from 'vue-router/auto'
 import leafletMap from '@/components/leafletMap.vue';
 definePage({
 meta: {
-  title: ' | 資源查詢'
+  title: 'KeeperS | 資源查詢'
 }
 })
 

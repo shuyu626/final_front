@@ -140,7 +140,7 @@
 </template>
 <script setup>
 import { VNumberInput } from 'vuetify/labs/VNumberInput'
-import { ref } from 'vue'
+import { ref, nextTick  } from 'vue'
 import * as yup from 'yup'
 import { useForm, useField } from 'vee-validate'
 import { definePage } from 'vue-router/auto'

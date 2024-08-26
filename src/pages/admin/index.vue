@@ -161,7 +161,7 @@ const mark=(['會員中心','地標管理'])
 const post=(['會員中心','貼文管理'])
 const event=(['會員中心','活動收藏'])
 const tab = ref('option-1');
-
+import { definePage } from 'vue-router/auto'
 
 import { ref, computed } from 'vue'
 import { useDisplay } from 'vuetify'
@@ -174,7 +174,11 @@ const createSnackbar = useSnackbar()
 const drawer = ref(false)
 
 
-
+definePage({
+  meta: {
+    title: 'KeeperS | 管理者'
+  }
+})
 const menus = computed(() => {
   return [
     {

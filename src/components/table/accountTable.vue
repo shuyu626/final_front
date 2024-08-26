@@ -19,7 +19,7 @@
             ref="fileAgent"
           ></vue-file-agent>
           <template v-for="item in files" :key="item.id">
-            <div id="img" style="width: 160px; height: 160px;" class="rounded-circle d-flex justify-center align-center bg-grey-lighten-5 mx-auto my-5 b-1" >
+            <div id="img" style="width: 170px; height: 170px;" class="rounded-circle d-flex justify-center align-center bg-grey-lighten-5 mx-auto my-5 b-1" >
               <v-img  :src="item.avatar" cover></v-img>
             </div>
             <div id="upload">編輯</div>
@@ -258,7 +258,7 @@ const passwordsaveChanges = (item) => {
 }
 #img{
  position: absolute;
- top: 15.2%;
+ top: 14%;
  left: 50%;
  z-index: 5;
  transform: translate(-50%);
@@ -273,7 +273,7 @@ const passwordsaveChanges = (item) => {
   background: white;
   font-family: "微軟正黑體";
   position: absolute;
-  top: 37%;
+  top: 36.5%;
   left: 50%;
   z-index: 8;
   transform: translateX(-50%);

@@ -28,7 +28,7 @@
                 <div class="pa-4">
                     <v-form @submit.prevent="submit" :disabled="isSubmitting">
                         <v-textarea 
-                        ref="textarea"
+                        ref="commentInput"
                         v-model="comment.value.value"
                         :error-messages="comment.errorMessage.value"
                         placeholder="請輸入您的留言或提問"

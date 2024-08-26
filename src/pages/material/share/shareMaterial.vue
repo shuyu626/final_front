@@ -13,21 +13,23 @@
             :key="provide._id"
             cols="12"
             sm="6">
-                <v-card width="650px" height="300px" variant="flat" >
-                    <v-row class="align-content-center">
-                        <v-col cols="5" class=" ml-15 ">
-                          <div style="width: 240px;height:240px;" class="d-flex justify-content-center b-1">
-                            <v-img :src="provide.image" contain ></v-img>
-                          </div>
-                        </v-col>
-                        <v-col cols="5">
-                            <v-card-title>{{ provide.name }}</v-card-title>
-                            <v-card-subtitle>{{ provide.organizer }}</v-card-subtitle>
-                            <v-card-text >數量：{{ provide.quantity }}</v-card-text>
-                              <AppButton text="詳細說明" class="bg-third" :to="'/material/share/'+ provide._id"></AppButton>
-                        </v-col>
-                    </v-row>
-                </v-card>
+            <v-card width="650px" height="300px" variant="flat">
+                        <v-row class="align-content-center">
+                          <v-col cols="5" class=" ml-15 ">
+                            <router-link :to="'/material/share/'+ provide._id">
+                              <div style="width: 240px;height:240px;" class="d-flex justify-content-center b-1">
+                                <v-img :src="provide.image" contain ></v-img>
+                              </div>
+                            </router-link>
+                            </v-col>
+                            <v-col cols="5">
+                                <v-card-title class="text-h6 font-weight-bold">{{ provide.name }}</v-card-title>
+                                <v-card-subtitle style="font-size: 16px;">{{ provide.organizer }}</v-card-subtitle>
+                                <v-card-text style="font-size: 15px;">數量：{{ provide.quantity }}</v-card-text>
+                                <AppButton text="詳細說明" class="bg-third" :to="'/material/find/'+ provide._id"></AppButton>
+                            </v-col>
+                        </v-row>                
+                    </v-card>
             </v-col>
             <v-col cols="12">
               <v-pagination v-model="page" :length="pages" rounded="circle" @update:model-value="loadMaterials"></v-pagination>
@@ -98,7 +100,7 @@ const { api } = useApi()
 const createSnackbar = useSnackbar()
 definePage({
   meta: {
-    title: ' | 我要分享'
+    title: 'KeeperS | 我要分享'
   }
 })
 

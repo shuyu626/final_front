@@ -93,6 +93,11 @@
                 </v-row>                
             </v-card>
           </div>
+          <v-row v-if="events.length==0">
+            <v-col class="text-center mt-15" style="color:#bfbfbf;">
+              <h1>暫無任何活動收藏</h1>
+            </v-col>
+          </v-row>
           
           </v-tabs-window-item>
 
@@ -139,7 +144,7 @@ const rawFileRecords = ref([]) // 綁定原始文件記錄
 
 definePage({
   meta: {
-    title: ' | 會員管理'
+    title: ' KeeperS | 會員管理'
   }
 })
 
