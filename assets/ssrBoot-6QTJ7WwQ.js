@@ -1,1 +1,0 @@
-import{U as s,P as t,s as e,b$ as n}from"./index-DoDZ8EiD.js";function i(){const o=s(!1);return t(()=>{window.requestAnimationFrame(()=>{o.value=!0})}),{ssrBootStyles:e(()=>o.value?void 0:{transition:"none !important"}),isBooted:n(o)}}export{i as u};
