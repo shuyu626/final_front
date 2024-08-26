@@ -273,7 +273,7 @@
                 </v-row>
                 <v-row>
                     <v-col class="text-center" >
-                        <submitButton type="submit" class="b-1 bg-accent mb-8" @click="addMarker"></submitButton>
+                        <submitButton text="修改" type="submit" class="b-1 bg-accent mb-8" @click="addMarker"></submitButton>
                     </v-col>
                 </v-row>
             </v-form>

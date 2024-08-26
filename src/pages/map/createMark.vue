@@ -427,11 +427,24 @@ try {
 }
 };
 
+const normalizeAddress = (address) => {
+  // 替换常见的繁体字和简体字
+  return address.replace(/臺北市/g, '台北市');
+};
 
 
 // 新增地標資料到後端資料庫
 const submit = handleSubmit(async (values) => {
   try {
+    const normalizeAddress = (address) => {
+  // 替换常见的繁体字和简体字
+  return address.replace(/臺北市/g, '台北市');
+};
+const normalizedAddress = normalizeAddress(address.value);
+    console.log(normalizeAddress)
+    // 更新地址值
+    address.value = normalizedAddress;
+    console.log(address.value)    
     await addMarker() // 避免取到經緯度時就已經執行了submit()，沒有這行會取不到lat、lng
     console.log(latitude.value)
 
@@ -473,8 +486,8 @@ const icon = categoryIcons[values.cl] || categoryIcons['綜合'];
     const marker = L.marker([latitude.value, longitude.value], { icon })
       .bindPopup(
         `<h2 style="margin:5px 0 5px 0;text-decoration: underline;">${values.name}</h2>
-        <h3 style="margin: 2px 0 2px 0;color:gray;">${values.address}</h3>
-        <h3 style="margin: 2px 0 2px 0;color:gray;">${values.tel}</h3>
+        <h3 style="margin: 2px 0 2px 0;color:gray;">地址：${values.address}</h3>
+        <h3 style="margin: 2px 0 2px 0;color:gray;">電話：${values.tel}</h3>
         <h4 style="margin: 2px 0 2px 0;color:gray;">類別：${categories.join(' | ')}</h4>
         <p style="margin: 2px 0 2px 0;color:gray;">簡介：<br>${values.description}</p>`,
         {
@@ -488,8 +501,7 @@ const icon = categoryIcons[values.cl] || categoryIcons['綜合'];
         }
       )
       .addTo(initialMap.value)
-      .openpopup()
-
+      marker.openPopup()
     // 重置表單
     resetForm();
 

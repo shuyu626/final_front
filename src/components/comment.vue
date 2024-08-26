@@ -2,7 +2,7 @@
 <!-- 留言板 -->
 <v-row class="mt-10">
             <v-col>
-                <div class="b-1 info-margin  text-center text-body-1 pa-2 bg-accent rounded-t-lg" style="width:150px;padding: 0;border-bottom: 0px;">留言板</div>
+                <div class="b-1 info-margin  text-center text-body-1 pa-2 bg-accent rounded-t-lg font-weight-bold" style="width:150px;padding: 0;border-bottom: 0px;">留言板</div>
                 <div class="b-1 pa-5 info-margin">
                   <v-row v-for="msg in message" :key="msg._id" >
                   <div class="pa-4 ">
@@ -13,16 +13,16 @@
                       <p class="ml-16 text-body-2">{{ msg.content }}</p>
                   </div>
                 </v-row>
-                <!-- <v-row>
-                <div class="pa-4">
-                    <v-avatar color="secondary b-1" class="me-3" size="large">
-                        <v-img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTqnRWICFHo49O2OyVoMHrqkQmAevK654iXKw&s"></v-img>
-                    </v-avatar>
-                    <span>家防中心</span>
-                    <p class="ml-13 text-body-2">請問商品期限有限定嗎?</p>
-                </div>
-              </v-row> -->
-                <v-divider></v-divider>
+                <!-- 當沒有留言時顯示提示訊息 -->
+                 <v-row class="my-10">
+                  <div v-if="message.length === 0" class="text-center text-body-2 mt-4 mx-auto ">
+                    <h1 style="color:#bfbfbf;" class="mb-15">
+                      目前暫無任何留言
+                    </h1>
+                  </div>
+                
+                  <v-divider></v-divider>
+                </v-row>
                 <!-- 留言發布 -->
                  <v-row class="my-2">
                 <div class="pa-4">
@@ -126,6 +126,7 @@ const submit = handleSubmit(async (values) => {
       }
     })
     resetForm()
+    loadComments()
   } catch (error) {
     console.log(error)
     createSnackbar({
@@ -154,6 +155,7 @@ const loadfile = async () => {
   }
 };
 loadfile();
+
 
 </script>
 <style scoped>
