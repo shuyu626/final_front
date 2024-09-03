@@ -1,18 +1,54 @@
 <template>
 <!-- 留言板 -->
 <v-row class="mt-10">
-            <v-col>
-                <div class="b-1 info-margin  text-center text-body-1 pa-2 bg-accent rounded-t-lg font-weight-bold" style="width:150px;padding: 0;border-bottom: 0px;">留言板</div>
-                <div class="b-1 pa-5 info-margin">
-                  <v-row v-for="msg in message" :key="msg._id" >
-                  <div class="pa-4 ">
-                      <v-avatar color="primary b-1" class="me-3" size="large">
-                          <v-img :src="msg.user.avatar || 'default-avatar-url'"></v-img>
-                      </v-avatar>
-                      <span class="ml-1">{{ msg.user.username }}</span>
-                      <p class="ml-16 text-body-2">{{ msg.content }}</p>
+  <v-col>
+      <div class="b-1 info-margin  text-center text-body-1 pa-2 bg-accent rounded-t-lg font-weight-bold" style="width:150px;padding: 0;border-bottom: 0px;">留言板</div>
+      <div class="b-1 pa-5 info-margin">
+        <v-row v-for="msg in message" :key="msg._id">
+          <v-col cols="5">
+            <div class="pa-4">
+              <div>
+                <v-avatar color="primary b-1" class="me-3" size="large">
+                  <v-img :src="msg.user.avatar || 'default-avatar-url'"></v-img>
+                </v-avatar>
+                <span class="ml-1">{{ msg.user.username }}</span>
+              </div>
+              <div v-if="currentEditingId !== msg._id">
+                <!-- 顯示純文字 -->
+                <p class="ml-16 text-body-2 d-inline">{{ msg.content }}</p>
+                <!-- 編輯按鈕 -->
+                <v-btn icon="mdi-pencil" @click="startEditing(msg._id, msg.content)" variant="text" class="d-inline" color="grey"></v-btn>
+                <!-- 刪除按鈕 -->
+                <v-btn icon="mdi-delete" @click="deleteMessage(msg._id)" variant="text" class="d-inline" color="grey"></v-btn>
+              </div>
+              <div v-else style="width: 800;">
+                <v-row class="mt-2 mx-8">
+                  <div class="pa-4">
+                    <!-- 顯示輸入框 -->
+                    <v-textarea
+                      v-model="currentEditingContent"
+                      placeholder="請輸入新的留言內容"
+                      rows="4"
+                      variant="outlined" 
+                      width="530" 
+                      clearable
+                      hide-details
+                      class="ms-1"
+                    ></v-textarea>
                   </div>
                 </v-row>
+                <v-row>
+                  <v-col cols="12">
+                    <div style="width: 500px;">
+                      <v-btn @click="saveEdit(msg._id)" variant="text" class="rounded-md b-1 bg-primary me-2" height="30">儲存</v-btn>
+                      <v-btn @click="cancelEdit" variant="text" class="rounded-md b-1 bg-info" height="30">取消</v-btn>
+                    </div>
+                  </v-col>
+                </v-row>
+              </div>
+            </div>
+          </v-col>
+        </v-row>
                 <!-- 當沒有留言時顯示提示訊息 -->
                  <v-row class="my-10">
                   <div v-if="message.length === 0" class="text-center text-body-2 mt-4 mx-auto ">
@@ -36,6 +72,7 @@
                         width="600" 
                         maxlength="20" 
                         counter
+                        clearable
                         >
                             <template v-slot:prepend v-for="file in files">
                             <v-avatar color="primary " class="me-1 b-1" size="large">
@@ -56,6 +93,8 @@
             </div>
             </v-col>
         </v-row>
+
+
 
 </template>
 <script setup>
@@ -107,8 +146,6 @@ onMounted(() => {
 })
 
 
-
-
 const comment = useField('comment')
 const submit = handleSubmit(async (values) => {
   try {
@@ -157,6 +194,68 @@ const loadfile = async () => {
 loadfile();
 
 
+
+
+const currentEditingId = ref(null)
+const currentEditingContent = ref('')
+
+const startEditing = (id, content) => {
+  currentEditingId.value = id
+  currentEditingContent.value = content
+}
+
+
+
+
+const cancelEdit = () => {
+  currentEditingId.value = null
+  currentEditingContent.value = ''
+}
+
+
+const saveEdit = async () => {
+  try {
+    await apiAuth.patch(`/comment/${currentEditingId.value}`, { 
+      content: currentEditingContent.value
+    })
+    createSnackbar({
+      text: '留言已更新',
+      snackbarProps: {
+        color: 'green'
+      }
+    })
+    loadComments()
+    cancelEdit()
+  } catch (error) {
+    createSnackbar({
+      text: error?.response?.data?.message || '更新留言時出錯',
+      snackbarProps: {
+        color: 'red'
+      }
+    })
+  }
+}
+
+
+const deleteMessage = async (id) => {
+  try {
+    await apiAuth.delete(`/comment/${id}`) 
+    createSnackbar({
+      text: '留言已刪除',
+      snackbarProps: {
+        color: 'green'
+      }
+    })
+    loadComments()
+  } catch (error) {
+    createSnackbar({
+      text: error?.response?.data?.message || '刪除留言時出錯',
+      snackbarProps: {
+        color: 'red'
+      }
+    })
+  }
+}
 </script>
 <style scoped>
 .b-1{

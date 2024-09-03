@@ -282,8 +282,9 @@ onMounted(async () => {
 
 <style scoped>
 #map {
+  min-width: 500px;
   width: 50%;
-  height: 650px;
+  height: 72%;
   border: 1px solid #000;
   border-radius: 15px;
   position: absolute;
