@@ -1,81 +1,81 @@
 <template>
-  <v-container>
-
-  <v-row>
-    <v-col cols="7">
-      <leaflet-map  
+  <v-row style="height: 95vh;">
+    <v-col cols="12" lg="8" class="map_col order-2 order-lg-1">
+      <Leaflet-map  
       :searchQuery="searchQuery"
       :selectedCity="selectedCity"
       :selectedArea="selectedArea"
       :selectedSubcategories="selectedSubcategories"
       />
-    </v-col>
-    <v-col cols="5">
-      <v-card width="500px" variant="outlined" class="overflow-y-auto">
-      <v-toolbar color="secondary" prominent class=" bb-1">
-          <v-toolbar-title>
-              服務查詢
-          </v-toolbar-title>
-      </v-toolbar>
-      <v-card-item>
-          <search
-           class="my-5"
-          v-model="searchQuery"
-          label="輸入資源地址"
-          />
-          <v-select  
-          v-model="selectedCity"
-          :items="cities"
-          width="215px"
-          label="縣市"
-          class="d-inline-block mr-4"
-          density="comfortable"
-          variant="outlined"
-          @change="onCityChange"
-          >
-          </v-select>
-          <v-select  
-          v-model="selectedArea"
-          :items="areas"
-          width="215px"
-          label="鄉鎮市區"
-          class="d-inline-block"
-          density="comfortable"
-          variant="outlined"
-          ></v-select>
-
-
-          <v-toolbar density="compact">
-              <v-toolbar-title class="ms-5 text-body-1">
-                服務類別
+    </v-col >
+    <v-col cols="12" lg="4" class="map_col order-1 order-lg-2">
+      <v-card variant="outlined" class="overflow-y-auto find-resource">
+          <v-toolbar color="secondary" prominent class=" bb-1">
+              <v-toolbar-title>
+                  服務查詢
               </v-toolbar-title>
           </v-toolbar>
-          <v-expansion-panels  variant="accordion" class="">
-              <v-expansion-panel
-              v-for="(category, index) in categories"
-              :key="index"
-              v-model="selectedcategories"
-              @click="handlePanelClick(category, index)"
+          <v-card-item>
+              <search
+              class="my-5 w-auto"
+              max-width="1000px"
+              v-model="searchQuery"
+              label="輸入資源地址"
+              />
+              <div>
+              <v-select  
+              v-model="selectedCity"
+              :items="cities"
+              min-width="215px"
+              label="縣市"
+              class="me-4 d-none d-md-inline-block"
+              style="width: 48%;"
+              density="comfortable"
+              variant="outlined"
+              @change="onCityChange"
               >
-              <v-expansion-panel-title>{{ category.name }}</v-expansion-panel-title>
-              <v-expansion-panel-text>
-                  <v-checkbox
-                  v-for="(subcategory, subIndex) in category.subcategories"
-                  :key="subIndex"
-                  v-model="selectedSubcategories"
-                  :label="subcategory"
-                  :value="subcategory"
-                  hide-details
-                  ></v-checkbox>
-              </v-expansion-panel-text>
-              </v-expansion-panel>
-          </v-expansion-panels>
-      </v-card-item>
-  </v-card>
+              </v-select>
+              <v-select  
+              v-model="selectedArea"
+              :items="areas"
+              min-width="215px"
+              label="鄉鎮市區"
+              class="d-none d-md-inline-block"
+              style="width: 48%;"
+              density="comfortable"
+              variant="outlined"
+              ></v-select>
+            </div>
+
+              <v-toolbar density="compact">
+                  <v-toolbar-title class="ms-5 text-body-1">
+                    服務類別
+                  </v-toolbar-title>
+              </v-toolbar>
+              <v-expansion-panels  variant="accordion" class="">
+                  <v-expansion-panel
+                  v-for="(category, index) in categories"
+                  :key="index"
+                  v-model="selectedcategories"
+                  @click="handlePanelClick(category, index)"
+                  >
+                  <v-expansion-panel-title>{{ category.name }}</v-expansion-panel-title>
+                  <v-expansion-panel-text>
+                      <v-checkbox
+                      v-for="(subcategory, subIndex) in category.subcategories"
+                      :key="subIndex"
+                      v-model="selectedSubcategories"
+                      :label="subcategory"
+                      :value="subcategory"
+                      hide-details
+                      ></v-checkbox>
+                  </v-expansion-panel-text>
+                  </v-expansion-panel>
+              </v-expansion-panels>
+          </v-card-item>
+      </v-card>
     </v-col>
   </v-row>
-
-</v-container>
 </template>
 <script setup>
 import { ref, watch, onMounted, defineEmits } from 'vue';
@@ -186,14 +186,44 @@ const handlePanelClick = (category, index) => {
 };
 </script>
 <style scoped>
-.v-card{
-  height: 650px;
+.map_col{
+    position: relative;
+    height: 60%;
+    width: 100%;
+  }
+@media(min-width:1280px){
+  .map_col{
+    position: relative;
+    height: 100%;
+    width: 100%;
+  }
+}
+
+
+
+
+.find-resource{
+  height: 80%;
+  min-width: 450px;
+  width: 80%;
   position: absolute;
-  top: 18%;
-  right: 10%;
+  top: 40%;
+  left: 50%;
+  transform: translate(-50%,-40%);
+  
+}
+
+@media(min-width:1280px){
+  .find-resource{
+    height: 75%;
+    top: 50%;
+    left: 42%;
+    transform: translate(-50%,-50%);
+  }
 }
 
 .bb-1{
   border-bottom: 1px solid #7a7a7a;
 }
+
 </style>

@@ -282,14 +282,25 @@ onMounted(async () => {
 
 <style scoped>
 #map {
-  min-width: 500px;
-  width: 50%;
-  height: 72%;
+  min-width: 450px;
+  width:80%;
+  height: 85%;
   border: 1px solid #000;
   border-radius: 15px;
   position: absolute;
-  top: 18%;
-  left: 12%;
+  top: 10%;
+  left: 50%;
+  transform: translate(-50%,-10%);
+}
+
+@media(min-width:1280px){
+  #map{
+    height: 75%;
+    position: absolute;
+    top: 50%;
+    left: 80%;
+    transform: translate(-80%,-50%);
+  }
 }
 ::v-deep .leaflet-popup {
   background-color: white;
@@ -300,6 +311,7 @@ onMounted(async () => {
 ::v-deep .leaflet-popup-content{
   color:rgb(85, 85, 85);
 }
+
 
 </style>
 

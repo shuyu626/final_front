@@ -3,8 +3,8 @@
             <v-btn
                 v-if="user.isLogin"
                 @click="openDialog(null)"
-                class="bg-third b-1"
-                size="65px"
+                class="bg-third b-1 btn-container p-0"
+                
                 variant="text"
                 id="create"
                 >
@@ -134,14 +134,16 @@
 
 
         <!-- 搜尋欄 -->
-        <v-container>
+        <!-- <v-container> -->
             <!-- 麵包屑 - 顯示目前頁面位置 -->
+          <v-container>
             <v-breadcrumbs :items="items">
               <template v-slot:divider>
                 <v-icon icon="mdi-chevron-right"></v-icon>
               </template>
             </v-breadcrumbs>
-            <v-responsive >
+          </v-container>
+            <v-responsive max-width="700px" class="mx-auto">
               <v-text-field
               variant="outlined"
               label="搜尋"
@@ -150,20 +152,20 @@
               single-line
               density="comfortable"
               clearable
-              width="700px" 
-              class="bg-white mx-auto mt-5 my-5"
-             v-model="searchQuery"
+              class="bg-white mx-5 mt-5 my-5"
+              v-model="searchQuery"
               >
               </v-text-field>
             </v-responsive>
             <div class="text-center">
+              <v-responsive max-width="900" class="mx-auto">
                     <v-sheet
-                    class="mx-auto d-inline-block"
-                    max-width="900"
+                    class="w-100 mx-auto d-inline-block"
                     >
                         <v-slide-group
                             show-arrows
                             multiple
+                            mobile-breakpoint="xxl"
                         >
                             <v-slide-group-item
                             v-for="category in categories"
@@ -185,13 +187,14 @@
                             </v-slide-group-item>
                         </v-slide-group>
                     </v-sheet>
-                  <div class="w-75 mx-auto">
-                  <v-row class="my-3 d-flex w-100" style="box-sizing: content-box;">
-                    <v-col cols="12" md="3" lg="2" v-for="event in filteredEvents" :key="event._id" class="mx-10">
+                  </v-responsive>
+                  <div class="mx-auto" style="width:100%;">
+                  <v-row class="my-3 d-flex w-75 mx-auto" style="box-sizing: content-box;">
+                    <v-col cols="12" md="4" lg="2" v-for="event in filteredEvents" :key="event._id" class="mx-10">
                       <router-link :to="'/event/'+ event._id" style="text-decoration: none">
-                        <v-card width="300px" height="400px" variant="flat" color="third" class="b-1">
+                        <v-card  variant="flat" color="third" class="b-1 card-size">
                             <v-card-item class="p-5 text-left">
-                                <div style="width: 264px;height:264px;" class="d-flex justify-content-center b-1 mt-2 mb-2  bg-white">
+                                <div  class="d-flex justify-content-center b-1 mt-2 mb-2  bg-white">
                                     <v-img :src="event.image" rounded containr></v-img>
                                 </div>
                                 <v-card-title class="font-weight-black " style="font-size: 1.1rem;width: 215px;word-wrap: break-word;">{{ event.title }}
@@ -206,11 +209,6 @@
                     </v-col>
                   </v-row>
                 </div>
-                <!-- <v-row justify="center" v-for="r in 3" :key="r" class="my-3">
-                    <v-col cols="12" md="4" lg="2" v-for="c in 4" :key="c">
-                        <card class="cursor-pointer"></card>
-                    </v-col>
-                </v-row> -->
             </div>
             <!-- 上下頁 -->
             <div class="text-center my-5">
@@ -221,7 +219,7 @@
                 rounded="circle"
                 ></v-pagination>
             </div>
-        </v-container>
+        <!-- </v-container> -->
 
 </template>
 
@@ -474,8 +472,14 @@ loadEvents();
 
 
 
+function addUpTo(n){
+  return ((1 + n) * n) / 2;
+}
+console.log(addUpTo(5)) // 15
+
 </script>
 <style scoped>
+
 .b-1{
   border: 1px solid #7a7a7a;
 }
@@ -485,6 +489,41 @@ loadEvents();
     bottom: 4%;
     border-radius: 50%;
 }
+
+.btn-container{
+  width: 65px;
+  height: 65px;
+}
+
+.card-size{
+  width:295px;
+  height:390px;
+
+  div{
+    max-width: 264px;
+    max-height:264px;
+    
+  }
+}
+@media (min-width: 500px) {
+  .btn-container{
+    z-index: 5;
+    width: 60px;
+    height: 60px;
+    
+  }
+  .card-size{
+    margin: auto;
+    width:350px;
+    height:420px;
+    
+    div{
+      max-width: 330px;
+      max-height:300px;
+    }
+  }
+}
+
 .v-overlay__content{
     background-color: #fff;
 }

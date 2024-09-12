@@ -33,7 +33,7 @@
               <v-col cols="12" md="3" class="my-auto form-label text-h6 " style="font-size:18px;">服務單位</v-col>
               <template v-for="item in files" :key="item.id" >
                 <v-col cols="12" md="4" class="my-auto">
-                  <p v-if="!item.isEditing" style="font-size:18px;color: #616161;"  class="text-h6 ">
+                  <p v-if="!item.isEditing" style="font-size:18px;color: #616161;"  class="text-h6 font-weight-bold">
                     {{ item.username }}
                   </p>
                   <v-text-field
