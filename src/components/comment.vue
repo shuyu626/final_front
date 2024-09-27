@@ -2,7 +2,7 @@
 <!-- 留言板 -->
 <v-row class="mt-10">
   <v-col>
-      <div class="b-1 info-margin  text-center text-body-1 pa-2 bg-accent rounded-t-lg font-weight-bold" style="width:150px;padding: 0;border-bottom: 0px;">留言板</div>
+      <div class="b-1 info-margin  text-center text-body-1 pa-2 bg-accent rounded-t-lg font-weight-bold" style="max-width:150px;padding: 0;border-bottom: 0px;">留言板</div>
       <div class="b-1 pa-5 info-margin">
         <v-row v-for="msg in message" :key="msg._id">
           <v-col cols="5">
@@ -17,9 +17,10 @@
                 <!-- 顯示純文字 -->
                 <p class="ml-16 text-body-2 d-inline">{{ msg.content }}</p>
                 <!-- 編輯按鈕 -->
-                <v-btn icon="mdi-pencil" @click="startEditing(msg._id, msg.content)" variant="text" class="d-inline" color="grey"></v-btn>
+                <!-- 條件句部分表示留言的id與登入id相同時才會顯示 -->
+                <v-btn icon="mdi-pencil" v-if="msg.user._id == currentUser" @click="startEditing(msg._id, msg.content)" variant="text" class="d-inline" color="grey"></v-btn>
                 <!-- 刪除按鈕 -->
-                <v-btn icon="mdi-delete" @click="deleteMessage(msg._id)" variant="text" class="d-inline" color="grey"></v-btn>
+                <v-btn icon="mdi-delete" v-if="msg.user._id == currentUser" @click="deleteMessage(msg._id)" variant="text" class="d-inline" color="grey"></v-btn>
               </div>
               <div v-else style="width: 800;">
                 <v-row class="mt-2 mx-8">
@@ -128,7 +129,7 @@ const loadComments = async () => {
     const { data } = await apiAuth.get(`/comment/`+ route.params.id)
     console.log(data)
     message.value = data.result
-    console.log(message.value[0].user.username)
+    console.log(message.value[0].user._id)
     
   } catch (error) {
     console.log(error)
@@ -176,12 +177,14 @@ const submit = handleSubmit(async (values) => {
 })
 
 const files = ref([])
+const currentUser = ref(null)
 const loadfile = async () => {
   try {
     const { data } = await apiAuth.get('/user/profile');
     files.value = [data.result];
-
     console.log(files.value)
+    currentUser.value = files.value[0].id
+    console.log(currentUser.value)
   } catch (error) {
     createSnackbar({
       text: error?.response?.data?.message || '發生錯誤',
@@ -263,7 +266,13 @@ const deleteMessage = async (id) => {
 }
 
 .info-margin{
+    margin: 0 1rem 0 1rem ;
+}
+
+@media(min-width:1280px){
+  .info-margin{
     margin: 0 6rem 0 6rem ;
+  }
 }
 .v-btn{
     position: relative;

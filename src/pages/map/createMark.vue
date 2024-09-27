@@ -1,15 +1,21 @@
 <template>
     <v-container>
-    <!-- 麵包屑 -->
-    <v-breadcrumbs :items="items">
-        <template v-slot:divider>
-        <v-icon icon="mdi-chevron-right"></v-icon>
-        </template>
-    </v-breadcrumbs>
+      <!-- 麵包屑 -->
+      <v-breadcrumbs :items="items">
+          <template v-slot:divider>
+          <v-icon icon="mdi-chevron-right"></v-icon>
+          </template>
+      </v-breadcrumbs>
+    </v-container>
     <!-- 地圖 -->
-    <div id="map" ref="map" ></div>
 
-    <v-card width="500px" variant="outlined" class="overflow-y-auto">
+
+    <v-row style="height: 95vh;">
+      <v-col cols="12" lg="8" class="map_col order-2 order-lg-1">
+        <div id="map" ref="map" ></div>
+      </v-col >
+      <v-col cols="12" lg="4" class="map_col order-1 order-lg-2">
+        <v-card  variant="outlined" class="overflow-y-auto find-resource">
         <v-toolbar color="secondary bb-1" prominent >
             <v-toolbar-title >
                 新增資源
@@ -18,6 +24,7 @@
         <div class="px-6">
             <v-form @submit.prevent="submit" :disabled="isSubmitting">
                 <Search class="mx-auto my-5" 
+                max-width="1000px"
                 v-model="address"
                 :error-messages="addressError "
                 label="輸入資源地址"
@@ -246,7 +253,9 @@
             </v-form>
         </div>
     </v-card>
-</v-container>
+      </v-col>
+    </v-row>
+
 </template>
 <script setup>
 import { ref, onMounted } from 'vue';
@@ -639,7 +648,63 @@ loadMap();
 
 </script>
 <style scoped>
+.map_col{
+    position: relative;
+    height: 60%;
+    width: 100%;
+  }
+@media(min-width:1280px){
+  .map_col{
+    position: relative;
+    height: 100%;
+    width: 100%;
+  }
+}
+.find-resource{
+  height: 80%;
+  min-width: 450px;
+  width: 80%;
+  position: absolute;
+  top: 40%;
+  left: 50%;
+  transform: translate(-50%,-40%);
+  
+}
+
+@media(min-width:1280px){
+  .find-resource{
+    height: 75%;
+    top: 20%;
+    left: 42%;
+    transform: translate(-50%,-20%);
+  }
+}
+
+
+
+
 #map {
+  min-width: 450px;
+  width:80%;
+  height: 85%;
+  border: 1px solid #000;
+  border-radius: 15px;
+  position: absolute;
+  top: 10%;
+  left: 50%;
+  transform: translate(-50%,-10%);
+}
+
+@media(min-width:1280px){
+  #map{
+    height: 75%;
+    position: absolute;
+    top: 20%;
+    left: 80%;
+    transform: translate(-80%,-20%);
+  }
+}
+/* #map {
 width: 50%;
 height: 650px;
 border: 1px solid #000;
@@ -647,19 +712,14 @@ border-radius: 15px;
 position: absolute;
 top: 18%;
 left: 12%;
-}
+} */
 .b-1{
 border: 1px solid #7a7a7a;
 }
 .bb-1{
     border-bottom: 1px solid #7a7a7a;
 }
-.v-card{
-    height: 650px;
-    position: absolute;
-    top: 18%;
-    right: 10%;
-}
+
 ::v-deep .v-expansion-panel__shadow{
     box-shadow:none;
 }
@@ -683,9 +743,9 @@ border: 1px solid #7a7a7a;
 p{
     color:rgb(94, 94, 94);
 }
-.v-col{
+/* .v-col{
     padding: 5px 10px 5px 10px;
-}
+} */
 .form-label{
  font-size: 18px;
  font-weight: bold;

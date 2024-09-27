@@ -216,7 +216,7 @@ const updateMarkers = () => {
     // 根据筛选条件进行过滤
     const matchesCity = !props.selectedCity || item.address.includes(props.selectedCity);
     const matchesArea = !props.selectedArea || item.address.includes(props.selectedArea);
-    const matchsQuery = !props.searchQuery || item.name.toLowerCase().includes(props.searchQuery.toLowerCase())
+    const matchsQuery = !props.searchQuery || item.name.toLowerCase().includes(props.searchQuery.toLowerCase()) || item.address.toLowerCase().includes(props.searchQuery.toLowerCase())
     const matchesSubcategory = props.selectedSubcategories.length === 0 ||
       item.categories.some(subcat => props.selectedSubcategories.includes(subcat));
     
@@ -254,30 +254,7 @@ onMounted(async () => {
 });
 
 
-// try {
-//       const response = await axios.get('/api/public/js/mapdata.json');
-//       const data = response.data;
 
-//       // 將 JSON 資料中的每個地標添加到地圖
-//       data.forEach((item) => {
-//         const lat = parseFloat(item.lat);
-//         const lng = parseFloat(item.lng);
-
-//         if (isFinite(lat) && isFinite(lng) && lat >= -90 && lat <= 90 && lng >= -180 && lng <= 180) {
-//           L.marker([lat, lng], { icon: greenIcon })
-//             .addTo(initialMap.value)
-//             .bindPopup(
-//               `<h2>${item.name}</h2>
-//               <br>
-//               <h3>地址 : ${item.city}${item.area}${item.add}</h3>`
-//             );
-//         } else {
-//           console.warn(`Invalid coordinates for item: ${JSON.stringify(item)}`);
-//         }
-//       });
-//     } catch (error) {
-//       console.error('Error fetching JSON data:', error);
-//     }
 </script>
 
 <style scoped>

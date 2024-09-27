@@ -1,19 +1,19 @@
 <template>
-    <v-container style="padding:0.5rem 15rem 3rem 15rem;">
+    <v-container id="con">
         <v-breadcrumbs :items="items">
               <template v-slot:divider>
                 <v-icon icon="mdi-chevron-right"></v-icon>
               </template>
       </v-breadcrumbs>
-        <v-row justify-center class="mt-5">
+        <v-row class="mt-5 w-100 h-66">
             <v-col cols="5" class="d-flex justify-center align-center">
-                <div style="width: 360px;height: 360px;" class="b-1 pa-2 d-flex justify-center ">
+              <div class="b-1 pa-2 d-flex justify-center img">
                     <v-img :src="provide.image" max-width="330" max-height="330" contain></v-img>
                 </div>
             </v-col>
-            <v-col cols="5">
+            <v-col cols="6">
                 <v-card variant="flat" id="resourceCard">
-                    <v-card-title class="font-weight-black mb-2 text-h5">物資名稱：{{provide.name}}</v-card-title>
+                    <v-card-title class="font-weight-black mb-3 text-h5">物資名稱：{{provide.name}}</v-card-title>
                     <v-divider thickness="0"></v-divider>
                     <v-row>
                         <!-- 活動名稱 -->
@@ -50,12 +50,13 @@
                     <!-- <v-card-text v-for="item in cardtext" :key="item">{{ item }}</v-card-text> -->
                     
                 </v-card>
+                <AppButton text="我要留言" width="90" class="me-4 bg-third" @click="scrollTo('#msg')"></AppButton>
+                <AppButton text="我要索取" width="90" class=" bg-third" @click="openDialog(null)" ></AppButton>
             </v-col>
         </v-row>
+        <Comment id="msg" ref="textarea"></Comment>
 
-
-        <AppButton text="我要留言" width="90" class="me-4 bg-third" @click="scrollTo('#msg')"></AppButton>
-                <AppButton text="我要索取" width="90" class=" bg-third" @click="openDialog(null)" ></AppButton>
+        
         <!-- 我要捐贈 - 對話框 -->
         <v-dialog max-width="700px" v-model="dialog">
 
@@ -67,13 +68,13 @@
                                 <v-btn id="close" icon="$close" variant="text" @click="closeDialog()"></v-btn>
                             </v-card-actions>
                             <v-card-title class="font-weight-black text-left text-h5 py-0">物資名稱：{{provide.name}}</v-card-title>
-                            <div class="b-1 bg-white rounded-sm pt-5 mt-1" >   
+                            <div class="b-1 bg-white rounded-sm pt-5 mt-2 mb-4 mx-4" >    
                                 <v-card-text>
                                     <v-form @submit.prevent="submit" :disabled="isSubmitting">
                                         <v-row>
                                             <!-- 捐贈數量 -->
                                             <v-col cols="12" md="3" class="my-auto text-center">
-                                            <label class="form-label">捐贈數量</label>
+                                            <label class="form-label">索取數量</label>
                                             </v-col>
                                             <v-col cols="12" md="9">
                                                 <!-- 實驗中的元件，要記得import -->
@@ -130,67 +131,18 @@
                     </v-card>
             </v-dialog>
 
-
-
-        <!-- 留言板 -->
-        <v-row class="mt-10">
-            <v-col>
-                <div class="b-1 info-margin  text-center text-body-1 pa-2 bg-accent rounded-t-lg" style="width:150px;padding: 0;border-bottom: 0px;">留言板</div>
-                <div class="b-1 pa-5 info-margin">
-                <div class="pa-4 ">
-                    <v-avatar color="primary b-1" class="me-3" size="large">
-                        <v-img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRWAhVMz9jthsapuZL1tkdJks34QlTbXolbmg&s"></v-img>
-                    </v-avatar>
-                    <span>照管中心</span>
-                    <p class="ml-13 text-body-2">您好，請問周末親送過去可以嗎?</p>
-                </div>
-                <div class="pa-4">
-                    <v-avatar color="secondary b-1" class="me-3" size="large">
-                        <v-img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTqnRWICFHo49O2OyVoMHrqkQmAevK654iXKw&s"></v-img>
-                    </v-avatar>
-                    <span>家防中心</span>
-                    <p class="ml-13 text-body-2">請問商品期限有限定嗎?</p>
-                </div>
-                <v-divider></v-divider>
-                <!-- 留言發布 -->
-                <div class="pa-4">
-                    <v-textarea 
-                    ref="textarea"
-                    id="msg"
-                    placeholder="請輸入您的留言或提問"
-                    variant="outlined" 
-                    width="600" 
-                    maxlength="20" 
-                    counter
-                    >
-                        <template v-slot:prepend>
-                        <v-avatar color="primary " class="me-1 b-1" size="large">
-                            <v-img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTyKvt7MWE2LrmiZbNLMYdnwEW-OnNf1sam1g&s"></v-img>
-                        </v-avatar>
-                        </template>
-                    </v-textarea>
-                    <v-btn
-                    variant="text"
-                    class="rounded-md b-1 bg-accent mt-2"
-                    density="comfortable"
-                    :ripple="false"
-                    id="submit"
-                    >送出</v-btn>
-                </div>
-            </div>
-            </v-col>
-        </v-row>
     </v-container>
 </template>
 <script setup>
 import { VNumberInput } from 'vuetify/labs/VNumberInput'
-import { ref } from 'vue'
+import { ref, nextTick  } from 'vue'
 import * as yup from 'yup'
 import { useForm, useField } from 'vee-validate'
 import { definePage } from 'vue-router/auto'
 import { useRoute } from 'vue-router'
 import { useApi } from '@/composables/axios'
 import { useSnackbar } from 'vuetify-use-dialog'
+import Comment from '@/components/comment.vue'
 
 const { api,apiAuth } = useApi()
 const route = useRoute()
@@ -265,7 +217,6 @@ const load = async () => {
   }
 }
 load()
-
 
 
 
@@ -351,14 +302,28 @@ function scrollTo(selector) { // 找到想滾動到的元素css選擇器
 .b-1{
   border: 1px solid #7a7a7a;
 }
-.v-container{
-    padding:0.5rem 3rem 3rem 3rem;
+
+@media(min-width:1920px){
+  #con{
+    padding:0.5rem 15rem 3rem 15rem;
+  }
 }
-.v-card-title{
-    padding-left: 9px;
-    font-size: 30px;
-}
-#resourceCard{
+
+
+
+.img{
+    width: 80%;
+    
+    
+  }
+  @media(min-width:1280px){
+  .img{
+    /* width: 340px;
+    height: 340px; */
+    width:60%;
+    margin: 0;
+  }
+  #resourceCard{
     .v-card-text{
     padding: 9px;
         &:nth-child(even){
@@ -374,8 +339,14 @@ function scrollTo(selector) { // 找到想滾動到的元素css選擇器
     font-weight: bold;
     color:#87b3b0;
     margin-left: 0.8rem;
+  }
 }
 }
+.v-card-title{
+    padding-left: 9px;
+    font-size: 30px;
+}
+
 .info-margin{
     margin: 0 6rem 0 6rem ;
 }
@@ -386,7 +357,7 @@ function scrollTo(selector) { // 找到想滾動到的元素css選擇器
 }
 .v-btn{
     position: relative;
-    left: 70%;
+    left: 65%;
 }
 #close{
     position: relative;

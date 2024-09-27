@@ -1,4 +1,4 @@
-<template>
+<template>''
   <v-row style="height: 95vh;">
     <v-col cols="12" lg="8" class="map_col order-2 order-lg-1">
       <Leaflet-map  
@@ -16,8 +16,20 @@
               </v-toolbar-title>
           </v-toolbar>
           <v-card-item>
-              <search
-              class="my-5 w-auto"
+            <div class="text-right">
+              <v-btn
+                type="submit"
+                variant="plain"
+                class="rounded-md bb-1 mt-2 bg-grey-lighten-4"
+                density="comfortable"
+                :ripple="false"
+                height="40"
+                width="80"
+                @click="clear()"
+                >清空條件</v-btn>
+              </div>
+              <Search
+              class="my-5"
               max-width="1000px"
               v-model="searchQuery"
               label="輸入資源地址"
@@ -90,13 +102,7 @@ meta: {
 
 const emit = defineEmits();
 
-// 服務篩選
-// const categories = ref([
-// { name: '身障', subcategories: ['日照中心','全日型住宿機構','輔具中心'] },
-// { name: '長期照顧', subcategories: ['照管中心','共餐服務','輔具中心'] },
-// { name: '兒少', subcategories: ['青少年服務中心', '家扶中心', '少觀所'] },
-// { name: '社會救助', subcategories: ['基金會','社會福利中心'] }
-// ]);
+
 const categories = ref([
 { name: '服務對象', subcategories: ['長期照顧','身心障礙','婦女','兒童及少年','心理衛生','社會救助','綜合','其他'] },
 { name: '長期照顧', subcategories: ['日照中心','護理之家','居家服務','交通接送','家庭托顧'] },
@@ -163,15 +169,6 @@ loadData();
 
 
 
-
-
-
-
-
-
-
-
-
 const searchQuery = ref('');
 const handlePanelClick = (category, index) => {
   console.log('Clicked panel:', category.name);
@@ -184,6 +181,15 @@ const handlePanelClick = (category, index) => {
   // 如果當前選擇的子類別都在當前面板中，則更新選擇
   selectedSubcategories.value = newSelectedSubcategories;
 };
+
+
+const clear = () =>{
+  selectedSubcategories.value = []
+  selectedcategories.value  = []
+  selectedArea.value = []
+  selectedCity.value = []
+  searchQuery.value = ''
+}
 </script>
 <style scoped>
 .map_col{
@@ -198,10 +204,6 @@ const handlePanelClick = (category, index) => {
     width: 100%;
   }
 }
-
-
-
-
 .find-resource{
   height: 80%;
   min-width: 450px;
@@ -212,7 +214,6 @@ const handlePanelClick = (category, index) => {
   transform: translate(-50%,-40%);
   
 }
-
 @media(min-width:1280px){
   .find-resource{
     height: 75%;
@@ -221,7 +222,6 @@ const handlePanelClick = (category, index) => {
     transform: translate(-50%,-50%);
   }
 }
-
 .bb-1{
   border-bottom: 1px solid #7a7a7a;
 }

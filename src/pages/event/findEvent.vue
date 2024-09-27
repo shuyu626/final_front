@@ -189,8 +189,8 @@
                     </v-sheet>
                   </v-responsive>
                   <div class="mx-auto" style="width:100%;">
-                  <v-row class="my-3 d-flex w-75 mx-auto" style="box-sizing: content-box;">
-                    <v-col cols="12" md="4" lg="2" v-for="event in filteredEvents" :key="event._id" class="mx-10">
+                  <v-row class="my-3 d-flex w-lg-75 w-md-100 mx-auto" >
+                    <v-col cols="12" sm="4" md="3" v-for="event in filteredEvents" :key="event._id" class="mx-0">
                       <router-link :to="'/event/'+ event._id" style="text-decoration: none">
                         <v-card  variant="flat" color="third" class="b-1 card-size">
                             <v-card-item class="p-5 text-left">
@@ -470,13 +470,6 @@ const loadEvents = async () => {
 loadEvents();
 
 
-
-
-function addUpTo(n){
-  return ((1 + n) * n) / 2;
-}
-console.log(addUpTo(5)) // 15
-
 </script>
 <style scoped>
 
@@ -496,14 +489,11 @@ console.log(addUpTo(5)) // 15
 }
 
 .card-size{
-  width:295px;
+  /* width:295px; */
+  width: 100%;
   height:390px;
 
-  div{
-    max-width: 264px;
-    max-height:264px;
-    
-  }
+  
 }
 @media (min-width: 500px) {
   .btn-container{
@@ -514,12 +504,12 @@ console.log(addUpTo(5)) // 15
   }
   .card-size{
     margin: auto;
-    width:350px;
+    width:100%;
     height:420px;
     
     div{
       max-width: 330px;
-      max-height:300px;
+      max-height: 280px;
     }
   }
 }

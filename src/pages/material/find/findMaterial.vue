@@ -1,35 +1,64 @@
 
 <template>
         <!-- 物資card -->
-        <v-container>
+        <v-container class="h-100">
           <!-- 麵包屑 - 顯示目前頁面位置 -->
           <v-breadcrumbs :items="items">
               <template v-slot:divider>
                 <v-icon icon="mdi-chevron-right"></v-icon>
               </template>
             </v-breadcrumbs>
-          <!-- <v-divider width="200" color="yellow-darken-4" thickness="5"></v-divider> -->
-            <v-row class="mx-5" >
+            <v-responsive max-width="900" class="mx-auto d-xl-none d-lg-block">
+                    <v-sheet
+                    class="w-100 mx-auto d-inline-block"
+                    >
+                        <v-slide-group
+                            show-arrows
+                            multiple
+                            mobile-breakpoint="xxl"
+                        >
+                            <v-slide-group-item
+                            v-for="category in categories"
+                            :key="category.name"
+                            v-slot="{ isSelected, toggle }"
+                            >
+                            <v-chip
+                            :style="{
+                                backgroundColor: isSelected ? '#616161' : '#EEEEEE',
+                                color: isSelected ? 'white' : 'black'
+                            }"
+                            
+                                class="ma-2"
+                                @click="() => handleClick(category.name, toggle)"
+                            >
+                                {{ category.name }}
+                                
+                            </v-chip>
+                            </v-slide-group-item>
+                        </v-slide-group>
+                    </v-sheet>
+                  </v-responsive>
+            <v-row class="pl-lg-15 h-100">
               <!-- filteredItems -->
                 <v-col
                 v-for="provide in filteredItems"
                 :key="provide.id"
                 cols="12"
                 sm="6">
-                    <v-card width="650px" height="300px" variant="flat">
-                        <v-row class="align-content-center">
-                          <v-col cols="5" class=" ml-15 ">
+                    <v-card variant="flat">
+                        <v-row class="align-content-center h-100 my-4">
+                          <v-col cols="6"  lg="5" class=" ml-lg-15 ml-5">
                             <router-link :to="'/material/find/'+ provide._id">
-                              <div style="width: 240px;height:240px;" class="d-flex justify-content-center b-1">
+                              <div class="d-flex justify-content-center b-1 item-img">
                                 <v-img :src="provide.image" contain ></v-img>
                               </div>
                             </router-link>
                             </v-col>
-                            <v-col cols="5">
-                                <v-card-title class="text-h6 font-weight-bold">{{ provide.name }}</v-card-title>
-                                <v-card-subtitle style="font-size: 16px;">{{ provide.organizer }}</v-card-subtitle>
-                                <v-card-text style="font-size: 15px;">數量：{{ provide.quantity }}</v-card-text>
-                                <AppButton text="詳細說明" class="bg-third" :to="'/material/find/'+ provide._id"></AppButton>
+                            <v-col cols="5" lg="5" class="ml-4">
+                                <v-card-title class="text-h6 font-weight-bold ms-md-1">{{ provide.name }}</v-card-title>
+                                <v-card-subtitle style="font-size: 16px;" class="ms-md-1">{{ provide.organizer }}</v-card-subtitle>
+                                <v-card-text style="font-size: 15px;" class="ms-md-1">數量：{{ provide.quantity }}</v-card-text>
+                                <AppButton text="詳細說明" class="bg-third ms-md-4 ms-3" :to="'/material/find/'+ provide._id"></AppButton>
                             </v-col>
                         </v-row>                
                     </v-card>
@@ -202,6 +231,37 @@ onMounted(() => {
 
 
 
+const selectedCategory = ref([]);
+
+// 切換選中類別邏輯
+const toggleCategory = (categoryName) => {
+  const index = selectedCategory.value.indexOf(categoryName);
+  if (index === -1) { 
+    // 如果该类别不在已选类别列表中，则添加它
+    selectedCategory.value.push(categoryName);
+  } else { 
+    // 如果该类别已经被选中，则取消选中
+    selectedCategory.value.splice(index, 1);
+  }
+};
+
+// 解決不能重複使用@click的問題(toggle 為內建的語法，用來更改樣式)
+const handleClick = (categoryName, toggle) => {
+  toggleCategory(categoryName); 
+  toggle(); 
+  console.log(selectedCategory)
+};
+
+
+
+
+
+
+
+
+
+
+
 const page = ref(1) // 現在第幾頁
 const pages = ref(1) // 全部有幾頁
 const ITEMS_PER_PAGE = 8
@@ -241,6 +301,14 @@ loadMaterials()
 
 </script>
 <style scoped>
+.v-card{
+  max-width: 650px;
+  max-height: 300px;
+}
+.item-img{
+  width: 240px;
+  height:240px;
+}
 .b-1{
   border: 1px solid #7a7a7a;
 }

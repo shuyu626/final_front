@@ -1,23 +1,23 @@
 <template>
-    <v-container style="padding:0.5rem 15rem 3rem 15rem;">
+    <v-container id="con">
       <v-breadcrumbs :items="items">
               <template v-slot:divider>
                 <v-icon icon="mdi-chevron-right"></v-icon>
               </template>
       </v-breadcrumbs>
-        <v-row justify-center class="mt-5">
+        <v-row class="mt-5 w-100 h-66">
             <v-col cols="5" class="d-flex justify-center align-center">
-                <div style="width: 360px;height: 360px;" class="b-1 pa-2 d-flex justify-center ">
+                <div class="b-1 pa-2 d-flex justify-center img">
                     <v-img :src="provide.image" max-width="330" max-height="330" contain></v-img>
                 </div>
             </v-col>
-            <v-col cols="5">
+            <v-col cols="6">
                 <v-card variant="flat" id="resourceCard">
-                    <v-card-title class="font-weight-black mb-3 text-h5" >物資名稱：{{provide.name}}</v-card-title>
+                    <v-card-title class="font-weight-black mb-3 text-h5">物資名稱：{{provide.name}}</v-card-title>
                     <v-divider thickness="0"></v-divider>
                     <v-row>
                         <!-- 活動名稱 -->
-                        <v-col cols="12" md="3" class="my-auto" >
+                        <v-col cols="12" md="3" class="my-auto">
                             <label class="form-label">需求單位</label>
                         </v-col>
                         <v-col cols="12" md="9">
@@ -50,12 +50,13 @@
                     <!-- <v-card-text v-for="item in cardtext" :key="item">{{ item }}</v-card-text> -->
                     
                 </v-card>
+                <AppButton text="我要留言" width="90" class="me-4 bg-third" @click="scrollTo('#msg')"></AppButton>
+                <AppButton text="我要捐贈" width="90" class=" bg-third" @click="openDialog(null)" ></AppButton>
             </v-col>
         </v-row>
+        <Comment id="msg" ref="textarea"></Comment>
 
-
-        <AppButton text="我要留言" width="90" class="me-4 bg-third" @click="scrollTo('#msg')"></AppButton>
-                <AppButton text="我要捐贈" width="90" class=" bg-third" @click="openDialog(null)" ></AppButton>
+        
         <!-- 我要捐贈 - 對話框 -->
         <v-dialog max-width="700px" v-model="dialog">
 
@@ -67,7 +68,7 @@
                                 <v-btn id="close" icon="$close" variant="text" @click="closeDialog()"></v-btn>
                             </v-card-actions>
                             <v-card-title class="font-weight-black text-left text-h5 py-0">物資名稱：{{provide.name}}</v-card-title>
-                            <div class="b-1 bg-white rounded-sm pt-5 mt-1" >   
+                            <div class="b-1 bg-white rounded-sm pt-5 mt-2 mb-4 mx-4" >   
                                 <v-card-text>
                                     <v-form @submit.prevent="submit" :disabled="isSubmitting">
                                         <v-row>
@@ -135,7 +136,7 @@
                         </v-container>
                     </v-card>
             </v-dialog>
-            <Comment id="msg" ref="textarea"></Comment>
+            
     </v-container>
 </template>
 <script setup>
@@ -177,7 +178,6 @@ const items=ref([
     disabled: true,
   }
 ])
-
 
 definePage({
   meta: {
@@ -289,9 +289,6 @@ const submit = handleSubmit(async (values) => {
 
 
 
-
-
-
 // 點擊我要留言按鈕跳到留言板
 function scrollTo(selector) { // 找到想滾動到的元素css選擇器
     const element = document.querySelector(selector);
@@ -312,14 +309,27 @@ function scrollTo(selector) { // 找到想滾動到的元素css選擇器
   border: 1px solid #7a7a7a;
 }
 
-.v-container{
-    padding:0.5rem 3rem 3rem 3rem;
+@media(min-width:1920px){
+  #con{
+    padding:0.5rem 15rem 3rem 15rem;
+  }
 }
-.v-card-title{
-    padding-left: 9px;
-    font-size: 30px;
-}
-#resourceCard{
+
+
+
+.img{
+    width: 80%;
+    
+    
+  }
+@media(min-width:1280px){
+  .img{
+    /* width: 340px;
+    height: 340px; */
+    width:60%;
+    margin: 0;
+  }
+  #resourceCard{
     .v-card-text{
     padding: 9px;
         &:nth-child(even){
@@ -335,8 +345,19 @@ function scrollTo(selector) { // 找到想滾動到的元素css選擇器
     font-weight: bold;
     color:#87b3b0;
     margin-left: 0.8rem;
+  }
 }
 }
+
+
+
+.v-card-title{
+    padding-left: 9px;
+    font-size: 30px;
+}
+
+
+
 .info-margin{
     margin: 0 6rem 0 6rem ;
 }
@@ -347,7 +368,7 @@ function scrollTo(selector) { // 找到想滾動到的元素css選擇器
 }
 .v-btn{
     position: relative;
-    left: 70%;
+    left: 65%;
 }
 
 #close{

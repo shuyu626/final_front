@@ -26,7 +26,7 @@
                                 <v-card-title class="text-h6 font-weight-bold">{{ provide.name }}</v-card-title>
                                 <v-card-subtitle style="font-size: 16px;">{{ provide.organizer }}</v-card-subtitle>
                                 <v-card-text style="font-size: 15px;">數量：{{ provide.quantity }}</v-card-text>
-                                <AppButton text="詳細說明" class="bg-third" :to="'/material/find/'+ provide._id"></AppButton>
+                                <AppButton text="詳細說明" class="bg-third" :to="'/material/share/'+ provide._id"></AppButton>
                             </v-col>
                         </v-row>                
                     </v-card>
