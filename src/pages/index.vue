@@ -1,39 +1,48 @@
-<template>''
-  <v-row style="height: 95vh;">
-    <v-col cols="12" lg="8" class="map_col order-2 order-lg-1">
+<template>
+  <v-row style="height: 94vh;">
+    <v-col v-if="!mobile" cols="12" lg="8" class="sm_map map_col order-2 order-lg-1">
       <Leaflet-map  
       :searchQuery="searchQuery"
       :selectedCity="selectedCity"
       :selectedArea="selectedArea"
       :selectedSubcategories="selectedSubcategories"
+      id="map"
       />
     </v-col >
-    <v-col cols="12" lg="4" class="map_col order-1 order-lg-2">
-      <v-card variant="outlined" class="overflow-y-auto find-resource">
-          <v-toolbar color="secondary" prominent class=" bb-1">
+    <v-col v-if="!mobile" cols="12" lg="4" class="map_col order-1 order-lg-2">
+      <v-card  class="find-resource" elevation="0">
+          <v-toolbar color="secondary" prominent class=" bb-1 d-none d-md-inline-block">
               <v-toolbar-title>
                   服務查詢
               </v-toolbar-title>
           </v-toolbar>
           <v-card-item>
+            <div>
             <div class="text-right">
               <v-btn
+                id="clear"
                 type="submit"
                 variant="plain"
-                class="rounded-md bb-1 mt-2 bg-grey-lighten-4"
+                class="rounded-md bb-1 mt-2 bg-grey-lighten-4 d-none d-md-block"
                 density="comfortable"
                 :ripple="false"
                 height="40"
                 width="80"
                 @click="clear()"
-                >清空條件</v-btn>
-              </div>
+                >
+              清空條件
+              </v-btn>
+              <v-btn icon="mdi-delete" class="d-md-none" variant="text" color="black" @click="clear()"></v-btn>
+              <v-btn icon="mdi-filter" class="d-md-none" variant="text" color="black" @click="toggleFilterPanel"></v-btn>  
+            </div>
               <Search
               class="my-5"
               max-width="1000px"
               v-model="searchQuery"
               label="輸入資源地址"
+              id="search"
               />
+            </div>
               <div>
               <v-select  
               v-model="selectedCity"
@@ -59,12 +68,14 @@
               ></v-select>
             </div>
 
-              <v-toolbar density="compact">
+            <div id="filter">
+              <v-toolbar density="compact" class=" d-none d-md-block" >
                   <v-toolbar-title class="ms-5 text-body-1">
                     服務類別
                   </v-toolbar-title>
               </v-toolbar>
-              <v-expansion-panels  variant="accordion" class="">
+              <v-expansion-panels  variant="accordion">
+              <!-- <v-expansion-panels  variant="accordion"v-if="showFilterPanel" > -->
                   <v-expansion-panel
                   v-for="(category, index) in categories"
                   :key="index"
@@ -84,16 +95,73 @@
                   </v-expansion-panel-text>
                   </v-expansion-panel>
               </v-expansion-panels>
+            </div>
           </v-card-item>
       </v-card>
     </v-col>
+
+    <v-container v-else class="pa-0 d-flex flex-column" style="height: 100%;">
+      <v-app-bar>
+        <v-row no-gutters align="center">
+          <Search
+            v-model="searchQuery"
+            label="輸入資源地址"
+            id="search-xs"
+            class="ms-2"
+            dense
+          />
+          <v-btn icon="mdi-delete" class="d-md-none" variant="text" color="black" @click="clear()"></v-btn>
+          <v-btn icon="mdi-filter" class="d-md-none" variant="text" color="black" @click="toggleFilterPanel"></v-btn>  
+        </v-row>
+      </v-app-bar>
+      <v-navigation-drawer
+        v-model="showFilterPanel"
+        temporary
+        right
+        width="80%"
+        class="bg-transparent"
+        v-if="showFilterPanel"
+      >
+      <v-expansion-panels variant="accordion">
+        <v-expansion-panel
+          v-for="(category, index) in categories"
+          :key="index"
+          v-model="selectedcategories"
+          @click="handlePanelClick(category, index)"
+        >
+          <v-expansion-panel-title>{{ category.name }}</v-expansion-panel-title>
+          <v-expansion-panel-text>
+            <v-checkbox
+              v-for="(subcategory, subIndex) in category.subcategories"
+              :key="subIndex"
+              v-model="selectedSubcategories"
+              :label="subcategory"
+              :value="subcategory"
+              hide-details
+            ></v-checkbox>
+          </v-expansion-panel-text>
+        </v-expansion-panel>
+      </v-expansion-panels>
+    </v-navigation-drawer>
+      <!-- 小屏幕地圖 -->
+      <Leaflet-map
+        :searchQuery="searchQuery"
+        :selectedCity="selectedCity"
+        :selectedArea="selectedArea"
+        :selectedSubcategories="selectedSubcategories"
+        id="map-xs"
+        style="flex-grow: 1;"
+      />
+    </v-container>
   </v-row>
 </template>
 <script setup>
 import { ref, watch, onMounted, defineEmits } from 'vue';
 import axios from 'axios';
 import { definePage } from 'vue-router/auto'
-import leafletMap from '@/components/leafletMap.vue';
+import LeafletMap from '@/components/leafletMap.vue';
+import { useDisplay } from 'vuetify'
+const { mobile } = useDisplay()
 definePage({
 meta: {
   title: 'KeeperS | 資源查詢'
@@ -190,31 +258,39 @@ const clear = () =>{
   selectedCity.value = []
   searchQuery.value = ''
 }
+const showFilterPanel = ref(false);
+const toggleFilterPanel = () => {
+  showFilterPanel.value = !showFilterPanel.value;
+};
+
+
+
 </script>
 <style scoped>
+
+
 .map_col{
     position: relative;
     height: 60%;
     width: 100%;
   }
+.find-resource{
+  background-color: transparent;
+  height: 80%;
+  min-width: 450px;
+  width: 80%;
+  position: absolute;
+  overflow-y: auto;
+  /* top: 40%;
+  left: 50%;
+  transform: translate(-50%,-40%); */
+}
 @media(min-width:1280px){
   .map_col{
     position: relative;
     height: 100%;
     width: 100%;
   }
-}
-.find-resource{
-  height: 80%;
-  min-width: 450px;
-  width: 80%;
-  position: absolute;
-  top: 40%;
-  left: 50%;
-  transform: translate(-50%,-40%);
-  
-}
-@media(min-width:1280px){
   .find-resource{
     height: 75%;
     top: 50%;
@@ -222,8 +298,36 @@ const clear = () =>{
     transform: translate(-50%,-50%);
   }
 }
+@media(min-width:960px){
+  .find-resource{
+    overflow-y: auto;
+    border:1px solid black;
+  }
+  
+}
+
 .bb-1{
   border-bottom: 1px solid #7a7a7a;
 }
 
+/* #search{
+  width: 70%;
+  position: absolute;
+  top: 0%;
+  left: 5%;
+}
+#filter{
+  position: absolute;
+  top: 20%;
+  left: 5%;
+} */
+@media (max-width: 599px) {
+  #search-xs {
+    width: 70%;
+  }
+
+  #map-xs {
+    height: calc(100vh - 100px); /* 減去 app-bar 的高度 */
+  }
+}
 </style>
