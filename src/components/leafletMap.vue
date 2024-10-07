@@ -216,7 +216,7 @@ const updateMarkers = () => {
     // 根据筛选条件进行过滤
     const matchesCity = !props.selectedCity || item.address.includes(props.selectedCity);
     const matchesArea = !props.selectedArea || item.address.includes(props.selectedArea);
-    const matchsQuery = !props.searchQuery || item.name.toLowerCase().includes(props.searchQuery.toLowerCase()) || item.address.toLowerCase().includes(props.searchQuery.toLowerCase())
+    const matchsQuery = !props.searchQuery || item.name.toLowerCase().includes(props.searchQuery.toLowerCase()) 
     const matchesSubcategory = props.selectedSubcategories.length === 0 ||
       item.categories.some(subcat => props.selectedSubcategories.includes(subcat));
     
@@ -258,20 +258,27 @@ onMounted(async () => {
 </script>
 
 <style scoped>
-#map {
-  min-width: 450px;
-  width:80%;
-  height: 85%;
-  border: 1px solid #000;
-  border-radius: 15px;
-  position: absolute;
-  top: 10%;
-  left: 50%;
-  transform: translate(-50%,-10%);
+#map{
+    min-width: 450px;
+    width:100%;
+    height: 100vh;
+    border: 1px solid #000;
+  }
+@media(min-width:960px){
+  #map {
+    min-width: 450px;
+    border: 1px solid #000;
+    border-radius: 15px;
+    position: absolute;
+    top: 10%;
+    left: 50%;
+    transform: translate(-50%,-10%);
+  }
 }
 
 @media(min-width:1280px){
   #map{
+    width: 85%;
     height: 75%;
     position: absolute;
     top: 50%;

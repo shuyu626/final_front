@@ -247,13 +247,6 @@ try {
 })
 
 
-
-
-
-
-
-
-
 </script>
 <style scoped>
 .b-1{

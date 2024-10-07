@@ -1,6 +1,6 @@
 <template>
   <v-row style="height: 94vh;">
-    <v-col v-if="!mobile" cols="12" lg="8" class="sm_map map_col order-2 order-lg-1">
+    <v-col v-if="!mobile" cols="12" md="7" lg="8" class="sm_map map_col order-2 order-lg-1  order-md-1">
       <Leaflet-map  
       :searchQuery="searchQuery"
       :selectedCity="selectedCity"
@@ -9,7 +9,7 @@
       id="map"
       />
     </v-col >
-    <v-col v-if="!mobile" cols="12" lg="4" class="map_col order-1 order-lg-2">
+    <v-col v-if="!mobile" cols="12" md="5" lg="4" class="map_col order-1 order-lg-2  order-md-2">
       <v-card  class="find-resource" elevation="0">
           <v-toolbar color="secondary" prominent class=" bb-1 d-none d-md-inline-block">
               <v-toolbar-title>
@@ -32,8 +32,8 @@
                 >
               清空條件
               </v-btn>
-              <v-btn icon="mdi-delete" class="d-md-none" variant="text" color="black" @click="clear()"></v-btn>
-              <v-btn icon="mdi-filter" class="d-md-none" variant="text" color="black" @click="toggleFilterPanel"></v-btn>  
+              <!-- <v-btn icon="mdi-delete" class="d-md-none" variant="text" color="black" @click="clear()"></v-btn>
+              <v-btn icon="mdi-filter" class="d-md-none" variant="text" color="black" @click="toggleFilterPanel"></v-btn>   -->
             </div>
               <Search
               class="my-5"
@@ -47,9 +47,9 @@
               <v-select  
               v-model="selectedCity"
               :items="cities"
-              min-width="215px"
+              min-width="145px"
               label="縣市"
-              class="me-4 d-none d-md-inline-block"
+              class="me-3 d-none d-sm-inline-block"
               style="width: 48%;"
               density="comfortable"
               variant="outlined"
@@ -59,9 +59,9 @@
               <v-select  
               v-model="selectedArea"
               :items="areas"
-              min-width="215px"
+              min-width="145px"
               label="鄉鎮市區"
-              class="d-none d-md-inline-block"
+              class="d-none d-sm-inline-block"
               style="width: 48%;"
               density="comfortable"
               variant="outlined"
@@ -103,24 +103,57 @@
     <v-container v-else class="pa-0 d-flex flex-column" style="height: 100%;">
       <v-app-bar>
         <v-row no-gutters align="center">
-          <Search
+          <v-col cols="10">
+            <Search
             v-model="searchQuery"
             label="輸入資源地址"
             id="search-xs"
             class="ms-2"
             dense
+            width="95%"
           />
-          <v-btn icon="mdi-delete" class="d-md-none" variant="text" color="black" @click="clear()"></v-btn>
-          <v-btn icon="mdi-filter" class="d-md-none" variant="text" color="black" @click="toggleFilterPanel"></v-btn>  
+          </v-col>
+          <v-col cols="1" class="text-center">
+            <v-btn
+                id="clear"
+                type="submit"
+                variant="plain"
+                class="rounded-md bb-1 mt-2 bg-grey-lighten-4 d-none d-md-block"
+                density="comfortable"
+                :ripple="false"
+                height="40"
+                width="60"
+                @click="clear()"
+                >
+              清空條件
+            </v-btn>
+            <v-btn icon="mdi-delete" class="d-md-none" variant="text" density="comfortable" color="black" @click="clear()"></v-btn>
+          </v-col>
+          <v-col cols="1" class="text-center">
+            <v-btn
+                id="clear"
+                type="submit"
+                variant="plain"
+                class="rounded-md bb-1 mt-2 bg-grey-lighten-4 d-none d-md-block"
+                density="comfortable"
+                :ripple="false"
+                height="40"
+                width="60"
+                @click="toggleFilterPanel"
+                >
+              篩選
+            </v-btn>
+            <v-btn icon="mdi-filter" class="d-md-none" variant="text" density="comfortable" color="black" @click="toggleFilterPanel"></v-btn>  
+          </v-col>
         </v-row>
       </v-app-bar>
       <v-navigation-drawer
         v-model="showFilterPanel"
         temporary
-        right
-        width="80%"
+        width="100vw"
         class="bg-transparent"
         v-if="showFilterPanel"
+        location="top"
       >
       <v-expansion-panels variant="accordion">
         <v-expansion-panel
@@ -161,7 +194,7 @@ import axios from 'axios';
 import { definePage } from 'vue-router/auto'
 import LeafletMap from '@/components/leafletMap.vue';
 import { useDisplay } from 'vuetify'
-const { mobile } = useDisplay()
+const { mobile , md} = useDisplay()
 definePage({
 meta: {
   title: 'KeeperS | 資源查詢'
@@ -241,13 +274,9 @@ const searchQuery = ref('');
 const handlePanelClick = (category, index) => {
   console.log('Clicked panel:', category.name);
   console.log('Panel index:', index);
-  // 清空選中的子類別
-  const newSelectedSubcategories = selectedSubcategories.value.filter(
-    (subcategory) => category.subcategories.includes(subcategory)
-  );
 
-  // 如果當前選擇的子類別都在當前面板中，則更新選擇
-  selectedSubcategories.value = newSelectedSubcategories;
+
+
 };
 
 
@@ -277,7 +306,7 @@ const toggleFilterPanel = () => {
 .find-resource{
   background-color: transparent;
   height: 80%;
-  min-width: 450px;
+  max-width: 450px;
   width: 80%;
   position: absolute;
   overflow-y: auto;
@@ -295,7 +324,7 @@ const toggleFilterPanel = () => {
     height: 75%;
     top: 50%;
     left: 42%;
-    transform: translate(-50%,-50%);
+    transform: translate(-45%,-50%);
   }
 }
 @media(min-width:960px){
@@ -303,6 +332,7 @@ const toggleFilterPanel = () => {
     overflow-y: auto;
     border:1px solid black;
   }
+  
   
 }
 
@@ -323,7 +353,7 @@ const toggleFilterPanel = () => {
 } */
 @media (max-width: 599px) {
   #search-xs {
-    width: 70%;
+    width: 95%;
   }
 
   #map-xs {

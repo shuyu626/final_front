@@ -14,7 +14,7 @@
         >
         </v-text-field>
     </v-responsive> -->
-    <v-responsive max-width="450px">
+    <v-responsive max-width="1000px">
         <v-text-field
             v-model="internalValue"
             variant="outlined"
