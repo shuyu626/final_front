@@ -18,11 +18,12 @@
       <v-dialog max-width="700" v-model="dialog">
         <v-card>
           <v-container class="dialog-container">
-            <v-card-title class="font-weight-black text-center text-h4">新增活動</v-card-title>   
+            <v-card-title class="font-weight-black text-center text-sm-h4 text-h5">新增活動</v-card-title>   
             <v-card-text>
               <v-form  @submit.prevent="submit" :disabled="isSubmitting">
                 <v-row>
-                  <v-col >
+                  <v-col cols="1" ></v-col>
+                  <v-col cols="10" md="12">
                     <!-- plugins > index.js 要先引入套件 -->
                     <vue-file-agent
                       v-model="fileRecords"
@@ -114,11 +115,12 @@
                     v-model="description.value.value"
                     :error-messages="description.errorMessage.value"
                     :density="$vuetify.display.xs ? 'compact' : 'comfortable'"
+                    :rows="$vuetify.display.xs ? '3' : '4'"
                     ></v-textarea>
                   </v-col>
                 </v-row>
                 <v-card-actions>
-              <div class="mx-auto">
+              <div class="mx-auto mt-3">
                   <v-btn variant="text"class="rounded-xl b-1 bg-accent" density="comfortable" type="submit" :loading="isSubmitting">送出</v-btn>
                   <v-btn
                   text="取消"
@@ -513,6 +515,20 @@ loadEvents();
 .dialog-col{
   padding: 0;
 }
+
+.v-overlay__content{
+    background-color: #fff;
+}
+
+::v-deep .v-input__prepend{
+    margin-right: 5px;
+}
+
+::v-deep .v-field__input{
+    padding: 12px 10px 12px 10px;
+    /* width: 120px; */
+}
+
 @media (min-width: 600px) {
   .v-row{
     padding: 0px 8% 0px 8%;
@@ -564,17 +580,6 @@ loadEvents();
   }
 }
 
-.v-overlay__content{
-    background-color: #fff;
-}
 
-::v-deep .v-input__prepend{
-    margin-right: 5px;
-}
-
-::v-deep .v-field__input{
-    padding: 12px 10px 12px 10px;
-    /* width: 120px; */
-}
 
 </style>
