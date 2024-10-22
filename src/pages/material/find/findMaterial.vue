@@ -11,47 +11,47 @@
       <!-- 小尺寸新增紐 及 篩選 -->
       <resourceDialog v-if="mobile" card-title="" type="find" @update="loadMaterials"></resourceDialog>
       <v-responsive max-width="900" class="mx-auto d-xl-none d-lg-block">
-              <v-sheet
-              class="w-100 mx-auto d-inline-block"
+        <v-sheet
+        class="w-100 mx-auto d-inline-block"
+        >
+            <v-slide-group
+                show-arrows
+                multiple
+                mobile-breakpoint="xxl"
+            >
+            <v-slide-group-item v-slot="{ toggle }">
+              <v-chip
+                :style="{
+                  backgroundColor: allSelected ? '#616161' : '#EEEEEE',
+                  color: allSelected ? 'white' : 'black'
+                }"
+                class="ma-2"
+                @click="() => handleAllClick(toggle)"
               >
-                  <v-slide-group
-                      show-arrows
-                      multiple
-                      mobile-breakpoint="xxl"
-                  >
-                  <v-slide-group-item v-slot="{ toggle }">
-                    <v-chip
-                      :style="{
-                        backgroundColor: allSelected ? '#616161' : '#EEEEEE',
-                        color: allSelected ? 'white' : 'black'
-                      }"
-                      class="ma-2"
-                      @click="() => handleAllClick(toggle)"
-                    >
-                      全部
-                    </v-chip>
-                  </v-slide-group-item>
-                      <v-slide-group-item
-                      v-for="category in categories"
-                      :key="category.name"
-                      v-slot="{isSelected, toggle }"
-                      >
-                      <v-chip
-                      :style="{
-                          backgroundColor: allSelected || isSelected? '#616161' : '#EEEEEE',
-                          color: allSelected || isSelected ? 'white' : 'black'
-                      }"
-                      
-                          class="ma-2"
-                          @click="() => handleClick(category, toggle)"
-                      >
-                          {{ category.name }}
-                          
-                      </v-chip>
-                      </v-slide-group-item>
-                  </v-slide-group>
-              </v-sheet>
-            </v-responsive>
+                全部
+              </v-chip>
+            </v-slide-group-item>
+                <v-slide-group-item
+                v-for="category in categories"
+                :key="category.name"
+                v-slot="{isSelected, toggle }"
+                >
+                <v-chip
+                :style="{
+                    backgroundColor: allSelected || isSelected? '#616161' : '#EEEEEE',
+                    color: allSelected || isSelected ? 'white' : 'black'
+                }"
+                
+                    class="ma-2"
+                    @click="() => handleClick(category, toggle)"
+                >
+                    {{ category.name }}
+                    
+                </v-chip>
+                </v-slide-group-item>
+            </v-slide-group>
+        </v-sheet>
+      </v-responsive>
       <v-row class="pl-lg-15 h-100">
         <!-- filteredItems -->
           <v-col
@@ -348,11 +348,6 @@ border: 1px solid #7a7a7a;
 }
 .v-row{
 height: 300px;
-}
-#button{
-position: relative;
-top: 35%;
-left: 60%;
 }
 ::v-deep .v-breadcrumbs{
 padding:8px 12px 6px 12px ;

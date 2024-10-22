@@ -1,68 +1,68 @@
 <template>
   <v-container >
     <v-breadcrumbs :items="items">
-            <template v-slot:divider>
-              <v-icon icon="mdi-chevron-right"></v-icon>
-            </template>
+      <template v-slot:divider>
+        <v-icon icon="mdi-chevron-right"></v-icon>
+      </template>
     </v-breadcrumbs>
       <v-row justify-center class="mt-2 flex-column flex-sm-row">
           <v-col cols="12" sm="6" md="5" lg="6" class="w-66 w-sm-100 d-flex justify-center align-start mx-auto" style="margin-top: 20px;">
               <v-img :src="event.image" class="image"  contain></v-img>
           </v-col>
           <v-col cols="12" sm="6" md="7" lg="6">
-              <v-card variant="flat" class="d-none d-sm-block">
-                  <v-card-title class="card-title" style="white-space: pre-line;">活動名稱：{{ event.title }}</v-card-title>
-                  <v-divider thickness="0"></v-divider>
-                  <v-card-text class="card-text">活動時間</v-card-text>
-                  <v-card-text class="card-text">{{ event.date }}</v-card-text>
-                  <v-card-text class="card-text">活動地點</v-card-text>
-                  <v-card-text class="card-text">{{event.address}}</v-card-text>
-                  <v-card-text class="card-text">活動類別</v-card-text>
-                  <v-card-text class="card-text" v-for="item in event.category" :key="item">{{item}}</v-card-text>
-                  <v-card-text class="card-text">主辦單位</v-card-text>
-                  <v-card-text class="card-text">{{ event.organizer }}</v-card-text>
-                  <v-card-text></v-card-text>
-                  <v-card-text></v-card-text>
-                  <v-card-text></v-card-text>
-                    <!-- 按收藏按鈕切換樣式 -->
-                    <AppButton
-                      v-if="user.isLogin"
-                      :prepend-icon="isFavorite ? 'mdi-bookmark' : 'mdi-bookmark-outline'"
-                      :text="isFavorite ? '已收藏' : '我要收藏'"
-                      :class="isFavorite ? 'me-15' : 'me-15 bg-info'"
-                      :style="isFavorite ? { backgroundColor: '#F5B4B4' } : {}"
-                      @click="toggleFavorite"
-                      width="125"
-                      height="32"
-                      class="text-body-3"
-                      :ripple="false"
-                  />
-              </v-card>
-              <v-row class="pl-4 d-flex d-sm-none">
-                <v-col cols="12" class="font-weight-black card-title" style="white-space: pre-line;">活動名稱：{{ event.title }}</v-col>
-                <v-col cols="3" class="card-text">活動時間</v-col>
-                <v-col cols="9" class="card-text">{{ event.date }}</v-col>
-                <v-col cols="3" class="card-text">活動地點</v-col>
-                <v-col cols="9" class="card-text">{{ event.address }}</v-col>
-                <v-col cols="3" class="card-text">活動類別</v-col>
-                <v-col cols="9" class="card-text" v-for="item in event.category" :key="item">{{item}}</v-col>
-                <v-col cols="3" class="card-text">主辦單位</v-col>
-                <v-col cols="9" class="card-text">{{ event.organizer }}</v-col>
-                <v-col cols="12" class="mt-6" style="position: relative;">
-                  <v-btn
-                  color="medium-emphasis"
-                  :icon="isFavorite ? 'mdi-heart' : 'mdi-heart-outline'"
-                  :class="isFavorite ? 'me-5 mb-2 bg-red-lighten-4' : 'me-5 mb-2 bg-info'"
-                  size="small"
-                  class="bg-transparent xs-btn m-0"
-                  @click="toggleFavorite"
-                  elevation="0"
-                  variant="text"
-            ></v-btn>
-                </v-col>
-                
-              </v-row>
-          </v-col>
+            <v-card variant="flat" class="d-none d-sm-block">
+                <v-card-title class="card-title" style="white-space: pre-line;">活動名稱：{{ event.title }}</v-card-title>
+                <v-divider thickness="0"></v-divider>
+                <v-card-text class="card-text">活動時間</v-card-text>
+                <v-card-text class="card-text">{{ event.date }}</v-card-text>
+                <v-card-text class="card-text">活動地點</v-card-text>
+                <v-card-text class="card-text">{{event.address}}</v-card-text>
+                <v-card-text class="card-text">活動類別</v-card-text>
+                <v-card-text class="card-text" v-for="item in event.category" :key="item">{{item}}</v-card-text>
+                <v-card-text class="card-text">主辦單位</v-card-text>
+                <v-card-text class="card-text">{{ event.organizer }}</v-card-text>
+                <v-card-text></v-card-text>
+                <v-card-text></v-card-text>
+                <v-card-text></v-card-text>
+                  <!-- 按收藏按鈕切換樣式 -->
+                  <AppButton
+                    v-if="user.isLogin"
+                    :prepend-icon="isFavorite ? 'mdi-bookmark' : 'mdi-bookmark-outline'"
+                    :text="isFavorite ? '已收藏' : '我要收藏'"
+                    :class="isFavorite ? 'me-15' : 'me-15 bg-info'"
+                    :style="isFavorite ? { backgroundColor: '#F5B4B4' } : {}"
+                    @click="toggleFavorite"
+                    width="125"
+                    height="32"
+                    class="text-body-3"
+                    :ripple="false"
+                />
+            </v-card>
+            <v-row class="pl-4 d-flex d-sm-none">
+              <v-col cols="12" class="font-weight-black card-title" style="white-space: pre-line;">活動名稱：{{ event.title }}</v-col>
+              <v-col cols="4" class="card-text">活動時間</v-col>
+              <v-col cols="8" class="card-text">{{ event.date }}</v-col>
+              <v-col cols="4" class="card-text">活動地點</v-col>
+              <v-col cols="8" class="card-text">{{ event.address }}</v-col>
+              <v-col cols="4" class="card-text">活動類別</v-col>
+              <v-col cols="8" class="card-text" v-for="item in event.category" :key="item">{{item}}</v-col>
+              <v-col cols="4" class="card-text">主辦單位</v-col>
+              <v-col cols="8" class="card-text">{{ event.organizer }}</v-col>
+              <v-col cols="12" class="mt-6" style="position: relative;">
+              <v-btn
+              v-if="user.isLogin"
+              color="medium-emphasis"
+              :icon="isFavorite ? 'mdi-heart' : 'mdi-heart-outline'"
+              :class="isFavorite ? 'me-5 mb-2 bg-red-lighten-4' : 'me-5 mb-2 bg-info'"
+              size="small"
+              class="bg-transparent xs-btn m-0"
+              @click="toggleFavorite"
+              elevation="0"
+              variant="text"
+              ></v-btn>
+            </v-col>
+          </v-row>
+        </v-col>
       </v-row>
       <v-row>
           <v-col cols="12" class="d-none d-sm-flex mt-lg-2 py-0">
@@ -221,8 +221,6 @@ try {
   })
 }
 }
-
-// 在组件挂载时加载数据
 onMounted(load)
 
 
@@ -279,7 +277,17 @@ position: absolute;
 .info{
   margin: 0 1rem 0 1rem ;
 }
-
+.card-title{
+  font-size: 18px;
+}
+.card-text{
+    &:nth-child(even){
+        font-size: 17px;
+        }
+    &:nth-child(odd){
+    font-size: 16px;
+    }
+}
 }
 
 @media(min-width:960px){
