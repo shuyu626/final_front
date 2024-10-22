@@ -1,1 +1,0 @@
-import{G as p,U as s,K as e,N as n,b as t,A as c,m}from"./index-DHtY1JWC.js";const V=p({...s({icon:"$menu",variant:"text"})},"VAppBarNavIcon"),v=e()({name:"VAppBarNavIcon",props:V(),setup(a,o){let{slots:r}=o;return n(()=>t(m,c(a,{class:["v-app-bar-nav-icon"]}),r)),{}}}),B=""+new URL("logo-BEDPDuaW.png",import.meta.url).href;export{v as V,B as _};
