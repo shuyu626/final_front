@@ -6,11 +6,11 @@
       </template>
     </v-breadcrumbs>
       <v-row class="mt-5 w-100 h-66 mx-auto">
-        <v-col cols="12" sm="6" md="5" lg="6" class="w-66 w-sm-100 d-flex justify-center  mt-5 mx-auto">
+        <v-col cols="12" sm="6" md="5" lg="6" class="w-66 w-sm-100 d-flex justify-center align-start mx-auto">
           <v-img :src="provide.image" class="image b-1" contain></v-img>
         </v-col>
         <v-col cols="12" sm="6" md="6" lg="6">
-          <v-card variant="flat" class="d-none d-sm-block">
+        <v-card variant="flat" class="d-none d-sm-block">
             <v-card-title class="card-title" style="white-space: pre-line;">物資名稱：{{provide.name}}</v-card-title>
             <v-divider thickness="0"></v-divider>
             <v-card-text class="card-text">需求單位</v-card-text>
@@ -45,7 +45,6 @@
       
       <!-- 我要捐贈 - 對話框 -->
       <v-dialog max-width="700px" v-model="dialog">
-        <!-- 定義了對話框打開時顯示的內容。插槽道具 { isActive } 用於控制對話框的打開和關閉狀態 -->
         <v-card class="bg-third">
           <v-container class="pt-0">
             <!-- 關閉對話框的按鈕 -->
@@ -57,59 +56,59 @@
                 <v-card-text>
                   <v-form @submit.prevent="submit" :disabled="isSubmitting">
                     <v-row>
-                        <!-- 捐贈數量 -->
-                        <v-col cols="4" sm="3" class="my-auto text-center">
-                          <label class="form-label">捐贈數量</label>
-                        </v-col>
-                        <v-col cols="8" sm="9">
-                          <!-- 實驗中的元件，要記得import -->
-                          <v-number-input
-                          control-variant="stacked"
-                          variant="outlined"
-                          inset
-                          label="輸入數量"
-                          hide-details
-                          :min="0"
-                          v-model="quantity.value.value"
-                          :error-messages="quantity.errorMessage.value"
-                          :density="$vuetify.display.xs ? 'compact' : 'comfortable'"
-                          ></v-number-input>
-                        </v-col>
-                        <!-- 活動對象 -->
-                        <v-col cols="4" sm="3" class="my-auto text-center">
-                          <label v-if="$vuetify.display.xs" class="form-label">單位名稱</label>
-                          <label v-else class="form-label">單位／姓名</label>
-                        </v-col>
-                        <v-col cols="8" sm="9">
-                            <inputText
-                            v-model="donator.value.value"
-                            :error-messages="donator.errorMessage.value"
-                            :density="$vuetify.display.xs ? 'compact' : 'comfortable'"
-                            />
-                        </v-col>
-                        <!-- 需求介紹 -->
-                        <v-col cols="4" sm="3" class="my-auto text-center">
-                            <label class="form-label">聯絡電話</label>
-                        </v-col>
-                        <v-col cols="8" sm="9">
-                            <inputText
-                            v-model="phone.value.value"
-                            :error-messages="phone.errorMessage.value"
-                            :density="$vuetify.display.xs ? 'compact' : 'comfortable'"
-                            />
-                        </v-col>
+                      <!-- 捐贈數量 -->
+                      <v-col cols="4" sm="3" class="my-auto text-center">
+                        <label class="form-label">捐贈數量</label>
+                      </v-col>
+                      <v-col cols="8" sm="9">
+                        <!-- 實驗中的元件，要記得import -->
+                        <v-number-input
+                        control-variant="stacked"
+                        variant="outlined"
+                        inset
+                        label="輸入數量"
+                        hide-details
+                        :min="0"
+                        v-model="quantity.value.value"
+                        :error-messages="quantity.errorMessage.value"
+                        :density="$vuetify.display.xs ? 'compact' : 'comfortable'"
+                        ></v-number-input>
+                      </v-col>
+                      <!-- 活動對象 -->
+                      <v-col cols="4" sm="3" class="my-auto text-center">
+                        <label v-if="$vuetify.display.xs" class="form-label">單位名稱</label>
+                        <label v-else class="form-label">單位／姓名</label>
+                      </v-col>
+                      <v-col cols="8" sm="9">
+                        <inputText
+                        v-model="donator.value.value"
+                        :error-messages="donator.errorMessage.value"
+                        :density="$vuetify.display.xs ? 'compact' : 'comfortable'"
+                        />
+                      </v-col>
+                      <!-- 需求介紹 -->
+                      <v-col cols="4" sm="3" class="my-auto text-center">
+                        <label class="form-label">聯絡電話</label>
+                      </v-col>
+                      <v-col cols="8" sm="9">
+                        <inputText
+                        v-model="phone.value.value"
+                        :error-messages="phone.errorMessage.value"
+                        :density="$vuetify.display.xs ? 'compact' : 'comfortable'"
+                        />
+                      </v-col>
                     </v-row>
                     <v-card-actions>
-                        <div class="mx-auto">
-                            <v-btn
-                            type="submit"
-                            text="送出"
-                            variant="text"
-                            class="rounded-xl b-1 bg-primary"
-                            density="comfortable"
-                            :loading="isSubmitting"
-                            ></v-btn>
-                        </div>
+                      <div class="mx-auto">
+                          <v-btn
+                          type="submit"
+                          text="送出"
+                          variant="text"
+                          class="rounded-xl b-1 bg-primary"
+                          density="comfortable"
+                          :loading="isSubmitting"
+                          ></v-btn>
+                      </div>
                     </v-card-actions>
                   </v-form>
                 </v-card-text>
@@ -179,6 +178,7 @@ const provide = ref({
 
 
 
+const textarea = ref(null);
 
 
 const load = async () => {
@@ -267,7 +267,6 @@ const submit = handleSubmit(async (values) => {
 
 
 
-const textarea = ref(null);
 
 // 點擊我要留言按鈕跳到留言板
 function scrollTo(selector) { // 找到想滾動到的元素css選擇器
@@ -276,11 +275,13 @@ function scrollTo(selector) { // 找到想滾動到的元素css選擇器
         // scrollIntoView 方法使該元素滾動到視窗內部
         // behavior: 'smooth' 使滾動效果平滑過渡，而不是瞬間跳轉
         element.scrollIntoView({ behavior: 'smooth' });
-        nextTick(() => { // 滾動後再執行
-          if (textarea.value && textarea.value.$refs.commentInput) {
-        textarea.value.$refs.commentInput.focus(); // 聚焦到 v-textarea
-      }
-        });
+
+        // 使用 setTimeout 確保滾動效果完成後再聚焦
+        setTimeout(() => { 
+            if (textarea.value && textarea.value.$refs.commentInput) {
+                textarea.value.$refs.commentInput.focus();
+            }
+        }, 500); // 調整延遲時間以符合需求
     }
 }
 </script>
@@ -432,4 +433,35 @@ function scrollTo(selector) { // 找到想滾動到的元素css選擇器
     padding:0.5rem 15rem 3rem 15rem;
   }
 }
+/* 
+.v-card-title{
+    padding-left: 9px;
+    font-size: 30px;
+}
+
+
+
+.info-margin{
+    margin: 0 6rem 0 6rem ;
+}
+#submit{
+    position: relative;
+    left: 51%;
+    padding: 0;
+}
+.v-btn{
+    position: relative;
+    left: 65%;
+}
+
+#close{
+    position: relative;
+    left: 95%;
+}
+p{
+    font-size: 19px;
+    font-weight: bold;
+    color: gray;
+} */
+
 </style>
