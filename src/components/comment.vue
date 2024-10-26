@@ -51,7 +51,7 @@
                   <v-list-item-title @click="startEditing(msg._id, msg.content)" variant="text" >編輯</v-list-item-title>
                 </v-list-item>
                 <v-list-item>
-                  <v-list-item-title  @click="deleteMessage(msg._id)" variant="text" >刪除</v-list-item-title>
+                  <v-list-item-title @click="deleteMessage(msg._id)" variant="text" >刪除</v-list-item-title>
                 </v-list-item>
               </v-list>
             </v-menu>
@@ -123,7 +123,6 @@
   const createSnackbar = useSnackbar()
   const route = useRoute()
   
-  
   const schema = yup.object({
     comment: yup
       .string()
@@ -160,16 +159,15 @@
     loadComments()
   })
   
-  
   const comment = useField('comment')
   const submit = handleSubmit(async (values) => {
     try {
       const data = {
+          // content:comment.value.value 
           content:values.comment,
           materialId: route.params.id
       }
       
-      console.log(data)
       await apiAuth.post('comment/', data) 
       createSnackbar({
         text: '新增成功' ,

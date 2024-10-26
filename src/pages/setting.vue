@@ -1,23 +1,51 @@
 <template>
-  <v-btn v-show="!drawerOpen" @click="toggleDrawer" icon variant="plain" class="position-sticky top-0 pa-3 mt-2">
-  <!-- 切換側邊欄的按鈕 -->
-    <v-icon>{{ drawerOpen ? 'mdi-chevron-left' : 'mdi-chevron-right' }}</v-icon>
-  </v-btn>
-   <!-- <div v-if="$vuetify.display.xs || $vuetify.display.sm " class="horizontal-drawer">
+  <div 
+    v-if="$vuetify.display.xs" 
+    style=" z-index: 5;" 
+    class="position-fixed bg-primary d-flex justify-center align-center"
+  >
+
+    <!-- <v-icon v-show="!drawerOpen" @click="smToggleDrawer">{{ smDrawerOpen  ='mdi-chevron-right' }}</v-icon> -->
+    
+    <div  
+        class="position-fixed bg-primary tabs-show" 
+        style="width:94%; height: 40px; bottom: 1%; z-index: 5;border-radius: 10px;left: 50%; transform: translateX(-50%);">
+      <v-tabs
+        v-model="tab"
+        color="teal-darken-4"
+        direction="horizontal"
+        show-arrows
+        style="height: 40px;border-radius: 10px;"
+        fixed-tabs
+      >
+        <v-tab prepend-icon="mdi-account" value="option-1"></v-tab>
+        <v-tab prepend-icon="mdi-lock" value="option-2"></v-tab>
+        <v-tab prepend-icon="mdi-access-point" value="option-3"></v-tab>
+        <v-tab prepend-icon="mdi-book-cog" value="option-4"></v-tab>
+        <v-tab prepend-icon="mdi-package-variant-closed-check" value="option-5"></v-tab>
+      </v-tabs>
+    </div>
+  </div>
+  <div v-else="$vuetify.display.sm " class="position-fixed bg-primary" style="width: 40px;height: 290px;left: 0%;bottom:2%;z-index: 5;">
         <v-tabs
           v-model="tab"
           color="teal-darken-4"
-          direction="horizontal"
+          direction="vertical"
           show-arrows
+          style="width: 40px;"
+          fixed-tabs
         >
           
-          <v-tab prepend-icon="mdi-account" text="基本資料" value="option-1"></v-tab>
-          <v-tab prepend-icon="mdi-lock" text="地標管理" value="option-2"></v-tab>
-          <v-tab prepend-icon="mdi-access-point" text="貼文管理" value="option-3"></v-tab>
-          <v-tab prepend-icon="mdi-book-cog" text="活動收藏" value="option-4"></v-tab>
-          <v-tab prepend-icon="mdi-package-variant-closed-check" text="物資管理" value="option-5"></v-tab>
+          <v-tab prepend-icon="mdi-account" value="option-1"></v-tab>
+          <v-tab prepend-icon="mdi-lock" value="option-2"></v-tab>
+          <v-tab prepend-icon="mdi-access-point" value="option-3"></v-tab>
+          <v-tab prepend-icon="mdi-book-cog" value="option-4"></v-tab>
+          <v-tab prepend-icon="mdi-package-variant-closed-check" value="option-5"></v-tab>
         </v-tabs>
-      </div> -->
+        <div style="width: 40px;height: 40px;left: 0%;bottom:3%;z-index: 5;" class="position-fixed bg-primary  d-flex justify-center align-center">
+          <v-icon v-show="!drawerOpen" @click="toggleDrawer">{{ drawerOpen ? 'mdi-chevron-left' : 'mdi-chevron-right' }}</v-icon>
+      </div>
+    </div>
     <div>
     
     <!-- 側邊欄 -->
@@ -26,12 +54,6 @@
       width="190" 
       v-model="drawerOpen"
     >
-    <div class="text-right me-5">
-        <v-btn @click="toggleDrawer" icon variant="plain">
-          <!-- 切換側邊欄的按鈕 -->
-          <v-icon>{{ drawerOpen ? 'mdi-chevron-left' : 'mdi-chevron-right'  }}</v-icon>
-        </v-btn>
-      </div>
       <div>
         <v-tabs
           v-model="tab"
@@ -46,7 +68,10 @@
           <v-tab prepend-icon="mdi-package-variant-closed-check" text="物資管理" value="option-5" height="100" class="text-body-1 ms-1" @click="toggleDrawer(false)"></v-tab>
         </v-tabs>
       </div>
-
+      <div style="width: 40px;height: 40px;bottom: 3%;right: 0;" class="position-absolute me-5 d-flex justify-center align-center">
+          <!-- 切換側邊欄的按鈕 -->
+          <v-icon @click="toggleDrawer">{{ drawerOpen ? 'mdi-chevron-left' : 'mdi-chevron-right'  }}</v-icon>
+      </div>
       
     </v-navigation-drawer>
   </div>
@@ -134,28 +159,43 @@
                 <v-icon icon="mdi-chevron-right"></v-icon>
               </template>
             </v-breadcrumbs>
+            
           <div class="mx-auto rounded-lg my-5 mark-container" style="border:1.2px solid #000;" v-for="event in events" :key="event._id">
-            <v-card variant="flat" class="rounded-lg" style="background-color: #f7f2e9;">
-                <v-row class="align-center my-4 ps-md-8 flex-column flex-sm-row" >
-                    <v-col cols="6" md="3" class="align-self-center align-sm-self-start">
+            <v-card variant="flat" class="rounded-lg pa-4" style="background-color: #f7f2e9;">
+                <v-row class="align-center" >
+                    <v-col cols="4" sm="3" class="align-self-center align-sm-self-start">
                       <router-link :to="'/event/'+ event._id" style="text-decoration: none">
-                        <v-img :src="event.image" class="b-1 rounded-lg mark-image" cover></v-img>
+                        <v-img :src="event.image" class="mx-auto b-1 rounded-lg mark-image" cover></v-img>
                       </router-link>
                       </v-col>
-                    <v-col cols="12" md="9" class="align-self-start">
-                      <v-card-title class="text-h6 font-weight-black">{{ event.title }}</v-card-title>
-                      <v-card-subtitle class="text-body-1 font-weight-bold d-none d-sm-block">{{ event.organizer }}</v-card-subtitle>
-                      <v-card-subtitle class="text-body-1 font-weight-bold d-none d-sm-block mt-2">{{ event.date }}</v-card-subtitle>
+                    <v-col cols="8" sm="9" class="align-self-start">
+                      <v-card-title class="font-weight-black">{{ event.title }}</v-card-title>
+                      <v-card-subtitle class="font-weight-bold">{{ event.organizer }}</v-card-subtitle>
+                      <v-card-subtitle class="font-weight-bold mt-2">{{ event.date }}</v-card-subtitle>
                       <!-- <v-card-text style="white-space: pre-line;">{{ event.description }}</v-card-text> -->
-                  </v-col>
-                  <v-col cols="12" class=" align-self-start mt-2">
-                    <v-btn id="btn" v-if="isFavorite"  text="取消收藏" prepend-icon="mdi-bookmark" variant="outlined" style="background-color: #F5B4B4;" @click="toggleFavorite(event._id)" class="font-weight-black " width="120" height="35"></v-btn>
+                      <div class="text-end h-100 w-100 mt-5">
+                        <v-btn
+                          v-if="isFavorite"
+                          color="medium-emphasis"
+                          :icon="isFavorite ? 'mdi-heart' : 'mdi-heart-outline'"
+                          :class="isFavorite ? 'me-5 mb-2 bg-red-lighten-4' : 'me-5 mb-2 bg-info'"
+                          size="small"
+                          class="bg-transparent m-0 d-sm-none"
+                          @click="toggleFavorite(event._id)"
+                          elevation="0"
+                          variant="text"
+                        ></v-btn>
+                      </div>
+                      <div class="text-end h-100 w-100 mt-5 d-none d-sm-block">
+                        <v-btn id="btn" v-if="isFavorite"  text="取消收藏" prepend-icon="mdi-bookmark" variant="outlined" style="background-color: #F5B4B4; " @click="toggleFavorite(event._id)" class="font-weight-black  mark-btn pa-1" ></v-btn>
+                      </div>
                   </v-col>
                 </v-row>
                 <v-row>
                   
                 </v-row>                
             </v-card>
+            
           </div>
           <v-row v-if="events.length==0">
             <v-col class="text-center mt-15" style="color:#bfbfbf;">
@@ -316,8 +356,18 @@ onMounted(() => {
   fetchFavoriteEventDetails();
 });
 
-const subTab = ref('find')
 
+const subTab = ref('find')
+const showTabs = ref(false);
+const smDrawerOpen = ref(false);
+
+const smToggleDrawer = () => {
+  smDrawerOpen.value = !smDrawerOpen.value;
+};
+
+const clickTab = () => {
+  showTabs.value = !showTabs.value;
+};
 
 
 
@@ -360,22 +410,84 @@ const subTab = ref('find')
 .bg-red {
   background-color: #F5B4B4;
 }
+
 .v-container{
   margin:0 auto;
 }
 .mark-container{
   width: 100%;
 }
+
+.mark-image{
+  height:150px;
+  width: 135px;
+}
+/* .mark-image{
+  width: 200px;
+  height: 220px;
+} */
+ .mark-btn{
+  /* width:"120px" ; */
+  width:"10px";
+  height:"35px";
+ }
+.tabs-hidden {
+    display: none;
+}
+
+.tabs-visible {
+    display: block;
+}
+.v-card-title{
+  font-size: 16px;
+}
+.v-card-subtitle{
+  font-size: 14px;
+}
+@media(min-width:600px){
+  .mark-container{
+    width: 87%;
+  }
+}@media(min-width:750px) and (max-width: 959px) {
+  .mark-container{
+    width: 80%;
+  }
+  .v-card-title{
+  font-size: 18px;
+  }
+  .v-card-subtitle{
+    font-size: 16px;
+  }
+}
 @media(min-width:960px){
   .mark-container{
     width: 75%;
   }
+  .v-card-title{
+  font-size: 18px;
+  }
+  .v-card-subtitle{
+    font-size: 16px;
+  }
 }
-.mark-image{
-  width: 100%;
-  height:100%;
-  max-width: 200px;
-  max-height: 220px;
+@media(min-width:1280px){
+  .mark-container{
+    width: 70%;
+  }
 }
-
+@media(min-width:1920px){
+  .mark-container{
+    width: 55%;
+  }
+}
 </style>
+  
+
+
+
+
+
+
+
+
+  

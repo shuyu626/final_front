@@ -433,35 +433,5 @@ function scrollTo(selector) { // 找到想滾動到的元素css選擇器
     padding:0.5rem 15rem 3rem 15rem;
   }
 }
-/* 
-.v-card-title{
-    padding-left: 9px;
-    font-size: 30px;
-}
-
-
-
-.info-margin{
-    margin: 0 6rem 0 6rem ;
-}
-#submit{
-    position: relative;
-    left: 51%;
-    padding: 0;
-}
-.v-btn{
-    position: relative;
-    left: 65%;
-}
-
-#close{
-    position: relative;
-    left: 95%;
-}
-p{
-    font-size: 19px;
-    font-weight: bold;
-    color: gray;
-} */
 
 </style>
