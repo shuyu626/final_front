@@ -9,7 +9,7 @@
     
     <div  
         class="position-fixed bg-primary tabs-show" 
-        style="width:94%; height: 40px; bottom: 1%; z-index: 5;border-radius: 10px;left: 50%; transform: translateX(-50%);">
+        style="width:94%; height: 40px; z-index: 5;border-radius: 10px;left: 50%; bottom: 0.8%; transform: translateX(-50%);">
       <v-tabs
         v-model="tab"
         color="teal-darken-4"
@@ -51,7 +51,7 @@
     <!-- 側邊欄 -->
     <v-navigation-drawer 
       class="b-1 text-center bg-primary" 
-      width="190" 
+      width="200" 
       v-model="drawerOpen"
     >
       <div>

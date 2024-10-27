@@ -5,7 +5,7 @@
     class="bg-info b-1 font-weight-black text-body-1 mt-10 sm-btn"
     variant="text"
     :ripple="false"
-    >{{cardTitle}}
+    >
     <v-icon size="x-large">mdi-plus</v-icon>
     <v-tooltip
         activator="parent"
