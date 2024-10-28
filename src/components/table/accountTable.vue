@@ -19,22 +19,22 @@
             ref="fileAgent"
           ></vue-file-agent>
 
-          <!-- <template v-for="item in files" :key="item.id">
+          <template v-for="item in files" :key="item.id">
             <div id="img" style="width: 170px; height: 170px;" class="rounded-circle d-flex justify-center align-center bg-grey-lighten-5 mx-auto my-5 b-1" >
               <v-img  :src="item.avatar" cover></v-img>
             </div>
             <div id="upload">編輯</div>
             
-          </template> -->
+          </template>
           
           <!-- :files="files" 將 files 屬性綁定到該組件，用於顯示預設圖片或上傳的圖片 -->
           <v-container>
             <v-row class="text-left justify-center">
               <v-col cols="0" md="1" lg="2"></v-col>
-              <v-col cols="4" md="3" lg="3" class=" info-text my-auto pl-5 pl-sm-13 pl-md-0 pl-lg-12">服務單位</v-col>
+              <v-col cols="5" sm="4" md="3" lg="3" class=" info-text my-auto pl-5 pl-sm-13 pl-md-0 pl-lg-12">服務單位</v-col>
               <template v-for="item in files" :key="item.id" >
-                <v-col cols="5" md="4" lg="4" class="px-0 my-auto">
-                  <p v-if="!item.isEditing" style="color: #616161;"  class="info-text pl-4 pl-md-0">
+                <v-col cols="4" sm="5" md="4" lg="4" class="px-0 my-auto">
+                  <p v-if="!item.isEditing" style="color: #616161;"  class="info-text pl-0 pl-sm-4 pl-md-0">
                     {{ item.username }}
                   </p>
                   <v-text-field
@@ -51,7 +51,7 @@
                     hide-details
                   ></v-text-field>
                 </v-col>
-                <v-col cols="3" md="2" lg="2" class="text-center text-sm-left" >
+                <v-col cols="2" sm="3" md="2" lg="2" class="text-center text-sm-left" >
                   <v-btn
                     @click="toggleEdit(item)"
                     icon="mdi-pencil"
@@ -66,16 +66,16 @@
 
             
             <v-row class="text-left justify-center ">
-              <v-col cols="0" md="1" lg="2"></v-col>
-              <v-col cols="4" md="3" lg="3" class="info-text my-auto pl-5 pl-sm-13 pl-md-0 pl-lg-12">電子信箱</v-col>
+              <v-col cols="5" sm="4" md="3" lg="3" class=" info-text my-auto pl-5 pl-sm-13 pl-md-0 pl-lg-12 d-flex align-center">電子信箱</v-col>
               <template v-for="item in files" :key="item.id">
-                <v-col cols="5" md="4" lg="4" class="px-0 my-auto">
-                  <p style="color: #616161;" class="info-text pl-4 pl-md-0">
+                <v-col cols="6" sm="8" md="5" lg="4" class="my-2 px-0">
+                  <p style="color: #616161;" class="info-text pl-0 pl-sm-4 pl-md-0">
                     {{ item.email }}
+                    
                   </p>
                 </v-col>
               </template>
-              <v-col cols="3" md="2" lg="2" class="text-center">
+              <!-- <v-col cols="2" sm="3" md="2" lg="2" class="text-center">
                   <v-btn
                     @click="passwordtoggleEdit(item)"
                     icon="mdi-pencil"
@@ -83,16 +83,16 @@
                     color="transparent"
                     disabled
                   ></v-btn>
-                </v-col>
+                </v-col> -->
               <v-divider></v-divider>
             </v-row>
             <v-row class="text-left justify-center">
-              <v-col cols="0" md="1" lg="2"></v-col>
-              <v-col cols="4" md="3" lg="3" class="info-text my-auto pl-5 pl-sm-13 pl-md-0 pl-lg-12">密碼</v-col>
+              <v-col cols="0" md="1" lg="2" class="pa-0"></v-col>
+              <v-col cols="5" sm="4" md="3" lg="3" class="info-text my-auto pl-5 pl-sm-13 pl-md-0 pl-lg-12">密碼</v-col>
               <template v-for="item in files" :key="item.id">
-                <v-col cols="5" md="4" lg="4" class="px-0 my-auto">
+                <v-col cols="4" sm="5" md="4" lg="4" class="px-0 my-auto">
                   <!-- 非編輯狀態時顯示原用戶名 -->
-                  <p v-if="!item.passwordisEditing" style="color: #616161;" class="info-text pl-4  pl-md-0 ">
+                  <p v-if="!item.passwordisEditing" style="color: #616161;" class="info-text  pl-0 pl-sm-4  pl-md-0 ">
                     {{ item.password }}
                   </p>
                   <v-text-field
@@ -109,7 +109,7 @@
                     hide-details
                   ></v-text-field>
                 </v-col>
-                <v-col cols="3" md="2" lg="2" class="text-center text-sm-left">
+                <v-col cols="2" sm="3" md="2" lg="2" class="text-center text-sm-left">
                   <v-btn
                     @click="passwordtoggleEdit(item)"
                     icon="mdi-pencil"
@@ -309,7 +309,7 @@ const passwordsaveChanges = (item) => {
   min-height: 500px;
 }
 .info-text{
-  font-size: 1.1rem;
+  font-size: 17px;
   font-weight: bold;
 }
 

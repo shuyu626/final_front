@@ -145,12 +145,12 @@ const items=ref([
   {
     title: '首頁',
     disabled: false,
-    href: '/',
+    to: '/',
   },
   {
     title: '我要募資',
     disabled: false,
-    href: '/material/find/findMaterial',
+    to: '/material/find/findMaterial',
   },
   {
     title: '物資詳情',
@@ -433,5 +433,35 @@ function scrollTo(selector) { // 找到想滾動到的元素css選擇器
     padding:0.5rem 15rem 3rem 15rem;
   }
 }
+/* 
+.v-card-title{
+    padding-left: 9px;
+    font-size: 30px;
+}
+
+
+
+.info-margin{
+    margin: 0 6rem 0 6rem ;
+}
+#submit{
+    position: relative;
+    left: 51%;
+    padding: 0;
+}
+.v-btn{
+    position: relative;
+    left: 65%;
+}
+
+#close{
+    position: relative;
+    left: 95%;
+}
+p{
+    font-size: 19px;
+    font-weight: bold;
+    color: gray;
+} */
 
 </style>

@@ -72,8 +72,8 @@ const loginSchema = yup.object({
 const {handleSubmit, isSubmitting}=useForm({
   validationSchema: loginSchema,
   initialValues: {
-    email: 'test@gmail.org', // 預設信箱
-    password: '000000' // 預設密碼
+    email: '444444@gmail.org', // 預設信箱
+    password: '444444' // 預設密碼
   }
 })
 

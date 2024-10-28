@@ -235,7 +235,6 @@
                           </v-expansion-panel>
                       </v-expansion-panels>
                   </v-col>
-                  <!-- 需求介紹 -->
                   <v-col cols="12" md="3" class="text-left ps-2 pe-0">
                       <label class="form-label">服務介紹</label>
                   </v-col>
@@ -506,6 +505,7 @@
                       v-model="description.value.value"
                       :error-messages="description.errorMessage.value"
                       width="100%"
+                      :rows="$vuetify.display.xs ? '3' : '4'"
                       ></v-textarea>
                   </v-col>
               </v-row>
@@ -544,7 +544,7 @@ const items=ref([
 {
   title: '首頁',
   disabled: false,
-  href: '/',
+  to: '/',
 },
 {
   title: '新增資源',
@@ -951,11 +951,6 @@ transform: translate(-50%,-10%);
 height: 80%;
 max-width: 455px;
 width: 80%;
-position: absolute;
-top: 40%;
-left: 50%;
-transform: translate(-50%,-40%);
-
 }
 .form-label{
 font-size: 18px;
@@ -996,9 +991,9 @@ z-index: 1000;
 }
 .find-resource{
   height: 75%;
-  top: 20%;
-  left: 42%;
-  transform: translate(-45%,-20%);
+  top: 5%;
+  left: 0%;
+  /* transform: translate(-45%,-20%); */
 }
 }
 

@@ -64,7 +64,7 @@
                   <v-col cols="4"class="my-auto text-center dialog-col">
                       <label class="form-label">活動類別：</label>
                   </v-col>
-                  <v-col cols="8">
+                  <v-col cols="8" class="pb-0">
                     <v-select
                       v-model="category.value.value"
                       :error-messages="category.errorMessage.value"
@@ -73,8 +73,8 @@
                       :density="$vuetify.display.xs ? 'compact' : 'comfortable'"
                       dense
                       :items="chips"
-                      hide-details
                       multiple
+                      @change="checkLimit"
                       >
                     </v-select>
                   </v-col>
@@ -197,7 +197,7 @@
       <v-row class="my-3 d-flex " >
         <v-col cols="12" sm="6" md="4" lg="3" v-for="event in filteredEvents" :key="event._id" class="mx-0">
           <router-link :to="'/event/'+ event._id" style="text-decoration: none">
-            <v-card  variant="flat" color="third" class="b-1 card-size">
+            <v-card  variant="flat" color="third" class="b-1 card-size" elevation="5">
                 <v-card-item class="p-5 text-left">
                     <div  class="d-flex justify-content-center b-1 mt-2 mb-2 bg-white img-container">
                         <v-img :src="event.image" contain></v-img>
@@ -210,7 +210,6 @@
                 </v-card-item>
             </v-card>
         </router-link>  
-          <!-- <Card class="cursor-pointer" v-bind="event"></Card> -->
         </v-col>
       </v-row>
     </div>
@@ -234,7 +233,6 @@ import * as yup from 'yup'
 import { useForm, useField } from 'vee-validate'
 import { useApi } from '@/composables/axios'
 import { useSnackbar } from 'vuetify-use-dialog'
-import Card from '@/components/card.vue'
 import { useUserStore } from '@/stores/user'
 const user = useUserStore()
 
@@ -245,7 +243,7 @@ const items=ref([
 {
     title: '首頁',
     disabled: false,
-    href: '/',
+    to: '/',
   },
   {
     title: '活動分享',
@@ -302,11 +300,7 @@ const closeDialog = () => {
   fileAgent.value.deleteFileRecord() 
 }
 
-watch(() => {
-  if(!dialog){
-  resetForm()
-}
-});
+
 const schema = yup.object({
   title: yup
     .string()
@@ -320,7 +314,8 @@ const schema = yup.object({
   category: yup
     .array()
     // .string()
-    .required('活動分類必填'),
+    .required('活動分類必填')
+    .max(4, '最多選擇 4 個項目'),
   organizer: yup
     .string()
     .required('主辦單位必填'),
@@ -476,13 +471,11 @@ const loadEvents = async () => {
   }
 };
 loadEvents();
-
-
 </script>
 <style scoped>
 
 .b-1{
-  border: 1px solid #7a7a7a;
+  border: 1px solid #b3b3b3;
 }
 #create{
   position: fixed;
@@ -528,7 +521,9 @@ loadEvents();
     padding: 12px 10px 12px 10px;
     /* width: 120px; */
 }
-
+::v-deep .v-input__details{
+  padding: 0;
+}
 @media (min-width: 600px) {
   .v-row{
     padding: 0px 8% 0px 8%;

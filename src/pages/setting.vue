@@ -19,10 +19,10 @@
         fixed-tabs
       >
         <v-tab prepend-icon="mdi-account" value="option-1"></v-tab>
-        <v-tab prepend-icon="mdi-lock" value="option-2"></v-tab>
-        <v-tab prepend-icon="mdi-access-point" value="option-3"></v-tab>
+        <v-tab prepend-icon="mdi-map-marker" value="option-2"></v-tab>
+        <v-tab prepend-icon="mdi-note-edit" value="option-3"></v-tab>
         <v-tab prepend-icon="mdi-book-cog" value="option-4"></v-tab>
-        <v-tab prepend-icon="mdi-package-variant-closed-check" value="option-5"></v-tab>
+        <v-tab prepend-icon="mdi-message-alert" value="option-5"></v-tab>
       </v-tabs>
     </div>
   </div>
@@ -37,10 +37,10 @@
         >
           
           <v-tab prepend-icon="mdi-account" value="option-1"></v-tab>
-          <v-tab prepend-icon="mdi-lock" value="option-2"></v-tab>
-          <v-tab prepend-icon="mdi-access-point" value="option-3"></v-tab>
+          <v-tab prepend-icon="mdi-map-marker" value="option-2"></v-tab>
+          <v-tab prepend-icon="mdi-note-edit" value="option-3"></v-tab>
           <v-tab prepend-icon="mdi-book-cog" value="option-4"></v-tab>
-          <v-tab prepend-icon="mdi-package-variant-closed-check" value="option-5"></v-tab>
+          <v-tab prepend-icon="mdi-message-alert" value="option-5"></v-tab>
         </v-tabs>
         <div style="width: 40px;height: 40px;left: 0%;bottom:3%;z-index: 5;" class="position-fixed bg-primary  d-flex justify-center align-center">
           <v-icon v-show="!drawerOpen" @click="toggleDrawer">{{ drawerOpen ? 'mdi-chevron-left' : 'mdi-chevron-right' }}</v-icon>
@@ -62,10 +62,10 @@
           show-arrows
         >
           <v-tab prepend-icon="mdi-account" text="基本資料" value="option-1" height="100" class="text-body-1 ms-1" @click="toggleDrawer(false)"></v-tab>
-          <v-tab prepend-icon="mdi-lock" text="地標管理" value="option-2" height="100" class="text-body-1 ms-1" @click="toggleDrawer(false)"></v-tab>
-          <v-tab prepend-icon="mdi-access-point" text="貼文管理" value="option-3" height="100" class="text-body-1 ms-1" @click="toggleDrawer(false)"></v-tab>
+          <v-tab prepend-icon="mdi-map-marker" text="地標管理" value="option-2" height="100" class="text-body-1 ms-1" @click="toggleDrawer(false)"></v-tab>
+          <v-tab prepend-icon="mdi-note-edit" text="貼文管理" value="option-3" height="100" class="text-body-1 ms-1" @click="toggleDrawer(false)"></v-tab>
           <v-tab prepend-icon="mdi-book-cog" text="活動收藏" value="option-4" height="100" class="text-body-1 ms-1" @click="toggleDrawer(false)"></v-tab>
-          <v-tab prepend-icon="mdi-package-variant-closed-check" text="物資管理" value="option-5" height="100" class="text-body-1 ms-1" @click="toggleDrawer(false)"></v-tab>
+          <v-tab prepend-icon="mdi-message-alert" text="物資管理" value="option-5" height="100" class="text-body-1 ms-1" @click="toggleDrawer(false)"></v-tab>
         </v-tabs>
       </div>
       <div style="width: 40px;height: 40px;bottom: 3%;right: 0;" class="position-absolute me-5 d-flex justify-center align-center">
@@ -108,11 +108,14 @@
                 <v-icon icon="mdi-chevron-right"></v-icon>
               </template>
             </v-breadcrumbs>
-            <v-tabs v-model="subTab" color="yellow-darken-3" class="mt-3">
+            <div class=" group-container mx-auto">
+              <v-tabs v-model="subTab" color="yellow-darken-3" class="mt-3s">
               <v-tab value="find">物資募資</v-tab>
               <v-tab value="share">物資分享</v-tab>
               <v-tab value="event">活動管理</v-tab>
             </v-tabs>
+            </div>
+            
 
             <v-tabs-window v-model="subTab" class="mt-2">
               <v-tabs-window-item value="find">
@@ -161,17 +164,17 @@
             </v-breadcrumbs>
             
           <div class="mx-auto rounded-lg my-5 mark-container" style="border:1.2px solid #000;" v-for="event in events" :key="event._id">
-            <v-card variant="flat" class="rounded-lg pa-4" style="background-color: #f7f2e9;">
+            <v-card variant="flat" class="rounded-lg pa-3 pa-sm-4" style="background-color: #f7f2e9;">
                 <v-row class="align-center" >
-                    <v-col cols="4" sm="3" class="align-self-center align-sm-self-start">
+                    <v-col cols="5" sm="3" class="align-self-center align-sm-self-start">
                       <router-link :to="'/event/'+ event._id" style="text-decoration: none">
                         <v-img :src="event.image" class="mx-auto b-1 rounded-lg mark-image" cover></v-img>
                       </router-link>
                       </v-col>
-                    <v-col cols="8" sm="9" class="align-self-start">
-                      <v-card-title class="font-weight-black">{{ event.title }}</v-card-title>
-                      <v-card-subtitle class="font-weight-bold">{{ event.organizer }}</v-card-subtitle>
-                      <v-card-subtitle class="font-weight-bold mt-2">{{ event.date }}</v-card-subtitle>
+                    <v-col cols="7" sm="9" class="align-self-start pl-0">
+                      <v-card-title class="pl-0 pl-sm-2 font-weight-bold">{{ event.title }}</v-card-title>
+                      <v-card-subtitle class="pl-0 pl-sm-2 font-weight-bold">{{ event.organizer }}</v-card-subtitle>
+                      <v-card-subtitle class="pl-0 pl-sm-2 font-weight-bold mt-2">{{ event.date }}</v-card-subtitle>
                       <!-- <v-card-text style="white-space: pre-line;">{{ event.description }}</v-card-text> -->
                       <div class="text-end h-100 w-100 mt-5">
                         <v-btn
@@ -214,10 +217,35 @@
                 <v-icon icon="mdi-chevron-right"></v-icon>
               </template>
             </v-breadcrumbs>
-          <div class="  mx-auto mb-5 rounded-lg">
+            <div class=" group-container mx-auto">
+              <v-tabs v-model="replayTab" color="yellow-darken-3" class="mt-3s">
+              <v-tab value="findReply">物資募資</v-tab>
+              <v-tab value="shareReply">物資分享</v-tab>
+            </v-tabs>
+            </div>
+            
+
+            <v-tabs-window v-model="replayTab" class="mt-2">
+              <v-tabs-window-item value="findReply">
+                <div class="mx-auto mb-5 rounded-lg">
+                  <FindReplyTable/>
+                </div>
+              </v-tabs-window-item>
+
+              <v-tabs-window-item value="shareReply">
+                <div class="mx-auto mb-5 rounded-lg">
+                  <ShareReplyTable/>
+                </div>
+              </v-tabs-window-item>
+
+            </v-tabs-window>
+          
+          
+          
+            <!-- <div class="  mx-auto mb-5 rounded-lg">
               <ShareReplyTable/>
               <FindReplyTable/>
-            </div>
+            </div> -->
           </v-tabs-window-item>
           
         </v-tabs-window>
@@ -358,6 +386,7 @@ onMounted(() => {
 
 
 const subTab = ref('find')
+const replayTab = ref('findReplay')
 const showTabs = ref(false);
 const smDrawerOpen = ref(false);
 
@@ -392,10 +421,7 @@ const clickTab = () => {
   background-color:#000;
   font-size: 15px;
 }
-/* ::v-deep [data-v-9f35885f] .grid-block-wrapper .grid-block .file-preview {
-  width: 100px;
-  height: 100px;
-} */
+
 ::v-deep .v-data-table__thead{
   background: #D9D9D9
 }
@@ -417,17 +443,11 @@ const clickTab = () => {
 .mark-container{
   width: 100%;
 }
-
-.mark-image{
-  height:150px;
-  width: 135px;
+.group-container{
+  width:100%;
 }
-/* .mark-image{
-  width: 200px;
-  height: 220px;
-} */
+
  .mark-btn{
-  /* width:"120px" ; */
   width:"10px";
   height:"35px";
  }
@@ -444,10 +464,25 @@ const clickTab = () => {
 .v-card-subtitle{
   font-size: 14px;
 }
+.mark-image{
+      width: 100%;
+      min-width: 120px;
+      max-height: 150px;
+      min-height: 150px;
+}
 @media(min-width:600px){
   .mark-container{
     width: 87%;
   }
+  .group-container{
+    width: 95%;
+  }
+  .mark-image{
+      width: 100%;
+      height: 80%;
+      max-height: 185px;
+      min-height: 145px;
+}
 }@media(min-width:750px) and (max-width: 959px) {
   .mark-container{
     width: 80%;
@@ -463,6 +498,9 @@ const clickTab = () => {
   .mark-container{
     width: 75%;
   }
+  .group-container{
+    width: 90%;
+  }
   .v-card-title{
   font-size: 18px;
   }
@@ -474,10 +512,16 @@ const clickTab = () => {
   .mark-container{
     width: 70%;
   }
+  .group-container{
+    width: 87%;
+  }
 }
 @media(min-width:1920px){
   .mark-container{
-    width: 55%;
+    width: 45%;
+  }
+  .group-container{
+    width: 70%;
   }
 }
 </style>

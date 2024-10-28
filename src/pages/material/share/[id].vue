@@ -143,12 +143,12 @@ const items=ref([
 {
   title: '首頁',
   disabled: false,
-  href: '/',
+  to: '/',
 },
 {
   title: '我要分享',
   disabled: false,
-  href: '/material/share/shareMaterial',
+  to: '/material/share/shareMaterial',
 },
 {
   title: '物資詳情',
@@ -268,15 +268,19 @@ try {
 
 // 點擊我要留言按鈕跳到留言板
 function scrollTo(selector) { // 找到想滾動到的元素css選擇器
-const element = document.querySelector(selector);
-if (element) { 
-  // scrollIntoView 方法使該元素滾動到視窗內部
-  // behavior: 'smooth' 使滾動效果平滑過渡，而不是瞬間跳轉
-  element.scrollIntoView({ behavior: 'smooth' });
-  nextTick(() => { // 滾動後再執行
-      textarea.value.focus();
-  });
-}
+    const element = document.querySelector(selector);
+    if (element) { 
+        // scrollIntoView 方法使該元素滾動到視窗內部
+        // behavior: 'smooth' 使滾動效果平滑過渡，而不是瞬間跳轉
+        element.scrollIntoView({ behavior: 'smooth' });
+
+        // 使用 setTimeout 確保滾動效果完成後再聚焦
+        setTimeout(() => { 
+            if (textarea.value && textarea.value.$refs.commentInput) {
+                textarea.value.$refs.commentInput.focus();
+            }
+        }, 500); // 調整延遲時間以符合需求
+    }
 }
 </script>
 

@@ -1,5 +1,5 @@
 <template>
-  <div class="b-1 w-75 mx-auto" >
+  <div class="b-1 mx-auto find-container" >
     <h2 class="bb-1 bg-accent text-center mx-auto py-1 mb-5">捐贈者聯絡資訊</h2>
     <!-- 物資回覆管理 -->
             <v-data-table-server
@@ -10,33 +10,27 @@
                 :headers="tableHeaders"
                 :loading="tableLoading"
                 :items-length="tableItemsLength"
-                
                 @update:items-per-page="tableLoadItems(false)"
                 @update:sort-by="tableLoadItems(false)"
                 @update:page="tableLoadItems(false)"
                 hover
-                class="mb-15 px-8 rounded-lg"
+                class="mx-auto mb-15 px-2 px-md-8 text-body-1 rounded-sm"
               >
-              <template #[`item.image`]="{ item }">
-                <v-col cols="12" md="4" class="mx-auto" style="width: 250px;">
-                  <router-link :to="'/material/find/'+ item._id" style="text-decoration: none">
-                    <v-img :src="item.image" width="250px" max-height="150px" class="my-5"></v-img>
-                  </router-link>
-                </v-col>
+              <template #[`item.image`]="{ item }" >
+                <router-link :to="'/material/find/'+ item._id" style="text-decoration: none">
+                  <v-img :src="item.image"  class="my-5 img"></v-img>
+                </router-link>
               </template>
               <template #[`item.donations`]="{ item }">
-                    <v-col >
-                      <v-card class="mb-2" outlined variant="text" v-for="(donation, index) in item.donations" :key="index" >
-                        <v-card-title>
-                          <v-row no-gutters>
-                            <v-col cols="3" class="text-body-1 text-left">數量: {{ donation.quantity }}</v-col>
-                            <v-col cols="5" class="text-body-1 text-left">服務單位: {{ donation.donator }}</v-col>
-                            <v-col cols="4" class="text-body-1 text-left">聯絡電話: {{ donation.phone }}</v-col>
-                          </v-row>
-                          <v-divider class="100%"></v-divider>
-                        </v-card-title>
-                      </v-card>
-                    </v-col>
+                <v-card class="mb-2" outlined variant="text" v-for="(donation, index) in item.donations" :key="index" >
+                  <v-card-title>
+                    <v-row no-gutters class="flex-column ">
+                      <v-col cols="3" class="form-label text-left my-1">數量: {{ donation.quantity }}</v-col>
+                      <v-col cols="5" class="form-label text-left my-1">服務單位: {{ donation.donator }}</v-col>
+                      <v-col cols="4" class="form-label text-left my-1">聯絡電話: {{ donation.phone }}</v-col>
+                    </v-row>
+                  </v-card-title>
+                </v-card>
             </template>
             </v-data-table-server>
   </div>
@@ -114,5 +108,48 @@ tableLoadItems()
 }
 .bb-1{
   border-bottom: 1px solid #7a7a7a;
+}
+.img{
+  min-width: 115px;
+  max-width: 250px;
+  min-height: 80px;
+  max-height: 140px;
+}
+.find-container{
+  width: 100%;
+}
+.form-label{
+  font-size: 14px;
+  font-weight: bold;
+}
+@media(min-width:600px){
+  .find-container{
+    width: 95%;
+  }
+  .form-label{
+    font-size: 16px;
+    font-weight: bold;
+  }
+}
+@media(min-width:960px){
+  .find-container{
+    width: 90%;
+  }
+}
+@media(min-width:1280px){
+  .find-container{
+    width: 87%;
+  }
+ 
+}
+@media(min-width:1500px){
+  .find-container{
+    width: 85%;
+  }
+}
+@media(min-width:1920px){
+  .find-container{
+    width: 70%;
+  }
 }
 </style>

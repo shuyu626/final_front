@@ -18,7 +18,7 @@
                 <v-card-text class="card-text">活動地點</v-card-text>
                 <v-card-text class="card-text">{{event.address}}</v-card-text>
                 <v-card-text class="card-text">活動類別</v-card-text>
-                <v-card-text class="card-text" v-for="item in event.category" :key="item">{{item}}</v-card-text>
+                <v-card-text class="card-text" >{{Object.values(event.category).join(', ')}}</v-card-text>
                 <v-card-text class="card-text">主辦單位</v-card-text>
                 <v-card-text class="card-text">{{ event.organizer }}</v-card-text>
                 <v-card-text></v-card-text>
@@ -104,12 +104,12 @@ const items=ref([
 {
   title: '首頁',
   disabled: false,
-  href: '/',
+  to: '/',
 },
 {
   title: '活動分享',
   disabled: false,
-  href: '../event/findEvent.vue',
+  to: '/event/findEvent',
 },
 {
   title: '物資詳情',
@@ -154,7 +154,7 @@ try { // 透過'/event/' + route.params.id 來取得特定活動的資料
   // event.value.organizer = data.result.organizer
   // event.value.description = data.result.description
   // event.value.image = data.result.image
-
+  console.log(event.value.category)
   if (user.isLogin) {
     isFavorite.value = await checkIfFavorite(event.value._id)
   }
