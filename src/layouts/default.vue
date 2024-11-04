@@ -1,6 +1,15 @@
 <template>
   <!-- 側邊欄 -->
   <v-navigation-drawer v-if="mobile" v-model="drawer" color="primary" class="b-1">
+    <!-- <v-list-item to="/" lines="two">
+      <div style="width: 28%;display: inline-block;">
+        <v-img src="../assets/logo.png" width="28" class="d-inline-block"></v-img>
+      </div>
+      <div style="width: 62%;display: inline-block;">
+        <v-list-item-title class="d-inline-block">首頁</v-list-item-title>
+      </div>
+    </v-list-item> -->
+    
     <v-list class="pa-0 d-flex flex-column" style="height: 100%;">
       <div class="flex-grow-1">
         <!-- 菜單部分 -->
@@ -75,7 +84,7 @@
 
 
   <!-- 導覽列 -->
-  <v-app-bar color="primary" scroll-behavior="elevate" class="b-1">
+  <v-app-bar color="primary" scroll-behavior="elevate" class="b-1" elevation="3">
     <v-container class="d-flex align-center">
       <v-btn to="/" :active="false">
         <v-img src="../assets/logo.png" width="30" class="d-inline-block" style="vertical-align: cneter;" contain></v-img>
