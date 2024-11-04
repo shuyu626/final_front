@@ -2,169 +2,168 @@
   <div class="b-1 mx-auto share-container">
     <!-- 我的分享管理 -->
     <h2 class="bg-accent text-center mx-auto bb-1 py-1">我要分享</h2>
-            <v-data-table-server
-                v-model:items-per-page="tableItemsPerPage"
-                v-model:sort-by="tableSortBy"
-                v-model:page="tablePage"
-                :items="tableItems"
-                :headers="$vuetify.display.xs ||  $vuetify.display.sm? SmtableHeaders:$vuetify.display.md?MdtableHeaders : tableHeaders"
-                :loading="tableLoading"
-                :items-length="tableItemsLength"
-                :search="tableSearch"
-                @update:items-per-page="tableLoadItems(false)"
-                @update:sort-by="tableLoadItems(false)"
-                @update:page="tableLoadItems(false)"
-                hover
-                class="mx-auto mb-15 px-2 px-md-8 text-body-1 rounded-sm"
-              >
-              <!-- 搜尋欄位 -->
-              <template #top>
-                <search 
-                 class="my-5"
-                  v-model="tableSearch"
-                  @click-append="tableLoadItems(true)"
-                  @keydown.enter="tableLoadItems(true)"
-                  max-width="100%"
-                ></search>
-              </template>
-              <template #[`item.image`]="{ item }">
-              <router-link :to="'/material/share/'+ item._id" style="text-decoration: none">
-                <v-img :src="item.image" class="table-image my-2" ></v-img>
-              </router-link>
-              </template>
-            <template #[`item.name`]="{item }">
-                <td class="table-name text-left">{{ item.name }}</td>
-            </template>
-            <template #[`item.quantity`]="{item }">
-                <td class="table-quantity text-center">{{ item.quantity }}</td>
-            </template>
-            <template #[`item.category`]="{item }">
-                <td class="table-category text-center">{{ item.category }}</td>
-            </template>
-            <template #[`item.description`]="{ item }">
-              <td class="py-2 table-description">{{ item.description }}</td>
-            </template>
-              <template #[`item.action`]="{ item }">
-                <td>{{ item.action }}
-                  <v-btn icon="mdi-pencil" variant="text" color="blue-grey-darken-1" @click="openDialog(item)"></v-btn>
-                  <v-btn icon="mdi-delete" variant="text" color="red-darken-4" @click="confirmDelete(item)"></v-btn>
-                </td>
-              </template>
-            </v-data-table-server>
-             <!-- 確認刪除對話框 -->
-            <v-dialog v-model="deleteDialog" max-width="400">
-              <v-card>
-                <v-card-title class="headline">確認刪除</v-card-title>
-                <v-card-text>你確定要刪除這個項目嗎？</v-card-text>
-                <v-card-actions>
-                  <v-spacer></v-spacer>
-                  <v-btn color="grey" text @click="cancelDelete">取消</v-btn>
-                  <v-btn color="red" text @click="executeDelete">刪除</v-btn>
-                </v-card-actions>
-              </v-card>
-            </v-dialog>
+    <v-data-table-server
+      v-model:items-per-page="tableItemsPerPage"
+      v-model:sort-by="tableSortBy"
+      v-model:page="tablePage"
+      :items="tableItems"
+      :headers="$vuetify.display.xs ||  $vuetify.display.sm? SmtableHeaders:$vuetify.display.md?MdtableHeaders : tableHeaders"
+      :loading="tableLoading"
+      :items-length="tableItemsLength"
+      :search="tableSearch"
+      @update:items-per-page="tableLoadItems(false)"
+      @update:sort-by="tableLoadItems(false)"
+      @update:page="tableLoadItems(false)"
+      hover
+      class="mx-auto mb-15 px-2 px-md-8 text-body-1 rounded-sm"
+    >
+    <!-- 搜尋欄位 -->
+    <template #top>
+      <search 
+        class="my-5"
+        v-model="tableSearch"
+        @click-append="tableLoadItems(true)"
+        @keydown.enter="tableLoadItems(true)"
+        max-width="100%"
+      ></search>
+    </template>
+    <template #[`item.image`]="{ item }">
+      <router-link :to="'/material/share/'+ item._id" style="text-decoration: none">
+        <v-img :src="item.image" class="table-image my-2" ></v-img>
+      </router-link>
+    </template>
+    <template #[`item.name`]="{item }">
+      <td class="table-name text-left">{{ item.name }}</td>
+    </template>
+    <template #[`item.quantity`]="{item }">
+      <td class="table-quantity text-center">{{ item.quantity }}</td>
+    </template>
+    <template #[`item.category`]="{item }">
+      <td class="table-category text-center">{{ item.category }}</td>
+    </template>
+    <template #[`item.description`]="{ item }">
+      <td class="py-2 table-description">{{ item.description }}</td>
+    </template>
+      <template #[`item.action`]="{ item }">
+        <td>{{ item.action }}
+          <v-btn icon="mdi-pencil" variant="text" color="blue-grey-darken-1" @click="openDialog(item)"></v-btn>
+          <v-btn icon="mdi-delete" variant="text" color="red-darken-4" @click="confirmDelete(item)"></v-btn>
+        </td>
+      </template>
+    </v-data-table-server>
+    <!-- 確認刪除對話框 -->
+    <v-dialog v-model="deleteDialog" max-width="400">
+      <v-card>
+        <v-card-title class="headline">確認刪除</v-card-title>
+        <v-card-text>你確定要刪除這個項目嗎？</v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn color="grey" text @click="cancelDelete">取消</v-btn>
+          <v-btn color="red" text @click="executeDelete">刪除</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+  </div>
+  <v-dialog max-width="600" v-model="dialog.open">
+    <v-card>
+      <v-container>
+        <v-card-title class="font-weight-black text-center text-h4">分享物資</v-card-title>   
+        <v-card-text>
+          <v-form @submit.prevent="submit" :disabled="isSubmitting">
+          <v-row>
+            <v-col >
+              <!-- plugins > index.js 要先引入套件 -->
+              <vue-file-agent
+                v-model="fileRecords"
+                v-model:raw-model-value="rawFileRecords"
+                accept="image/jpeg,image/png"
+                deletable
+                max-size="1MB"
+                help-text="選擇檔案或拖曳到這裡"
+                :error-text="{ type: '檔案格式不支援', size: '檔案大小不能超過 1MB' }"
+                ref="fileAgent"
+              ></vue-file-agent>
+            </v-col>
+          </v-row>
+          <v-row>
+            <!-- 物資名稱 -->
+            <v-col cols="4" md="3" class="my-auto text-left ps-6">
+              <label class="form-label">物資名稱</label>
+            </v-col>
+            <v-col cols="8" md="9">
+              <inputText
+              v-model="name.value.value"
+              :error-messages="name.errorMessage.value"
+              :density="$vuetify.display.xs ? 'compact' : 'comfortable'"
+              />
+            </v-col>
+            <!-- 數量 -->
+            <v-col cols="4" md="3" class="my-auto text-left ps-6">
+              <label class="form-label">數量</label>
+            </v-col>
+            <v-col cols="8" md="9">
+              <inputText
+              v-model=" quantity.value.value"
+              :error-messages=" quantity.errorMessage.value"
+              :density="$vuetify.display.xs ? 'compact' : 'comfortable'"
+              />
+            </v-col>
+            <!-- 物資類別 -->
+            <v-col cols="4" md="3" class="my-auto text-left ps-6">
+              <label class="form-label">物資類別</label>
+            </v-col>
+            <v-col cols="8" md="9">
+              <v-select
+                v-model=" category.value.value"
+                :error-messages=" category.errorMessage.value"
+                :density="$vuetify.display.xs ? 'compact' : 'comfortable'"
+                label="選擇" 
+                variant="outlined" 
+                dense
+                :items="categories"
+                hide-details
+              ></v-select>
+            </v-col>
+            <!-- 需求介紹 -->
+            <v-col cols="4" md="3" class="my-auto text-left ps-6">
+              <label class="form-label" >物資概況</label>
+            </v-col>
+            <v-col cols="8" md="9">
+              <inputText
+              v-model=" description.value.value"
+              :error-messages=" description.errorMessage.value"
+              :density="$vuetify.display.xs ? 'compact' : 'comfortable'"
+              />
+            </v-col>
+            <!-- 單位名稱 -->
+            <v-col cols="4" md="3" class="my-auto text-left ps-6">
+              <label class="form-label">單位名稱</label>
+            </v-col>
+            <v-col cols="8" md="9">
+              <inputText
+              v-model="organizer.value.value"
+              :error-messages="organizer.errorMessage.value"
+              :density="$vuetify.display.xs ? 'compact' : 'comfortable'"
+              />
+            </v-col>
+          </v-row>
+          <v-card-actions>
+            <div class="mx-auto">
+              <v-btn variant="text" class="rounded-xl b-1 bg-accent" density="comfortable" type="submit" :loading="isSubmitting">送出</v-btn>
+              <v-btn
+              text="取消"
+              variant="text"
+              class="rounded-xl b-1 bg-info"
+              density="comfortable"
+              @click="closeDialog()"
+              ></v-btn>
           </div>
-            <v-dialog max-width="600" v-model="dialog.open">
-                <v-card>
-                    <v-container>
-                        <v-card-title class="font-weight-black text-center text-h4">{{cardTitle}}</v-card-title>   
-                        <v-card-text>
-                            <v-form @submit.prevent="submit" :disabled="isSubmitting">
-                                <v-row>
-                                    <v-col >
-                                        <!-- plugins > index.js 要先引入套件 -->
-                                        <vue-file-agent
-                                            v-model="fileRecords"
-                                            v-model:raw-model-value="rawFileRecords"
-                                            accept="image/jpeg,image/png"
-                                            deletable
-                                            max-size="1MB"
-                                            help-text="選擇檔案或拖曳到這裡"
-                                            :error-text="{ type: '檔案格式不支援', size: '檔案大小不能超過 1MB' }"
-                                            ref="fileAgent"
-                                        ></vue-file-agent>
-                                    </v-col>
-                                </v-row>
-                                <v-row>
-                                    <!-- 物資名稱 -->
-                                    <v-col cols="4" md="3" class="my-auto text-left ps-6">
-                                    <label class="form-label">物資名稱</label>
-                                    </v-col>
-                                    <v-col cols="8" md="9">
-                                        <inputText
-                                        v-model="name.value.value"
-                                        :error-messages="name.errorMessage.value"
-                                        :density="$vuetify.display.xs ? 'compact' : 'comfortable'"
-                                        />
-                                    </v-col>
-                                    <!-- 需求量 -->
-                                    <v-col cols="4" md="3" class="my-auto text-left ps-6">
-                                    <label class="form-label">{{numberTitle}}</label>
-                                    </v-col>
-                                    <v-col cols="8" md="9">
-                                        <inputText
-                                        v-model=" quantity.value.value"
-                                        :error-messages=" quantity.errorMessage.value"
-                                        :density="$vuetify.display.xs ? 'compact' : 'comfortable'"
-                                        />
-                                    </v-col>
-                                    <!-- 物資類別 -->
-                                    <v-col cols="4" md="3" class="my-auto text-left ps-6">
-                                    <label class="form-label">物資類別</label>
-                                    </v-col>
-                                    <v-col cols="8" md="9">
-                                        <v-select
-                                            v-model=" category.value.value"
-                                            :error-messages=" category.errorMessage.value"
-                                        :density="$vuetify.display.xs ? 'compact' : 'comfortable'"
-                                            label="選擇" 
-                                            variant="outlined" 
-                                            dense
-                                            :items="categories"
-                                            hide-details
-                                        ></v-select>
-                                    </v-col>
-                                    <!-- 需求介紹 -->
-                                    <v-col cols="4" md="3" class="my-auto text-left ps-6">
-                                        <label class="form-label" >{{descriptionTitle}}</label>
-                                    </v-col>
-                                    <v-col cols="8" md="9">
-                                        <inputText
-                                        v-model=" description.value.value"
-                                        :error-messages=" description.errorMessage.value"
-                                        :density="$vuetify.display.xs ? 'compact' : 'comfortable'"
-                                        />
-                                    </v-col>
-                                    <!-- 單位名稱 -->
-                                    <v-col cols="4" md="3" class="my-auto text-left ps-6">
-                                    <label class="form-label">單位名稱</label>
-                                    </v-col>
-                                    <v-col cols="8" md="9">
-                                        <inputText
-                                        v-model="organizer.value.value"
-                                        :error-messages="organizer.errorMessage.value"
-                                        :density="$vuetify.display.xs ? 'compact' : 'comfortable'"
-                                        />
-                                    </v-col>
-                                </v-row>
-                                <v-card-actions>
-                                  <div class="mx-auto">
-                                    <v-btn variant="text" class="rounded-xl b-1 bg-accent" density="comfortable" type="submit" :loading="isSubmitting">送出</v-btn>
-                                    <v-btn
-                                    text="取消"
-                                    variant="text"
-                                    class="rounded-xl b-1 bg-info"
-                                    density="comfortable"
-                                    @click="closeDialog()"
-                                    ></v-btn>
-                                </div>
-                            </v-card-actions>
-                            </v-form>
-                        </v-card-text>
-                    </v-container>
-                </v-card>
-            </v-dialog>
-
+        </v-card-actions>
+        </v-form>
+      </v-card-text>
+    </v-container>
+  </v-card>
+</v-dialog>
 </template>
 <script setup>
 import { ref } from 'vue'
@@ -172,36 +171,14 @@ import { useSnackbar } from 'vuetify-use-dialog'
 import * as yup from 'yup'
 import { useForm, useField } from 'vee-validate'
 import { useApi } from '@/composables/axios'
-import EventTable from '@/components/table/eventTable.vue'
-const { api,apiAuth } = useApi()
+
+const { apiAuth } = useApi()
 const createSnackbar = useSnackbar()
-
-
-const props = defineProps({
-    cardTitle: {
-        type: String,
-        default: '發布需求'
-    },
-    numberTitle:{
-        type:String,
-        default:'需求量'
-    },
-    descriptionTitle:{
-        type:String,
-        default:'需求介紹'
-    },
-    type: { // **新增 type prop**
-    type: String,
-    default: 'share'
-  }
-});
 
 
 const fileAgent = ref(null)
 const fileRecords = ref([]) // 綁定處理後的文件記錄
 const rawFileRecords = ref([]) // 綁定原始文件記錄
-
-
 
 // 我的分享管理
 const tableItemsPerPage = ref(8)
@@ -249,7 +226,6 @@ const tableLoadItems = async (reset) => {
         search: tableSearch.value
       }
     })
-    console.log(data)
     tableItems.value.splice(0, tableItems.value.length, ...data.result.data)
     tableItemsLength.value = data.result.total
   } catch (error) {
@@ -350,11 +326,10 @@ const submit = handleSubmit(async (values) => {
     fd.append('category', values.category)
     fd.append('description', values.description)
     fd.append('organizer', values.organizer)
-    fd.append('type',  props.type)
+    fd.append('type', 'share')
     if (fileRecords.value.length > 0) {
       fd.append('image', fileRecords.value[0].file)
     }
-    console.log(fd)
     await apiAuth.patch('/material/' + dialog.value.id, fd) 
     createSnackbar({
       text: '新增成功' ,

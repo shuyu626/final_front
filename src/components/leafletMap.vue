@@ -1,5 +1,5 @@
 <template>
-  <v-container>
+  <v-container class="pb-0">
     <div id="map" ref="map"></div>
   </v-container>
 </template>
@@ -16,8 +16,8 @@ import '@fortawesome/fontawesome-free/css/all.min.css';
 
 const createSnackbar = useSnackbar()
 const initialMap = ref(null);
-const markers = ref([]);
-const marks = ref([]);
+const markers = ref([]); // 管理和儲存地圖上的標記
+const marks = ref([]);// 從後端獲取的地標資料
 
 const { api } = useApi()
 
@@ -38,31 +38,27 @@ const props = defineProps({
   selectedSubcategories: {
     type: Array,
     default: () => []
-  },
-  selectedclient: {
-    type: String,
-    default: null
   }
 });
-// 地圖初始化和地標加載
+// 地圖初始化
 const initializeMap = () => {
   initialMap.value = L.map('map').setView([25.049183268037577, 121.51342818384893], 12);
-
+  
   if (initialMap.value) {
-    
+    // 地圖圖層添加
     L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
       maxZoom: 19,
       attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
     }).addTo(initialMap.value);
 
     // 確保移除舊的定位控件
-    initialMap.value.eachLayer(layer => {
-      if (layer instanceof L.Control.Locate) {
-        initialMap.value.removeControl(layer);
+    initialMap.value.eachLayer(layer => { // eachLayer 遍歷地圖上的所有圖層
+      if (layer instanceof L.Control.Locate) { // L.Control.Locate 用來顯示定位功能的控制元件
+        initialMap.value.removeControl(layer); // 如果找到 L.Control.Locate 的圖層，則使用 removeControl 方法將其從地圖中移除
       }
     });
 
-
+    // 添加定位功能，允許用戶獲取其當前位置
     L.control.locate({
       position: 'topleft',
       drawCircle: true, // 以位置為中心一定距離的圓
@@ -79,7 +75,7 @@ const initializeMap = () => {
       icon: 'fa fa-solid fa-crosshairs', // 設置定位標記的icon
       onLocationError: function (err) {
         console.error(err.message);
-        createSnackbar({
+        createSnackbar({ // 當定位失敗時，顯示錯誤訊息
           text: err.message,
           snackbarProps: {
             color: 'red',
@@ -92,24 +88,6 @@ const initializeMap = () => {
   }
 };
  
-
-const loadMapData = async () => {
-  try {
-    const { data } = await api.get('/landmark');
-    console.log(data)
-    marks.value = data.result.data;
-    updateMarkers();
-    console.log(marks.value)
-  } catch (error) {
-    console.error('Error fetching data:', error);
-    createSnackbar({
-      text: error?.response?.data?.message || '發生錯誤',
-      snackbarProps: {
-        color: 'red',
-      },
-    });
-  }
-};
 
 
 const categoryIcons = {
@@ -164,44 +142,56 @@ const categoryIcons = {
   }),
   '其他': L.icon({
     iconUrl: 'https://cdn-icons-png.flaticon.com/512/5672/5672993.png',
-    // iconUrl: 'https://cdn-icons-png.flaticon.com/512/3010/3010860.png',
-    // https://cdn-icons-png.flaticon.com/512/2684/2684763.png
     iconSize: [32, 32],
     iconAnchor: [16, 32],
     popupAnchor: [0, -32]
   })
 };
 
-
+// 取得後端地標資訊
+const loadMapData = async () => {
+  try {
+    const { data } = await api.get('/landmark');
+    marks.value = data.result.data;
+    updateMarkers();
+  } catch (error) {
+    console.error('Error fetching data:', error);
+    createSnackbar({
+      text: error?.response?.data?.message || '發生錯誤',
+      snackbarProps: {
+        color: 'red',
+      },
+    });
+  }
+};
 
 // 更新標記 (包括篩選功能)
 const updateMarkers = () => {
-  if (!initialMap.value) return;
+  if (!initialMap.value) return; // 如果地圖尚未初始化則不進行後續操作
 
-  // 清除现有的标记
+  // 清除現有的標記 : 遍歷 markers 陣列中的所有標記，並從地圖上移除
   markers.value.forEach(marker => initialMap.value.removeLayer(marker));
-  markers.value = [];
+  markers.value = []; // 將 markers 陣列重置為空，以便為新標記做準備
 
-  // 过滤数据
+  // 根據篩選條件進行過濾
   const filteredMarks = marks.value.filter(item => {
-    // 根据筛选条件进行过滤
-    const matchesCity = !props.selectedCity || item.address.includes(props.selectedCity);
-    const matchesArea = !props.selectedArea || item.address.includes(props.selectedArea);
-    const matchsQuery = !props.searchQuery || item.name.toLowerCase().includes(props.searchQuery.toLowerCase()) 
-    const matchesSubcategory = props.selectedSubcategories.length === 0 ||
+    const matchesCity = !props.selectedCity || item.address.includes(props.selectedCity); // 檢查地址是否包含所選的城市
+    const matchesArea = !props.selectedArea || item.address.includes(props.selectedArea); // 檢查地址是否包含所選的區域
+    const matchsQuery = !props.searchQuery || item.name.toLowerCase().includes(props.searchQuery.toLowerCase()) // 檢查名稱是否符合搜尋字串
+    const matchesSubcategory = props.selectedSubcategories.length === 0 || // 檢查項目的類別是否符合所選的子類別
       item.categories.some(subcat => props.selectedSubcategories.includes(subcat));
-    
     return matchesCity && matchesArea && matchesSubcategory && matchsQuery
   });
 
-  // 遍历过滤后的数据并添加标记
+  // 過濾後的數據添加標記到地圖
   filteredMarks.forEach(item => {
-    const lat = parseFloat(item.lat);
+    const lat = parseFloat(item.lat); // parseFloat 用於將字符串解析為浮點數
     const lng = parseFloat(item.lng);
-    const cl = item.cl; // 取出类别
-    const icon = categoryIcons[cl] || categoryIcons['綜合']; // 默认图标为 '綜合'
+    const cl = item.cl; // 取出類別
+    const icon = categoryIcons[cl] || categoryIcons['綜合']; // 預設圖標
 
-    if (isFinite(lat) && isFinite(lng)) {
+    if (isFinite(lat) && isFinite(lng)) { // isFinite 檢查一個值是否為有限數字
+      // 添加標記
       const marker = L.marker([lat, lng], { icon })
         .addTo(initialMap.value)
         .bindPopup(`<h2 style="margin:5px 0 5px 0;text-decoration: underline;color:#1b3f63;">${item.name}</h2>
@@ -216,8 +206,8 @@ const updateMarkers = () => {
     }
   });
 };
-// 監聽搜尋字串變化
-watch(() => [props.searchQuery, props.selectedCity, props.selectedArea, props.selectedSubcategories, props.selectedclient], updateMarkers);
+// 監聽過濾的變化重新 updateMarkers 
+watch(() => [props.searchQuery, props.selectedCity, props.selectedArea, props.selectedSubcategories], updateMarkers);
 
 onMounted(async () => {
   initializeMap();
@@ -235,6 +225,15 @@ onMounted(async () => {
     height: 100vh;
     border: 1px solid #000;
   }
+::v-deep .leaflet-popup {
+  background-color: white;
+  border: 1px solid #000; /* 邊框顏色 */
+  border-radius: 5px; /* 邊框圓角 */
+}
+
+::v-deep .leaflet-popup-content{
+  color:rgb(85, 85, 85);
+}
 @media(min-width:960px){
   #map {
     min-width: 450px;
@@ -257,17 +256,6 @@ onMounted(async () => {
     transform: translate(-80%,-50%);
   }
 }
-::v-deep .leaflet-popup {
-  background-color: white;
-  border: 1px solid #000; /* 邊框顏色 */
-  border-radius: 5px; /* 邊框圓角 */
-}
-
-::v-deep .leaflet-popup-content{
-  color:rgb(85, 85, 85);
-}
-
-
 </style>
 
 

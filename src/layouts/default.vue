@@ -16,7 +16,8 @@
               <template v-for="(item, i) in menu.items" :key="i">
                 <v-list-item
                   v-if="item.show"
-                  :to="item.to"
+                  :to="item.requiresLogin && !user.isLogin ? undefined : item.to"
+                  @click="item.requiresLogin && !user.isLogin ? handleLoginClick() : handleItemClick(item)"
                   link
                   class="bg-teal-lighten-5 ma-2"
                   >
@@ -50,25 +51,25 @@
   </v-navigation-drawer>
 
   <v-dialog v-model="dialogOpen" persistent width="600">
-      <!-- <template v-slot:extension> -->
-        <v-tabs
-        v-model="tabs"
-        grow
-        class="bg-secondary b-1"
-        >
-          <v-tab
-          :value="1">
-          <p class="text-h6">註冊</p>
-          </v-tab>
-          <v-tab
-          :value="2">
-          <p class="text-h6">登入</p>
-          </v-tab>
-        </v-tabs>
-      <v-tabs-window v-model="tabs">
-        <RegisterForm :closeDialog="closeDialog" @notify="showSnackbar"/>
-        <LoginForm :closeDialog="closeDialog" @notify="showSnackbar"/>
-      </v-tabs-window>
+    <!-- <template v-slot:extension> -->
+    <v-tabs
+    v-model="tabs"
+    grow
+    class="bg-secondary b-1"
+    >
+      <v-tab
+      :value="1">
+      <p class="text-h6">註冊</p>
+      </v-tab>
+      <v-tab
+      :value="2">
+      <p class="text-h6">登入</p>
+      </v-tab>
+    </v-tabs>
+    <v-tabs-window v-model="tabs">
+      <RegisterForm :closeDialog="closeDialog" @notify="showSnackbar"/>
+      <LoginForm :closeDialog="closeDialog" @notify="showSnackbar"/>
+    </v-tabs-window>
   </v-dialog>
 
 
@@ -97,7 +98,8 @@
             <template v-for="(item, i) in menu.items" :key="i">
               <v-list-item
                 v-if="item.show"  
-                :to="item.to"
+                :to="item.requiresLogin && !user.isLogin ? undefined : item.to"
+                  @click="item.requiresLogin && !user.isLogin ? handleLoginClick() : handleItemClick(item)"
                 link
               >
                 <v-list-item-title>{{ item.text }}</v-list-item-title>
@@ -132,49 +134,47 @@
 <script setup>
 import { ref, computed } from 'vue'
 import { useDisplay } from 'vuetify'
-const { mobile } = useDisplay()
-const router = useRouter();
-
 import { useUserStore } from '@/stores/user'
 import { useSnackbar } from 'vuetify-use-dialog'
+import emitter from '@/mitt';
+const { mobile } = useDisplay()
+const router = useRouter();
 const createSnackbar = useSnackbar()
 const drawer = ref(false)
 const dialogOpen = ref(false)
 const tabs = ref(1)
-
 const user = useUserStore()
+
 
 const menus = computed(() => {
   return [
     {
-      title: "資源地圖", icon: 'mdi-map-search', show:user.isLogin,
+      title: "資源地圖", icon: 'mdi-map-search', show:true,
       items: [
-        { to: "/", text: "資源查詢", show:user.isLogin },
-        { to: "/map/createMark", text: "新增資源", show: user.isLogin},
+        { to: "/", text: "資源查詢", show:true , requiresLogin: false  },
+        { to: "/map/createMark", text: "新增資源", show:true, requiresLogin: true},
       ],
     },
     {
-      title: "物資分享", icon: 'mdi-package-variant' , show: user.isLogin,
+      title: "物資分享", icon: 'mdi-package-variant' , show:true,
       items: [
-        { to: "/material/find/findMaterial", text: "我要募資" , show:user.isLogin || user.isAdmin},
-        { to: "/material/share/shareMaterial", text: "我要分享" , show:user.isLogin || user.isAdmin},
+        { to: "/material/find/findMaterial", text: "我要募資" , show:true || user.isAdmin, requiresLogin: true},
+        { to: "/material/share/shareMaterial", text: "我要分享" , show:true || user.isAdmin, requiresLogin: true},
       ],
     },
   ];
 });
 
 
+const navItems= computed(() => {
+  return[
+  { to: '/event/findEvent', text: '活動分享', icon: 'mdi-calendar', show:true},
+  { to: '/setting', text: '會員中心', icon: 'mdi-cog', show:user.isLogin },
+  { to:'',text:'註冊/登入',icon:'mdi-account-plus', show:!user.isLogin},
+  { to:'/admin',text:'管理者',icon:'mdi-face-man', show:user.isLogin && user.isAdmin}
+  ]
+})
 
-  const navItems= computed(() => {
-    return[
-    { to: '/', text: '資源地圖', icon: 'mdi-map-search', show:!user.isLogin },
-    { to: '/event/findEvent', text: '活動分享', icon: 'mdi-calendar', show:true},
-    { to: '/setting', text: '會員中心', icon: 'mdi-cog', show:user.isLogin },
-    { to:'',text:'註冊/登入',icon:'mdi-account-plus', show:!user.isLogin},
-    { to:'/admin',text:'管理者',icon:'mdi-face-man', show:user.isLogin && user.isAdmin}
-    ]
-  })
-  
   const handleItemClick = (item) => {
   if (item.text === '註冊/登入') {
     dialogOpen.value = true
@@ -184,7 +184,12 @@ const menus = computed(() => {
 const closeDialog = () => {
   dialogOpen.value = false
 }
-
+// 監聽登入請求事件
+  onMounted(() => {
+  emitter.on('open-login-dialog', () => {
+    dialogOpen.value = true;
+  });
+})
 
 const showSnackbar = (message, color) => {
   createSnackbar({
@@ -207,11 +212,19 @@ const logout = async () => {
   router.push('/');
 }
 
+const handleLoginClick = () => {
+  createSnackbar({
+    text: '使用此頁面需先登入',
+    snackbarProps: {
+      color: 'red',
+    },
+  });
+  emitter.emit('open-login-dialog'); // 開啟登入對話框
+};
 </script>
 <style scoped>
-
 .b-1{
-  border: 1px solid #7a7a7a;
+  border: 1px solid #838383;
 }
 .v-text-field{
   margin: 8px 0 8px 0;
@@ -221,6 +234,6 @@ const logout = async () => {
   
 }
 .v-main {
-  flex: 1; /* 使主要內容區域占據剩餘空間 */
+  flex: 1; 
 }
 </style>

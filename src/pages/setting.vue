@@ -4,12 +4,9 @@
     style=" z-index: 5;" 
     class="position-fixed bg-primary d-flex justify-center align-center"
   >
-
-    <!-- <v-icon v-show="!drawerOpen" @click="smToggleDrawer">{{ smDrawerOpen  ='mdi-chevron-right' }}</v-icon> -->
-    
     <div  
-        class="position-fixed bg-primary tabs-show" 
-        style="width:94%; height: 40px; z-index: 5;border-radius: 10px;left: 50%; bottom: 0.8%; transform: translateX(-50%);">
+      class="position-fixed bg-primary tabs-show" 
+      style="width:94%; height: 40px; z-index: 5;border-radius: 10px;left: 50%; bottom: 0.8%; transform: translateX(-50%);">
       <v-tabs
         v-model="tab"
         color="teal-darken-4"
@@ -27,26 +24,25 @@
     </div>
   </div>
   <div v-else="$vuetify.display.sm " class="position-fixed bg-primary" style="width: 40px;height: 290px;left: 0%;bottom:2%;z-index: 5;">
-        <v-tabs
-          v-model="tab"
-          color="teal-darken-4"
-          direction="vertical"
-          show-arrows
-          style="width: 40px;"
-          fixed-tabs
-        >
-          
-          <v-tab prepend-icon="mdi-account" value="option-1"></v-tab>
-          <v-tab prepend-icon="mdi-map-marker" value="option-2"></v-tab>
-          <v-tab prepend-icon="mdi-note-edit" value="option-3"></v-tab>
-          <v-tab prepend-icon="mdi-book-cog" value="option-4"></v-tab>
-          <v-tab prepend-icon="mdi-message-alert" value="option-5"></v-tab>
-        </v-tabs>
-        <div style="width: 40px;height: 40px;left: 0%;bottom:3%;z-index: 5;" class="position-fixed bg-primary  d-flex justify-center align-center">
-          <v-icon v-show="!drawerOpen" @click="toggleDrawer">{{ drawerOpen ? 'mdi-chevron-left' : 'mdi-chevron-right' }}</v-icon>
-      </div>
+    <v-tabs
+      v-model="tab"
+      color="teal-darken-4"
+      direction="vertical"
+      show-arrows
+      style="width: 40px;"
+      fixed-tabs
+    >
+      <v-tab prepend-icon="mdi-account" value="option-1"></v-tab>
+      <v-tab prepend-icon="mdi-map-marker" value="option-2"></v-tab>
+      <v-tab prepend-icon="mdi-note-edit" value="option-3"></v-tab>
+      <v-tab prepend-icon="mdi-book-cog" value="option-4"></v-tab>
+      <v-tab prepend-icon="mdi-message-alert" value="option-5"></v-tab>
+    </v-tabs>
+    <div style="width: 40px;height: 40px;left: 0%;bottom:3%;z-index: 5;" class="position-fixed bg-primary  d-flex justify-center align-center">
+      <v-icon v-show="!drawerOpen" @click="toggleDrawer">{{ drawerOpen ? 'mdi-chevron-left' : 'mdi-chevron-right' }}</v-icon>
     </div>
-    <div>
+  </div>
+  <div>
     
     <!-- 側邊欄 -->
     <v-navigation-drawer 
@@ -69,17 +65,16 @@
         </v-tabs>
       </div>
       <div style="width: 40px;height: 40px;bottom: 3%;right: 0;" class="position-absolute me-5 d-flex justify-center align-center">
-          <!-- 切換側邊欄的按鈕 -->
-          <v-icon @click="toggleDrawer">{{ drawerOpen ? 'mdi-chevron-left' : 'mdi-chevron-right'  }}</v-icon>
+        <!-- 切換側邊欄的按鈕 -->
+        <v-icon @click="toggleDrawer">{{ drawerOpen ? 'mdi-chevron-left' : 'mdi-chevron-right'  }}</v-icon>
       </div>
-      
     </v-navigation-drawer>
   </div>
   <v-card class="h-100">
     <div class="d-flex flex-row h-100">
       <v-container>
         <v-tabs-window v-model="tab" class="mt-10">
-<!-- 01 基本資料管理 -->
+          <!-- 01 基本資料管理 -->
           <v-tabs-window-item value="option-1">
             <AccountTable/>
           </v-tabs-window-item>
@@ -87,7 +82,7 @@
 
 
 
-<!-- 02 地標管理 -->
+          <!-- 02 地標管理 -->
           <v-tabs-window-item value="option-2" >
             <!-- 麵包屑 - 顯示目前頁面位置 -->
             <v-breadcrumbs v-if="!mobile" :items="mark">
@@ -100,61 +95,49 @@
 
 
 
-<!-- 03 貼文管理 -->
+          <!-- 03 貼文管理 -->
           <v-tabs-window-item value="option-3">
           <!-- 麵包屑 - 顯示目前頁面位置 -->
           <v-breadcrumbs v-if="!mobile" :items="post">
-              <template v-slot:divider>
-                <v-icon icon="mdi-chevron-right"></v-icon>
-              </template>
-            </v-breadcrumbs>
-            <div class=" group-container mx-auto">
-              <v-tabs v-model="subTab" color="yellow-darken-3" class="mt-3s">
-              <v-tab value="find">物資募資</v-tab>
-              <v-tab value="share">物資分享</v-tab>
-              <v-tab value="event">活動管理</v-tab>
-            </v-tabs>
-            </div>
+            <template v-slot:divider>
+              <v-icon icon="mdi-chevron-right"></v-icon>
+            </template>
+          </v-breadcrumbs>
+          <div class=" group-container mx-auto">
+            <v-tabs v-model="subTab" color="yellow-darken-3" class="mt-3s">
+            <v-tab value="find">物資募資</v-tab>
+            <v-tab value="share">物資分享</v-tab>
+            <v-tab value="event">活動管理</v-tab>
+          </v-tabs>
+          </div>
             
 
-            <v-tabs-window v-model="subTab" class="mt-2">
-              <v-tabs-window-item value="find">
-                <div class="mx-auto mb-5 rounded-lg">
-                  <FindTable/>
-                </div>
-              </v-tabs-window-item>
+          <v-tabs-window v-model="subTab" class="mt-2">
+            <v-tabs-window-item value="find">
+              <div class="mx-auto mb-5 rounded-lg">
+                <FindTable/>
+              </div>
+            </v-tabs-window-item>
 
-              <v-tabs-window-item value="share">
-                <div class="mx-auto mb-5 rounded-lg">
-                  <ShareTable/>
-                </div>
-              </v-tabs-window-item>
+            <v-tabs-window-item value="share">
+              <div class="mx-auto mb-5 rounded-lg">
+                <ShareTable/>
+              </div>
+            </v-tabs-window-item>
 
-              <v-tabs-window-item value="event">
-                <div class="mx-auto mb-5 rounded-lg">
-                  <EventTable/>
-                </div>
-              </v-tabs-window-item>
-            </v-tabs-window>
-          </v-tabs-window-item>
-           <!-- 物資募資
-           <div class="  mx-auto mb-5 rounded-lg">
-              <FindTable/>
-            </div>
-            物資分享
-            <div class="  mx-auto mb-5 rounded-lg">
-            <ShareTable/>
-          </div>
-            活動管理
-            <div class="  mx-auto mb-5 rounded-lg">
-            <EventTable/>
-          </div>
-          </v-tabs-window-item> -->
+            <v-tabs-window-item value="event">
+              <div class="mx-auto mb-5 rounded-lg">
+                <EventTable/>
+              </div>
+            </v-tabs-window-item>
+          </v-tabs-window>
+        </v-tabs-window-item>
+
           
 
 
 
-          <!-- 活動收藏管理 -->
+          <!-- 04 活動收藏管理 -->
           <v-tabs-window-item value="option-4">
             <!-- 麵包屑 - 顯示目前頁面位置 -->
             <v-breadcrumbs v-if="!mobile" :items="event">
@@ -209,7 +192,7 @@
           </v-tabs-window-item>
 
 
-          <!-- 讀取物資回覆 -->
+          <!-- 05 讀取物資回覆 -->
           <v-tabs-window-item value="option-5">
             <!-- 麵包屑 - 顯示目前頁面位置 -->
             <v-breadcrumbs v-if="!mobile" :items="material">
@@ -239,15 +222,7 @@
               </v-tabs-window-item>
 
             </v-tabs-window>
-          
-          
-          
-            <!-- <div class="  mx-auto mb-5 rounded-lg">
-              <ShareReplyTable/>
-              <FindReplyTable/>
-            </div> -->
           </v-tabs-window-item>
-          
         </v-tabs-window>
       </v-container>
     </div>
@@ -258,14 +233,15 @@ import { ref } from 'vue'
 import { definePage } from 'vue-router/auto'
 import { useSnackbar } from 'vuetify-use-dialog'
 import { useApi } from '@/composables/axios'
+
 import EventTable from '@/components/table/eventTable.vue'
 import ShareTable from '@/components/table/shareTable.vue'
 import FindTable from '@/components/table/findTable.vue'
 import AccountTable from '@/components/table/accountTable.vue'
-import MaterialTable from '@/components/table/shareReplyTable.vue'
 import ShareReplyTable from '@/components/table/shareReplyTable.vue'
 import FindReplyTable from '@/components/table/findReplyTable.vue'
 import LandmarkTable from '@/components/table/landmarkTable.vue'
+
 import { useDisplay } from 'vuetify'
 const { mobile } = useDisplay()
 const { apiAuth } = useApi()
@@ -278,8 +254,8 @@ definePage({
   }
 })
 
-const mark=ref([
-{
+const mark = ref([
+  {
     title: '會員中心',
     disabled: false,
     to: '/setting',
@@ -290,8 +266,8 @@ const mark=ref([
   }
 ])
 
-const post=ref([
-{
+const post = ref([
+  {
     title: '會員中心',
     disabled: false,
     to: '/setting',
@@ -302,8 +278,8 @@ const post=ref([
   }
 ])
 
-const event=ref([
-{
+const event = ref([
+  {
     title: '會員中心',
     disabled: false,
     to: '/setting',
@@ -314,8 +290,8 @@ const event=ref([
   }
 ])
 
-const material =ref([
-{
+const material = ref([
+  {
     title: '會員中心',
     disabled: false,
     to: '/setting',
@@ -329,19 +305,21 @@ const material =ref([
 
 const tab = ref('option-1');
 const drawerOpen = ref(false);
+const subTab = ref('find')
+const replayTab = ref('findReplay')
 
 const toggleDrawer = () => {
   drawerOpen.value = !drawerOpen.value;
 };
 
 
-const isFavorite = ref('true');
+const isFavorite = ref(true);
 const events=ref([])
 const fetchFavoriteEventDetails = async () => {
   try {
     // 獲取用戶收藏的活動列表
     const { data } = await apiAuth.get('/user/mark');
-    // 將每個活動標記為已收藏
+    // 每個活動添加一個新的屬性 isFavorite，將其設置為 true
     events.value = data.map(event => ({ ...event, isFavorite: true }));
   } catch (error) {
     console.error('Failed to fetch favorite event details:', error);
@@ -361,8 +339,6 @@ const toggleFavorite = async (eventId) => {
     // if (event) {
     //   event.isFavorite = isFavorite;
     // }
-
-
     createSnackbar({
       text: '取消收藏',
       snackbarProps: {
@@ -383,36 +359,11 @@ const toggleFavorite = async (eventId) => {
 onMounted(() => {
   fetchFavoriteEventDetails();
 });
-
-
-const subTab = ref('find')
-const replayTab = ref('findReplay')
-const showTabs = ref(false);
-const smDrawerOpen = ref(false);
-
-const smToggleDrawer = () => {
-  smDrawerOpen.value = !smDrawerOpen.value;
-};
-
-const clickTab = () => {
-  showTabs.value = !showTabs.value;
-};
-
-
-
-
-
-
-
-
-
-
-
 </script>
   
 <style scoped>
  .b-1{
-  border: 1px solid #7a7a7a;
+  border: 1px solid #838383;
 }
 .bb-1{
   border-bottom: 1px solid #7a7a7a;
@@ -421,14 +372,9 @@ const clickTab = () => {
   background-color:#000;
   font-size: 15px;
 }
-
-::v-deep .v-data-table__thead{
-  background: #D9D9D9
-}
-
 .form-label{
-    font-size: 20px;
-    font-weight: bold;
+  font-size: 20px;
+  font-weight: bold;
 }
 .bg-info {
   background-color: #2196F3;
@@ -447,16 +393,16 @@ const clickTab = () => {
   width:100%;
 }
 
- .mark-btn{
+.mark-btn{
   width:"10px";
   height:"35px";
- }
+}
 .tabs-hidden {
-    display: none;
+  display: none;
 }
 
 .tabs-visible {
-    display: block;
+  display: block;
 }
 .v-card-title{
   font-size: 16px;
@@ -465,10 +411,10 @@ const clickTab = () => {
   font-size: 14px;
 }
 .mark-image{
-      width: 100%;
-      min-width: 120px;
-      max-height: 150px;
-      min-height: 150px;
+  width: 100%;
+  min-width: 120px;
+  max-height: 150px;
+  min-height: 150px;
 }
 @media(min-width:600px){
   .mark-container{
@@ -478,12 +424,16 @@ const clickTab = () => {
     width: 95%;
   }
   .mark-image{
-      width: 100%;
-      height: 80%;
-      max-height: 185px;
-      min-height: 145px;
+    width: 100%;
+    height: 80%;
+    max-height: 185px;
+    min-height: 145px;
 }
-}@media(min-width:750px) and (max-width: 959px) {
+::v-deep .v-data-table__thead{
+  background: #D9D9D9
+}
+}
+@media(min-width:750px) and (max-width: 959px) {
   .mark-container{
     width: 80%;
   }
@@ -525,13 +475,3 @@ const clickTab = () => {
   }
 }
 </style>
-  
-
-
-
-
-
-
-
-
-  

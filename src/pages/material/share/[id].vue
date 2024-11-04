@@ -54,7 +54,6 @@
           <v-card-text>
             <v-form @submit.prevent="submit" :disabled="isSubmitting">
               <v-row>
-                <!-- 捐贈數量 -->
                 <v-col cols="4" sm="3" class="my-auto text-center">
                   <label class="form-label">索取數量</label>
                 </v-col>
@@ -72,7 +71,6 @@
                   :density="$vuetify.display.xs ? 'compact' : 'comfortable'"
                   ></v-number-input>
                 </v-col>
-                <!-- 活動對象 -->
                 <v-col cols="4" sm="3" class="my-auto text-center">
                   <label v-if="$vuetify.display.xs" class="form-label">單位名稱</label>
                   <label v-else class="form-label">單位／姓名</label>
@@ -84,7 +82,6 @@
                   :density="$vuetify.display.xs ? 'compact' : 'comfortable'"
                   />
                 </v-col>
-                <!-- 需求介紹 -->
                 <v-col cols="4" sm="3" class="my-auto text-center">
                   <label class="form-label">聯絡電話</label>
                 </v-col>
@@ -118,7 +115,7 @@
 </template>
 <script setup>
 import { VNumberInput } from 'vuetify/labs/VNumberInput'
-import { ref, nextTick  } from 'vue'
+import { ref } from 'vue'
 import * as yup from 'yup'
 import { useForm, useField } from 'vee-validate'
 import { definePage } from 'vue-router/auto'
@@ -132,12 +129,7 @@ const route = useRoute()
 const createSnackbar = useSnackbar()
 
 const dialog = ref(false)
-const openDialog = (item) => {
-dialog.value = true
-}
-const closeDialog = () => {
-dialog.value = false
-}
+
 
 const items=ref([
 {
@@ -182,13 +174,7 @@ const textarea = ref(null);
 const load = async () => {
 try { // 透過'/material/' + route.params.id 來取得特定商品的資料
   const { data } = await api.get('/material/' + route.params.id)
-  provide.value._id = data.result._id
-  provide.value.name = data.result.name
-  provide.value.quantity = data.result.quantity
-  provide.value.category = data.result.category
-  provide.value.description = data.result.description
-  provide.value.organizer = data.result.organizer
-  provide.value.image = data.result.image
+  Object.assign(provide.value, data.result)
 } catch (error) {
   console.log(error)
   createSnackbar({
@@ -268,26 +254,33 @@ try {
 
 // 點擊我要留言按鈕跳到留言板
 function scrollTo(selector) { // 找到想滾動到的元素css選擇器
-    const element = document.querySelector(selector);
-    if (element) { 
-        // scrollIntoView 方法使該元素滾動到視窗內部
-        // behavior: 'smooth' 使滾動效果平滑過渡，而不是瞬間跳轉
-        element.scrollIntoView({ behavior: 'smooth' });
+  const element = document.querySelector(selector);
+  if (element) { 
+      // scrollIntoView 方法使該元素滾動到視窗內部
+      // behavior: 'smooth' 使滾動效果平滑過渡，而不是瞬間跳轉
+      element.scrollIntoView({ behavior: 'smooth' });
 
-        // 使用 setTimeout 確保滾動效果完成後再聚焦
-        setTimeout(() => { 
-            if (textarea.value && textarea.value.$refs.commentInput) {
-                textarea.value.$refs.commentInput.focus();
-            }
-        }, 500); // 調整延遲時間以符合需求
-    }
+      // 使用 setTimeout 確保滾動效果完成後再聚焦
+      setTimeout(() => { 
+          if (textarea.value && textarea.value.$refs.commentInput) {
+              textarea.value.$refs.commentInput.focus();
+          }
+      }, 500); // 調整延遲時間以符合需求
+  }
+}
+
+const openDialog = (item) => {
+dialog.value = true
+}
+const closeDialog = () => {
+dialog.value = false
 }
 </script>
 
 
 <style scoped>
 .b-1{
-border: 1px solid #7a7a7a;
+border: 1px solid #838383;
 }
 #con{
   padding: 0 1rem 0 1rem;
@@ -424,9 +417,9 @@ font-weight: bold;
 }
 
 @media(min-width:1920px){
-#con{
-  padding:0.5rem 15rem 3rem 15rem;
-}
+  #con{
+    padding:0.5rem 15rem 3rem 15rem;
+  }
 }
 
 

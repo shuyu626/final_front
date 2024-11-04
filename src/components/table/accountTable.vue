@@ -48,7 +48,6 @@
                     v-model="newUsername"
                     :error-messages="usernameError"
                     @keydown.enter="saveChanges(item)"
-                    hide-details
                   ></v-text-field>
                 </v-col>
                 <v-col cols="2" sm="3" md="2" lg="2" class="text-center text-sm-left" >
@@ -75,15 +74,6 @@
                   </p>
                 </v-col>
               </template>
-              <!-- <v-col cols="2" sm="3" md="2" lg="2" class="text-center">
-                  <v-btn
-                    @click="passwordtoggleEdit(item)"
-                    icon="mdi-pencil"
-                    variant="text"
-                    color="transparent"
-                    disabled
-                  ></v-btn>
-                </v-col> -->
               <v-divider></v-divider>
             </v-row>
             <v-row class="text-left justify-center">
@@ -106,7 +96,6 @@
                     v-model="newPassword"
                     :error-messages="passwordError"
                     @keydown.enter="passwordsaveChanges(item)"
-                    hide-details
                   ></v-text-field>
                 </v-col>
                 <v-col cols="2" sm="3" md="2" lg="2" class="text-center text-sm-left">
@@ -143,6 +132,7 @@ import { useRouter } from 'vue-router';
 const router = useRouter();
 const { apiAuth } = useApi();
 const createSnackbar = useSnackbar();
+
 const fileAgent = ref(null)
 const fileRecords = ref([]) // 綁定處理後的文件記錄
 const rawFileRecords = ref([])
@@ -150,22 +140,13 @@ const files = ref([]);
 
 
 
-const loadfile = async () => {
+const loadFile = async () => {
   try {
     const { data } = await apiAuth.get('/user/profile');
     files.value = [data.result];
     files.value[0].password = '********';
     files.value[0].newUsername = files.value[0].username;
-    files.value[0].newPassword = ''; // 用於存儲新密碼   
-    console.log(files.value)
-    // fileRecords.value = [{
-    //   urlValue: files.value[0].avatar,
-    //   urlResized: null,
-    //   // 其他必要的屬性
-    // }];
-
-
-    console.log(fileRecords.value);
+    files.value[0].newPassword = ''; 
   } catch (error) {
     createSnackbar({
       text: error?.response?.data?.message || '發生錯誤',
@@ -175,11 +156,17 @@ const loadfile = async () => {
     });
   }
 };
-loadfile();
+loadFile();
 
 const schema = yup.object({
-  newUsername: yup.string().min(3, '服務單位長度不符').max(20, '服務單位長度不符'),
-  newPassword: yup.string().min(6, '使用者密碼長度不符').max(20, '使用者密碼長度不符'),
+  newUsername: yup
+    .string()
+    .min(3, '服務單位長度不符')
+    .max(20, '服務單位長度不符'),
+  newPassword: yup
+    .string()
+    .min(6, '使用者密碼長度不符')
+    .max(20, '使用者密碼長度不符'),
 });
 
 const { handleSubmit, isSubmitting } = useForm({
@@ -196,7 +183,7 @@ const submit = handleSubmit(async () => {
     const item = files.value[0]; // 用戶的資料
     const fd = new FormData(); // 創建 FormData 對象
 
-    // 添加字段到 FormData 對象
+    // 添加資料到 FormData 對象
     if (newUsername.value && newUsername.value !== item.username) {
       fd.append('username', newUsername.value);
     }
@@ -206,9 +193,7 @@ const submit = handleSubmit(async () => {
     if (fileRecords.value.length !==  0) {
       fd.append('image', fileRecords.value[0].file)
     }
-    for (let [key, value] of fd.entries()) {
-  console.log(`${key}:`, value);
-}
+    
     if (fd.get('username') === null && fd.get('password') === null && fd.get('image') === null) {
       createSnackbar({
         text: '沒有任何變更',
@@ -218,9 +203,8 @@ const submit = handleSubmit(async () => {
       });
       return;
     }
-    console.log(fd)
     // 發送 PATCH 請求
-    const response=await apiAuth.patch('/user/change', fd);
+    const response = await apiAuth.patch('/user/change', fd);
     if (response.data.success) {
       createSnackbar({
       text: '資料修改成功' ,
@@ -266,18 +250,10 @@ const passwordsaveChanges = (item) => {
 </script>
 <style scoped>
 .b-1 {
-  border: 1px solid #7a7a7a;
+  border: 1px solid #838383;
 }
 .bb-1 {
   border-bottom: 1px solid #7a7a7a;
-}
-::v-deep .vue-file-agent.file-input-wrapper {
-  border: none;
-}
-::v-deep .file-preview-wrapper {
-  border-radius: 50%;
-  overflow: hidden;
-  border: 1px solid #7a7a7a;
 }
 #account{
   position: relative;
@@ -312,7 +288,14 @@ const passwordsaveChanges = (item) => {
   font-size: 17px;
   font-weight: bold;
 }
-
+::v-deep .vue-file-agent.file-input-wrapper {
+  border: none;
+}
+::v-deep .file-preview-wrapper {
+  border-radius: 50%;
+  overflow: hidden;
+  border: 1px solid #838383;
+}
 @media(min-width:600px){
   .account-container{
     width: 85%;

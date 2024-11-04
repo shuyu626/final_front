@@ -5,24 +5,24 @@
       <v-card class=" px-6 bg-grey-lighten-3 b-1 pt-5 rounded-t-0" >
         <v-card-text class="pb-0 pb-sm-4">
           <!-- <template> -->
-            <v-text-field 
-              label="公務信箱"
-              type="email"
-              variant="outlined"
-              v-model="email.value.value"
-              :error-messages="email.errorMessage.value"
-              :density="$vuetify.display.xs ? 'comfortable' : 'default'"
-            ></v-text-field>
-            <v-text-field
-              label="密碼"
-              type="password"
-              variant="outlined"
-              minlength="6"
-              v-model="password.value.value"
-              :error-messages="password.errorMessage.value"
-              :density="$vuetify.display.xs ? 'comfortable' : 'default'"
-              counter
-            ></v-text-field>
+          <v-text-field 
+            label="公務信箱"
+            type="email"
+            variant="outlined"
+            v-model="email.value.value"
+            :error-messages="email.errorMessage.value"
+            :density="$vuetify.display.xs ? 'comfortable' : 'default'"
+          ></v-text-field>
+          <v-text-field
+            label="密碼"
+            type="password"
+            variant="outlined"
+            minlength="6"
+            v-model="password.value.value"
+            :error-messages="password.errorMessage.value"
+            :density="$vuetify.display.xs ? 'comfortable' : 'default'"
+            counter
+          ></v-text-field>
           <!-- </template> -->
         </v-card-text>
           <v-card-actions class="mb-5">
@@ -33,12 +33,8 @@
           </v-card-actions>
       </v-card>
     </v-form>
-
-
   </v-tabs-window-item>
-    
 </template>
-
 <script setup>
 import { useForm, useField } from 'vee-validate'
 import * as yup from 'yup'
@@ -68,21 +64,18 @@ const loginSchema = yup.object({
     .max(20, '密碼長度不符'),
 })
 
-
-const {handleSubmit, isSubmitting}=useForm({
+const { handleSubmit, isSubmitting } = useForm({
   validationSchema: loginSchema,
   initialValues: {
-    email: '444444@gmail.org', // 預設信箱
-    password: '444444' // 預設密碼
+    email: 'test@gmail.org', // 預設信箱
+    password: '000000' // 預設密碼
   }
 })
 
 const email = useField('email')
 const password = useField('password')
-
-
 const submit = handleSubmit(async (values) => {
-  // console.log(values) // 有東西的，信箱、密碼
+  console.log(values) // 有東西的，信箱、密碼
   const result = await user.login(values)
   // console.log(result)
   if (result === '登入成功') {
@@ -112,8 +105,7 @@ const handleClose = () => {
 </script>
 <style scoped>
 .b-1{
-  border: 1px solid black;
+  border: 1px solid #838383;
   border-top: none;
 }
-
 </style>

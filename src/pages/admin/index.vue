@@ -233,7 +233,7 @@ const menus = computed(() => {
 <style scoped>
 
 .b-1{
-  border: 1px solid #7a7a7a;
+  border: 1px solid #838383;
 }
 .v-text-field{
   margin: 8px 0 8px 0;

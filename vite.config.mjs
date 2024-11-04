@@ -64,17 +64,5 @@ export default defineConfig({
   },
   server: {
     port: 3000,
-    proxy: {
-      '/api': {
-        target: 'https://ltcpap.mohw.gov.tw',
-        changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/api/, ''),
-      },
-      '/api': {
-        target: 'http://data.ntpc.gov.tw',
-        changeOrigin: true,
-        pathRewrite: { '^/api': '' },
-      },
-    },
   },
 });

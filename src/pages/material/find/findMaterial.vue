@@ -137,21 +137,23 @@
 
 </template>
 <script setup>
-import { ref, computed, watch } from 'vue';
+import { ref,  watch } from 'vue';
 import { definePage } from 'vue-router/auto'
 import { useApi } from '@/composables/axios'
 import { useSnackbar } from 'vuetify-use-dialog'
 import { useDisplay } from 'vuetify'
+
 const { mobile } = useDisplay()
 const { api } = useApi()
 const createSnackbar = useSnackbar()
+
 definePage({
   meta: {
     title: 'KeeperS | 我要募資'
   }
 })
 
-
+// 麵包屑導航
 const items=ref([
 {
     title: '首頁',
@@ -163,6 +165,7 @@ const items=ref([
     disabled: true,
   }
 ])
+
 const categories = ref([
     { name: '食品', selected: false },
     { name: '服飾配件', selected: false },
@@ -178,15 +181,20 @@ const categories = ref([
   ]);
   
 
+const searchQuery = ref('') // 搜尋框中的文字
+const allSelected = ref(true); // 用於追蹤是否所有類別都被選中
+const filteredItems = ref([]); // 用於存儲篩選後的項目
 
-  const allSelected = ref(true); // 用於追蹤是否所有類別都被選中
-  const filteredItems = ref([]); // 用於存儲篩選後的項目
-  
-  const searchQuery = ref('')
+const provides = ref([]) // 後端物資資料
+const page = ref(1) // 現在第幾頁
+const pages = ref(1) // 全部有幾頁
+const ITEMS_PER_PAGE = 8
+
+
 
 
 const filterItems = () => {
-  // 獲取選中的分類
+  // 獲取選中的分類名
   const selectedCategories = categories.value
     .filter(category => category.selected)
     .map(category => category.name);
@@ -207,29 +215,15 @@ const filterItems = () => {
     } else {
       // 如果有選中的分類，則根據選中的分類和搜尋查詢過濾項目
       filteredItems.value = provides.value.filter(provide => {
-        const matchesCategory = selectedCategories.length === 0 || selectedCategories.includes(provide.category);
-        const matchesSearchQuery = provide.name.toLowerCase().includes(query) || 
-        provide.organizer.toLowerCase().includes(query);
-        return matchesCategory && matchesSearchQuery;
+        const matchesCategory = selectedCategories.length === 0 || selectedCategories.includes(provide.category); // 檢查該物資的類別是否在選中的類別中，或者選中類別為空
+        const matchesSearchQuery = provide.name.toLowerCase().includes(query) ||  provide.organizer.toLowerCase().includes(query); // 檢查物資的名稱或組織者的名稱是否包含搜尋查詢
+        return matchesCategory && matchesSearchQuery; // 以上兩個條件都滿足時，該物資才會被包括在 filteredItems 中
       });
     }
   }
 };
 
-watch(searchQuery, () => {
-  filterItems(); // 當搜尋查詢變化時重新過濾項目
-});
 
-// 監聽分類選擇狀態的變化
-watch(
-  () => categories.value.map(category => category.selected),
-  () => {
-    filterItems(); // 當分類選擇狀態變化時重新過濾項目
-    // 更新 allSelected 的值，判斷是否所有類別都被選中
-    allSelected.value = categories.value.every(category => category.selected);
-  },
-  { deep: true } // 深度監聽，監聽 categories 中每個 category 的 selected 屬性
-);
 
 const selectAll = () => {
   // 根據 allSelected 的值設置所有類別的 selected 狀態
@@ -247,42 +241,54 @@ onMounted(() => {
 
 const handleClick = (category, toggle) => {
   if (allSelected.value) {
-    // 若之前是全選狀態,現在取消某個類別
+    // 如果之前是全選狀態，取消所有類別的選擇
     allSelected.value = false;
     categories.value.forEach(cat => {
-      cat.selected = cat === category;
+      cat.selected = false; // 取消所有類別的選擇狀態
     });
+    category.selected = true; // 將當前點擊的類別設為選擇狀態
   } else {
+    // 切換當前類別的選擇狀態
     category.selected = !category.selected;
+    // 更新 allSelected 狀態
     allSelected.value = categories.value.every(cat => cat.selected);
   }
-  toggle();
-  filterItems();
+  toggle(); // 更新  toggle 效果
+  filterItems(); // 重新過濾項目
 };
-
 
 const handleAllClick = (toggle) => {
-  allSelected.value = !allSelected.value;
+  allSelected.value = !allSelected.value; // 反轉全選狀態
+
   categories.value.forEach(category => {
-    category.selected = allSelected.value;
+    category.selected = allSelected.value; // 根據 allSelected 設置所有類別的選擇狀態
   });
+
+  // 呼叫 toggle，強制更新 UI
   if (toggle) toggle();
-  filterItems();
+
+  filterItems(); // 重新過濾項目
 };
 
+watch(searchQuery, () => {
+  filterItems(); // 當搜尋查詢變化時重新過濾項目
+});
+
+// 監聽分類選擇狀態的變化
+watch(
+  () => categories.value.map(category => category.selected),
+  () => {
+    filterItems(); // 當分類選擇狀態變化時重新過濾項目
+    // 更新 allSelected 的值，判斷是否所有類別都被選中
+    allSelected.value = categories.value.every(category => category.selected);
+  },
+  { deep: true } // 深度監聽，監聽 categories 中每個 category 的 selected 屬性
+);
 
 
 
 
 
-
-
-
-const page = ref(1) // 現在第幾頁
-const pages = ref(1) // 全部有幾頁
-const ITEMS_PER_PAGE = 8
-
-const provides = ref([])
 
 // 加載物資資料
 const loadMaterials = async () => {
@@ -296,8 +302,6 @@ const loadMaterials = async () => {
     pages.value = Math.ceil(data.result.total / ITEMS_PER_PAGE) // 總頁數 = 總商品數量 / 每頁數量
     provides.value.splice(0, provides.value.length, ...data.result.data) // 更新前端的商品列表
     filterItems()
-    console.log(provides)
-    console.log(provides.value)
   } catch (error) {
     console.log(error)
     createSnackbar({
@@ -311,14 +315,8 @@ const loadMaterials = async () => {
 loadMaterials()
 
 
-
-
-
-
-
 </script>
 <style scoped>
-
 .v-card{
   max-width: 650px;
   max-height: 300px;
@@ -327,20 +325,8 @@ loadMaterials()
   width: 85%;
   aspect-ratio: 1; 
 }
-@media (min-width: 960px) and (max-width: 1280px) {
-  .item-img{
-    margin-left: 30px;
-  width: 90%;
-}
-}
-@media (min-width: 600px) and (max-width: 960px) {
-  .item-img{
-    margin-left: 50px;
-    width: 65%;
-}
-}
 .b-1{
-  border: 1px solid #7a7a7a;
+  border: 1px solid #838383;
 }
 .v-row{
     height: 300px;
@@ -350,10 +336,23 @@ loadMaterials()
     top: 35%;
     left: 60%;
 }
-::v-deep .v-breadcrumbs{
-  padding:8px 12px 6px 12px ;
-}
 .v-divider{
   margin: 0px 0 1rem 80px;
 }
+::v-deep .v-breadcrumbs{
+  padding:8px 12px 6px 12px ;
+}
+@media (min-width: 960px) and (max-width: 1280px) {
+    .item-img{
+      margin-left: 30px;
+    width: 90%;
+  }
+}
+@media (min-width: 600px) and (max-width: 960px) {
+    .item-img{
+      margin-left: 50px;
+      width: 65%;
+  }
+}
+
 </style>

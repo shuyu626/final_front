@@ -124,7 +124,7 @@ watch(tableSearch, () => {
   font-weight: bold;
 }
 .b-1{
-  border: 1px solid #7a7a7a;
+  border: 1px solid #838383;
 }
 .bb-1{
   border-bottom: 1px solid #7a7a7a;

@@ -2,37 +2,37 @@
   <div class="b-1 mx-auto find-container" >
     <h2 class="bb-1 bg-accent text-center mx-auto py-1 mb-5">捐贈者聯絡資訊</h2>
     <!-- 物資回覆管理 -->
-            <v-data-table-server
-                v-model:items-per-page="tableItemsPerPage"
-                v-model:sort-by="tableSortBy"
-                v-model:page="tablePage"
-                :items="tableItems"
-                :headers="tableHeaders"
-                :loading="tableLoading"
-                :items-length="tableItemsLength"
-                @update:items-per-page="tableLoadItems(false)"
-                @update:sort-by="tableLoadItems(false)"
-                @update:page="tableLoadItems(false)"
-                hover
-                class="mx-auto mb-15 px-2 px-md-8 text-body-1 rounded-sm"
-              >
-              <template #[`item.image`]="{ item }" >
-                <router-link :to="'/material/find/'+ item._id" style="text-decoration: none">
-                  <v-img :src="item.image"  class="my-5 img"></v-img>
-                </router-link>
-              </template>
-              <template #[`item.donations`]="{ item }">
-                <v-card class="mb-2" outlined variant="text" v-for="(donation, index) in item.donations" :key="index" >
-                  <v-card-title>
-                    <v-row no-gutters class="flex-column ">
-                      <v-col cols="3" class="form-label text-left my-1">數量: {{ donation.quantity }}</v-col>
-                      <v-col cols="5" class="form-label text-left my-1">服務單位: {{ donation.donator }}</v-col>
-                      <v-col cols="4" class="form-label text-left my-1">聯絡電話: {{ donation.phone }}</v-col>
-                    </v-row>
-                  </v-card-title>
-                </v-card>
-            </template>
-            </v-data-table-server>
+    <v-data-table-server
+      v-model:items-per-page="tableItemsPerPage"
+      v-model:sort-by="tableSortBy"
+      v-model:page="tablePage"
+      :items="tableItems"
+      :headers="tableHeaders"
+      :loading="tableLoading"
+      :items-length="tableItemsLength"
+      @update:items-per-page="tableLoadItems(false)"
+      @update:sort-by="tableLoadItems(false)"
+      @update:page="tableLoadItems(false)"
+      hover
+      class="mx-auto mb-15 px-2 px-md-8 text-body-1 rounded-sm"
+    >
+      <template #[`item.image`]="{ item }" >
+        <router-link :to="'/material/find/'+ item._id" style="text-decoration: none">
+          <v-img :src="item.image"  class="my-5 img"></v-img>
+        </router-link>
+      </template>
+      <template #[`item.donations`]="{ item }">
+        <v-card class="mb-2" outlined variant="text" v-for="(donation, index) in item.donations" :key="index" >
+          <v-card-title>
+            <v-row no-gutters class="flex-column ">
+              <v-col cols="3" class="form-label text-left my-1">數量: {{ donation.quantity }}</v-col>
+              <v-col cols="5" class="form-label text-left my-1">服務單位: {{ donation.donator }}</v-col>
+              <v-col cols="4" class="form-label text-left my-1">聯絡電話: {{ donation.phone }}</v-col>
+            </v-row>
+          </v-card-title>
+        </v-card>
+    </template>
+    </v-data-table-server>
   </div>
 
 </template>
@@ -41,7 +41,7 @@ import { ref } from 'vue'
 import { useSnackbar } from 'vuetify-use-dialog'
 import { useApi } from '@/composables/axios'
 
-const { api,apiAuth } = useApi()
+const { apiAuth } = useApi()
 const createSnackbar = useSnackbar()
 
 
@@ -72,7 +72,6 @@ const tableLoadItems = async (reset) => {
         sortOrder: tableSortBy.value[0]?.order || 'desc',
       }
     })
-    console.log(data.result.data)
 
     // 確認 data.result.data 裡的 donations 是否有東西，有東西才顯示在畫面上
     const filteredData = data.result.data.filter(item => item.donations && item.donations.length > 0)    
@@ -97,14 +96,8 @@ tableLoadItems()
 
 </script>
 <style scoped>
-
-::v-deep .v-data-table__thead{
-  background: #D9D9D9;
-  font-size: 16px;
-  font-weight: bold;
-}
 .b-1{
-  border: 1px solid #7a7a7a;
+  border: 1px solid #838383;
 }
 .bb-1{
   border-bottom: 1px solid #7a7a7a;
@@ -120,6 +113,11 @@ tableLoadItems()
 }
 .form-label{
   font-size: 14px;
+  font-weight: bold;
+}
+::v-deep .v-data-table__thead{
+  background: #D9D9D9;
+  font-size: 16px;
   font-weight: bold;
 }
 @media(min-width:600px){

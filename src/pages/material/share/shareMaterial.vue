@@ -135,9 +135,11 @@ import { definePage } from 'vue-router/auto'
 import { useApi } from '@/composables/axios'
 import { useSnackbar } from 'vuetify-use-dialog'
 import { useDisplay } from 'vuetify'
+
 const { mobile } = useDisplay()
 const { api } = useApi()
 const createSnackbar = useSnackbar()
+
 definePage({
 meta: {
   title: 'KeeperS | 我要分享'
@@ -176,9 +178,13 @@ const categories = ref([
 
 const allSelected = ref(true); // 用於追蹤是否所有類別都被選中
 const filteredItems = ref([]); // 用於存儲篩選後的項目
-
 const searchQuery = ref('')
 
+const page = ref(1) // 現在第幾頁
+const pages = ref(1) // 全部有幾頁
+const ITEMS_PER_PAGE = 8 // 一頁20個 // 老師習慣完全不會改的變數名稱用大寫
+
+const provides = ref([])
 
 const filterItems = () => {
 // 獲取選中的分類
@@ -212,20 +218,7 @@ if (allSelected.value) {
 }
 };
 
-watch(searchQuery, () => {
-  filterItems(); // 當搜尋查詢變化時重新過濾項目
-});
 
-// 監聽分類選擇狀態的變化
-watch(
-  () => categories.value.map(category => category.selected),
-  () => {
-    filterItems(); // 當分類選擇狀態變化時重新過濾項目
-    // 更新 allSelected 的值，判斷是否所有類別都被選中
-    allSelected.value = categories.value.every(category => category.selected);
-  },
-  { deep: true } // 深度監聽，監聽 categories 中每個 category 的 selected 屬性
-);
 
 const selectAll = () => {
   // 根據 allSelected 的值設置所有類別的 selected 狀態
@@ -267,6 +260,20 @@ const handleAllClick = (toggle) => {
 };
 
 
+watch(searchQuery, () => {
+  filterItems(); // 當搜尋查詢變化時重新過濾項目
+});
+
+// 監聽分類選擇狀態的變化
+watch(
+  () => categories.value.map(category => category.selected),
+  () => {
+    filterItems(); // 當分類選擇狀態變化時重新過濾項目
+    // 更新 allSelected 的值，判斷是否所有類別都被選中
+    allSelected.value = categories.value.every(category => category.selected);
+  },
+  { deep: true } // 深度監聽，監聽 categories 中每個 category 的 selected 屬性
+);
 
 
 
@@ -274,11 +281,6 @@ const handleAllClick = (toggle) => {
 
 
 
-const page = ref(1) // 現在第幾頁
-const pages = ref(1) // 全部有幾頁
-const ITEMS_PER_PAGE = 8 // 一頁20個 // 老師習慣完全不會改的變數名稱用大寫
-
-const provides = ref([])
 // 加載商品資料
 const loadMaterials = async () => {
 try {
@@ -312,35 +314,36 @@ loadMaterials()
 <style scoped>
 
 .v-card{
-max-width: 650px;
-max-height: 300px;
+  max-width: 650px;
+  max-height: 300px;
 }
 .item-img{
-width: 85%;
-aspect-ratio: 1; 
-}
-@media (min-width: 960px) and (max-width: 1280px) {
-.item-img{
-margin-left: 30px;
-width: 90%;
-}
-}
-@media (min-width: 600px) and (max-width: 960px) {
-.item-img{
-margin-left: 50px;
-width: 65%;
-}
+  width: 85%;
+  aspect-ratio: 1; 
 }
 .b-1{
-border: 1px solid #7a7a7a;
+border: 1px solid #838383;
 }
 .v-row{
 height: 300px;
 }
-::v-deep .v-breadcrumbs{
-padding:8px 12px 6px 12px ;
-}
 .v-divider{
-margin: 0px 0 1rem 80px;
+  margin: 0px 0 1rem 80px;
 }
+::v-deep .v-breadcrumbs{
+  padding:8px 12px 6px 12px ;
+}
+@media (min-width: 960px) and (max-width: 1280px) {
+  .item-img{
+    margin-left: 30px;
+    width: 90%;
+  }
+}
+@media (min-width: 600px) and (max-width: 960px) {
+  .item-img{
+    margin-left: 50px;
+    width: 65%;
+  }
+}
+
 </style>

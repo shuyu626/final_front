@@ -75,7 +75,6 @@ const tableLoadItems = async (reset) => {
         sortOrder: tableSortBy.value[0]?.order || 'desc',
       }
     })
-    console.log(data.result.data)
   // 確認 data.result.data 裡的 donations 是否有東西，有東西才顯示在畫面上
   const filteredData = data.result.data.filter(item => item.donations && item.donations.length > 0)    
     tableItems.value.splice(0, tableItems.value.length, ...filteredData)
@@ -98,14 +97,8 @@ tableLoadItems()
 
 </script>
 <style scoped>
-
-::v-deep .v-data-table__thead{
-  background: #D9D9D9;
-  font-size: 16px;
-  font-weight: bold;
-}
 .b-1{
-  border: 1px solid #7a7a7a;
+  border: 1px solid #838383;
 }
 .bb-1{
   border-bottom: 1px solid #7a7a7a;
@@ -121,6 +114,11 @@ tableLoadItems()
 }
 .form-label{
   font-size: 14px;
+  font-weight: bold;
+}
+::v-deep .v-data-table__thead{
+  background: #D9D9D9;
+  font-size: 16px;
   font-weight: bold;
 }
 @media(min-width:600px){
