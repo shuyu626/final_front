@@ -166,7 +166,7 @@ const deleteItem = async (item) => {
   font-size: 16px;
   font-weight: bold;
 }
-{
+.b-1{
   border: 1px solid #838383;
 }
 .bb-1{
