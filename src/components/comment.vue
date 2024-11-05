@@ -127,7 +127,6 @@
   const currentUser = ref(null)
   const currentEditingId = ref(null)
   const currentEditingContent = ref('')
-  const comment = useField('comment')
   
   const schema = yup.object({
     comment: yup
@@ -141,6 +140,7 @@
       comment: ''
     }
   })
+  const comment = useField('comment')
   
   const loadComments = async () => {
     try {
