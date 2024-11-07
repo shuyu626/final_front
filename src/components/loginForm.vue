@@ -75,9 +75,7 @@ const { handleSubmit, isSubmitting } = useForm({
 const email = useField('email')
 const password = useField('password')
 const submit = handleSubmit(async (values) => {
-  console.log(values) // 有東西的，信箱、密碼
   const result = await user.login(values)
-  // console.log(result)
   if (result === '登入成功') {
     createSnackbar({
       text: result,

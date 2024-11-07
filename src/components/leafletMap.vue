@@ -177,7 +177,7 @@ const updateMarkers = () => {
   const filteredMarks = marks.value.filter(item => {
     const matchesCity = !props.selectedCity || item.address.includes(props.selectedCity); // 檢查地址是否包含所選的城市
     const matchesArea = !props.selectedArea || item.address.includes(props.selectedArea); // 檢查地址是否包含所選的區域
-    const matchsQuery = !props.searchQuery || item.name.toLowerCase().includes(props.searchQuery.toLowerCase()) // 檢查名稱是否符合搜尋字串
+    const matchsQuery = !props.searchQuery || item.name.toLowerCase().includes(props.searchQuery.toLowerCase()) || item.address.toLowerCase().includes(props.searchQuery.toLowerCase()) // 檢查名稱是否符合搜尋字串
     const matchesSubcategory = props.selectedSubcategories.length === 0 || // 檢查項目的類別是否符合所選的子類別
       item.categories.some(subcat => props.selectedSubcategories.includes(subcat));
     return matchesCity && matchesArea && matchesSubcategory && matchsQuery

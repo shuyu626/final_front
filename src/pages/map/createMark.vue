@@ -248,8 +248,8 @@
             </v-col>
           </v-row>
           <v-row>
-            <v-col class="text-center " >
-              <AppButton type="submit" class="b-1 bg-accent mb-5" @click="addMarker"></AppButton>
+            <v-col class="text-center" >
+              <AppButton type="submit" class="b-1 bg-accent mb-5 d-inline-block" @click="addMarker"></AppButton>
             </v-col>
           </v-row>
         </v-form>
@@ -741,7 +741,7 @@ const submit = handleSubmit(async (values) => {
     const icon = categoryIcons[values.cl] || categoryIcons['綜合'];
     const marker = L.marker([latitude.value, longitude.value], { icon })
       .bindPopup(
-        `<h2 style="margin:5px 0 5px 0;text-decoration: underline;">${values.name}</h2>
+        `<h2 style="margin:5px 0 5px 0;text-decoration: underline;color:#1b3f63;">${values.name}</h2>
         <h3 style="margin: 2px 0 2px 0;color:gray;">地址：${values.address}</h3>
         <h3 style="margin: 2px 0 2px 0;color:gray;">電話：${values.tel}</h3>
         <h4 style="margin: 2px 0 2px 0;color:gray;">類別：${categories.join(' | ')}</h4>
@@ -768,6 +768,7 @@ const submit = handleSubmit(async (values) => {
         color: 'red'
       }
     })
+    resetForm();
   }
 })
 
@@ -850,11 +851,11 @@ const loadMap = async () => {
         const icon = categoryIcons[cl] || categoryIcons['綜合']
       L.marker([mark.lat, mark.lng], { icon })
         .bindPopup(
-        `<h2 style="margin:5px 0 5px 0;text-decoration: underline;">${mark.name}</h2>
+        `<h2 style="margin:5px 0 5px 0;text-decoration: underline;color:#1b3f63;">${mark.name}</h2>
         <h3 style="margin: 2px 0 2px 0;color:gray;">${mark.address}</h3>
         <h3 style="margin: 2px 0 2px 0;color:gray;">${mark.tel}</h3>
-        <h4 style="margin: 2px 0 2px 0;color:gray;">類別：${mark.categories.join(' | ') }</h4>
-        <p style="margin: 2px 0 2px 0;color:gray;">簡介：<br>${mark.description}</p>`
+        <span style="font-size: 1.17em;font-weight: bold;color:gray;">類別：</span><span style="font-size: 1.17em;font-weight: bold;margin: 2px 0 2px 0;color:#7b97a6;">${mark.categories.join(' | ') }</span>
+        <div><span style="font-size: 1.17em;font-weight: bold;color:gray;">簡介：</span><h4 style="margin: 2px 0 2px 0;color:gray;white-space: pre-line;">${mark.description}</h4></div>`
         ,
           {
             className: 'custom-popup-class',
