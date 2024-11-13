@@ -40,6 +40,11 @@ router.beforeEach(async (to, from, next) => {
 
 router.afterEach((to, from) => {
   document.title = to.meta.title
+  if (window.gtag) {
+    window.gtag('config', 'G-R94MDHTVB3', {
+      page_path: to.fullPath
+    });
+  }
 })
 
 
